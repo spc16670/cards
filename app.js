@@ -1,11 +1,12 @@
 'use strict';
 
-angular.module('ngWebglDemo', []).controller('AppCtrl', ['$scope', function ($scope) {
+var app = angular.module('ngWebglDemo', [
+  'cards.controllers.Main'
+  ,'cards.directives.Three'
+]);
 
-    $scope.canvasWidth = 400;
-    $scope.canvasHeight = 400;
-    $scope.dofillcontainer = true;
-    $scope.scale = 1;
-    $scope.materialType = 'lambert';
+app.config(function($interpolateProvider){
+});
 
-  }]);
+app.run(['$rootScope',function($rootScope) {
+}]);

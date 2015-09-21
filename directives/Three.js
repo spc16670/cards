@@ -1,6 +1,7 @@
 'use strict';
+var module = angular.module('cards.directives.Three',[]);
 
-angular.module('ngWebglDemo').directive('ngWebgl', function () {
+module.directive('ngWebgl', function () {
     return {
       restrict: 'A',
       scope: { 
