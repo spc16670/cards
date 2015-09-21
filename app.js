@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('ngWebglDemo', [
+var app = angular.module('CardsApp', [
   'cards.controllers.Main'
   ,'cards.directives.Three'
 ]);

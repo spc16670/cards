@@ -16,8 +16,7 @@ module.directive('ngWebgl', function () {
         var camera, scene, renderer,
           shadowMesh, icosahedron, light,
           mouseX = 0, mouseY = 0,
-          contW = (scope.fillcontainer) ? 
-            element[0].clientWidth : scope.width,
+          contW = (scope.fillcontainer) ? element[0].clientWidth : scope.width,
           contH = scope.height, 
           windowHalfX = contW / 2,
           windowHalfY = contH / 2,

@@ -30,7 +30,7 @@
 
   </head>
 
-  <body ng-app="ngWebglDemo">
+  <body ng-app="CardsApp">
 
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -67,22 +67,50 @@
     </nav>
 
     <!-- Begin page content -->
-    <div class="container">
-      <p class="lead">Pin a fixed-height footer to the bottom of the ...</p>
+    <div class="container" ng-controller="MainController">
 	  <div class="row">
-		  <div id="threeCanvased" class="col-md-9">
-		  1
+		  <div id="threeCanvased" class="col-md-8">
+			<div 
+				ng-webgl
+				id="webglContainer" 
+				width="canvasWidth"
+				height="canvasHeight"
+				fillcontainer="dofillcontainer"
+				scale="scale"
+				material-type="materialType"
+			></div>
 		  </div>
-		  <div class="col-md-3">
-		  2
+		  <div class="col-md-4">
+			<br><br>
+			<label for="scale">Scale Object</label>
+			<input type="range" name="scale" min="0.1" max="1.2" step="0.1" ng-model="scale" class="add-bottom">
+
+			<label for="canvasWidth">Canvas Width</label>
+			<input type="text" id="canvasWidth" ng-model="canvasWidth" ng-disabled="dofillcontainer"><br>
+
+			<label for="canvasHeight">Canvas Height</label>
+			<input type="text" id="canvasHeight" ng-model="canvasHeight" ng-disabled="dofillcontainer"><br>
+
+			<label for="materialsList">Material Type</label>
+			<select id="materialsList" ng-model="materialType">
+				<option value="lambert">Lambert</option>
+				<option value="phong">Phong</option>
+				<option value="wireframe">Wire Frame</option>
+			</select><br>
+
+			<label for="dofillcontainer">
+				<input type="checkbox" id="dofillcontainer" ng-model="dofillcontainer"/>
+				<span>Responsive Canvas</span>
+			</label>
+
 		  </div>
 	  </div>
     </div>
 
     <footer class="footer">
-      <div class="container">
-        <p class="text-muted">Place sticky footer content here.</p>
-      </div>
+		<div class="container">
+			<p class="text-muted">Place sticky footer content here.</p>
+		</div>
     </footer>
 
   </body>
