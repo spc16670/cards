@@ -23,6 +23,7 @@
     <script src="lib/three/Projector.js"></script>
     <script src="lib/three/CanvasRenderer.js"></script>
     <script src="lib/three/GeometryUtils.js"></script>
+	<script src="lib/three/OrbitControls.js"></script>
 
 	<script src="controllers/Main.js"></script>
     <script src="directives/Three.js"></script>
@@ -78,6 +79,7 @@
 				fillcontainer="dofillcontainer"
 				scale="scale"
 				material-type="materialType"
+				spinning="spinning"
 			></div>
 		  </div>
 		  <div class="col-md-4">
@@ -93,13 +95,18 @@
 
 			<label for="materialsList">Material Type</label>
 			<select id="materialsList" ng-model="materialType">
-				<option value="basic">Baisc</option>
+				<option value="basic">Basic</option>
 				<option value="wireframe">Wire Frame</option>
 			</select><br>
 
 			<label for="dofillcontainer">
 				<input type="checkbox" id="dofillcontainer" ng-model="dofillcontainer"/>
 				<span>Responsive Canvas</span>
+			</label>
+			
+			<label for="spinning">
+				<input type="checkbox" id="spinning" ng-model="spinning"/>
+				<span>Spinning</span>
 			</label>
 
 		  </div>

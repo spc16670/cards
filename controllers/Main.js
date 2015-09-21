@@ -8,5 +8,6 @@ module.controller('MainController', ['$scope', function ($scope) {
     $scope.dofillcontainer = true;
     $scope.scale = 1;
     $scope.materialType = 'basic';
+	$scope.spinning = true;
 
 }]);
