@@ -22,24 +22,26 @@ module.directive('ngWebgl', function () {
 			var materials; 
 			var controls;
 			var hoovering;
-			var mouseVector;
+			var mouse;
 			var raycaster;
-			 
+			var canvasPosition;
+			var facePointed;
+			
 			contW = (scope.fillcontainer) ? element[0].clientWidth : scope.width,
 			contH = scope.height, 
 			materials = {};
 			hoovering = true;
-			mouseVector = new THREE.Vector2();
 			raycaster = new THREE.Raycaster();
+			mouse = new THREE.Vector2();
 			
         scope.init = function () {
 
-          // Camera
-          camera = new THREE.PerspectiveCamera( 20, contW / contH, 1, 10000 );
-          camera.position.z = 1800;
-		  
-          // Scene
-          scene = new THREE.Scene();
+			// Camera
+			camera = new THREE.PerspectiveCamera( 20, contW / contH, 1, 10000 );
+			camera.position.z = 1800;
+
+			// Scene
+			scene = new THREE.Scene();
 
 			var objGeometry = new THREE.BoxGeometry( 200, 200, 200 );
 
@@ -62,39 +64,55 @@ module.directive('ngWebgl', function () {
 			obj = new THREE.Mesh( objGeometry, materials[scope.materialType] );
 			scene.add( obj );
 
+			var axes = new THREE.AxisHelper(1000);
+			scene.add(axes);
+			var gridXZ = new THREE.GridHelper(1000, 100);
+			scene.add(gridXZ);
+			
 			renderer = new THREE.CanvasRenderer();
 			renderer.setClearColor( 0xffffff );
 			renderer.setPixelRatio( window.devicePixelRatio );
 			renderer.setSize( contW, contH );
-			
+
 			// element is provided by the angular directive
 			element[0].appendChild( renderer.domElement );
+			canvasPosition = element[0].getBoundingClientRect();
+			console.log("canvasPosition? ",canvasPosition);
 			element[0].addEventListener('mouseover', scope.mouseOver);
 			element[0].addEventListener('mouseout', scope.mouseOut);
-			element[0].addEventListener('mousedown', scope.onRendereMouseDown, false );
-			
+			element[0].addEventListener('click', scope.onClick );
+			element[0].addEventListener('mousemove', scope.onRendereMouseMove );
 			controls = new THREE.OrbitControls( camera, renderer.domElement );
 			controls.addEventListener('change', scope.render );
-
 			window.addEventListener('resize', scope.onWindowResize, false );
 
         };
 		
 		scope.mouseOver = function () {
-		  hoovering = true;
+			hoovering = true;
 		}
 		
 		scope.mouseOut = function () {
-		  hoovering = false;
+			hoovering = false;
 		}
 
-		scope.onRendereMouseDown = function (event) {
+		scope.onRendereMouseMove = function (event) {
+			mouse.x = ( (event.clientX - canvasPosition.left) / contW ) * 2 - 1;
+			mouse.y = - ( (event.clientY - canvasPosition.top) / contH ) * 2 + 1;
+			raycaster.setFromCamera( mouse, camera );
+			var intersected = raycaster.intersectObjects( scene.children );
+			if (intersected.length != 0) {
+				facePointed = intersected[0].face.materialIndex
+			} else {
+				facePointed = null;
+			}
+		}
+
+		scope.onClick = function (event) {
 		    event.preventDefault();
-			mouseVector.x = ( event.clientX / contW ) * 2 - 1;
-			mouseVector.y = - ( event.clientY / contH ) * 2 + 1;
-			raycaster.setFromCamera( mouseVector,camera );
-			var intersects = raycaster.intersectObject( obj );
-			console.log(intersects);
+			if (facePointed != null) {
+				alert("face: " + facePointed);
+			}
 		}
         // -----------------------------------
         // Event listeners
@@ -107,15 +125,16 @@ module.directive('ngWebgl', function () {
         // Updates
         // -----------------------------------
         scope.resizeCanvas = function () {
-          contW = (scope.fillcontainer) ? element[0].clientWidth : scope.width;
-          contH = scope.height;
-          camera.aspect = contW / contH;
-          camera.updateProjectionMatrix();
-          renderer.setSize( contW, contH );
+			contW = (scope.fillcontainer) ? element[0].clientWidth : scope.width;
+			contH = scope.height;
+			canvasPosition = element[0].getBoundingClientRect();
+			camera.aspect = contW / contH;
+			camera.updateProjectionMatrix();
+			renderer.setSize( contW, contH );
         };
 
         scope.resizeObject = function () {
-          obj.scale.set(scope.scale, scope.scale, scope.scale);
+			obj.scale.set(scope.scale, scope.scale, scope.scale);
         };
 
         scope.changeMaterial = function () {
@@ -127,14 +146,18 @@ module.directive('ngWebgl', function () {
         // Draw and Animate
         // -----------------------------------
         scope.animate = function () {
-          requestAnimationFrame( scope.animate );
-          scope.render();
+			requestAnimationFrame( scope.animate );
+			scope.render();
         };
 
 		scope.render = function () {
 			if (!hoovering && scope.spinning) {
-				obj.rotation.x += 0.01
-				obj.rotation.z += 0.01
+				obj.rotation.y += 0.01
+			}
+			if (hoovering && facePointed != null) {
+				// Set the camera to always point to the centre of our scene, i.e. at vector 0, 0, 0
+				  camera.lookAt( scene.position );
+
 			}
 			renderer.render( scene, camera );
 		};
