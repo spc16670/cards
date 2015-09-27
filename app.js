@@ -1,7 +1,11 @@
 'use strict';
 
 var app = angular.module('CardsApp', [
-  'cards.controllers.Main'
+  ,'ui.bootstrap'
+  ,'cards.services.Canvas'
+  ,'cards.controllers.Canvas'
+  ,'cards.controllers.Tools'
+  ,'cards.controllers.GroupController'
   ,'cards.directives.Three'
 ]);
 
