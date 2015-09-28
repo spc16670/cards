@@ -7,6 +7,7 @@ var app = angular.module('CardsApp', [
   ,'cards.controllers.Tools'
   ,'cards.controllers.GroupController'
   ,'cards.directives.Three'
+  ,'cards.directives.Fabric'
 ]);
 
 app.config(function($interpolateProvider){

@@ -11,30 +11,30 @@ module.directive('ngWebgl', function () {
         'scale': '=',
         'materialType': '=',
 		'spinning': '=',
-		'showing':'='
+		'fabricShowing':'='
       },
       link: function postLink(scope, element, attrs) {
 
-			var container;
-			var camera, scene, renderer;
-			var obj;
-			var contW;
-			var contH;
-			var materials; 
-			var controls;
-			var hoovering;
-			var mouse;
-			var raycaster;
-			var canvasPosition;
-			var facePointed;
-			var line;
-			
-			contW = (scope.dofillcontainer) ? element[0].clientWidth : scope.width,
-			contH = scope.height, 
-			materials = {};
-			hoovering = true;
-			raycaster = new THREE.Raycaster();
-			mouse = new THREE.Vector2();
+		var container;
+		var camera, scene, renderer;
+		var obj;
+		var contW;
+		var contH;
+		var materials; 
+		var controls;
+		var hoovering;
+		var mouse;
+		var raycaster;
+		var canvasPosition;
+		var facePointed;
+		var line;
+		
+		contW = (scope.dofillcontainer) ? element[0].clientWidth : scope.width,
+		contH = scope.height, 
+		materials = {};
+		hoovering = true;
+		raycaster = new THREE.Raycaster();
+		mouse = new THREE.Vector2();
 			
         scope.init = function () {
 
@@ -63,6 +63,21 @@ module.directive('ngWebgl', function () {
 				transparent: true 
 			});
 
+			materials.custom = new THREE.MeshBasicMaterial();
+			
+			scope.$on("apply",function() {		
+				var fabricCanvas = document.getElementById("fabricCanvasElement");
+				var texture = new THREE.Texture(fabricCanvas.getContext('2d').canvas);
+				texture.needsUpdate = true;
+				materials.custom = new THREE.MeshBasicMaterial({
+					map : texture
+				})
+				scope.materialType = "custom";
+				scope.fabricShowing = false;
+				//scope.$apply();
+			})
+	
+	
 			obj = new THREE.Mesh( objGeometry, materials[scope.materialType] );
 			scene.add( obj );
 
@@ -106,7 +121,8 @@ module.directive('ngWebgl', function () {
 			if (intersected.length != 0) {
 				facePointed = intersected[0].face.materialIndex
 				console.log("intersected: ",intersected[0]);
-				scope.showing = false;
+				scope.fabricShowing = true;
+				scope.$apply();
 				//var start = new THREE.Vector3(0,0,0);
 				//var end = new THREE.Vector3(camera.position.x,camera.position.y,camera.position.z + 200);
 				//drawLine(start,end);
@@ -157,7 +173,6 @@ module.directive('ngWebgl', function () {
 			if (!hoovering && scope.spinning) {
 				obj.rotation.y += 0.01
 			}
-
 			renderer.render( scene, camera );
 		};
 
@@ -165,7 +180,7 @@ module.directive('ngWebgl', function () {
         // Watches
         // -----------------------------------
         scope.$watch('dofillcontainer + width + height', function () {
-          scope.resizeCanvas();
+			scope.resizeCanvas();
         });
 
         scope.$watch('scale', function () {

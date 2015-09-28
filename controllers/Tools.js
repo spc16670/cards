@@ -1,6 +1,6 @@
 var module = angular.module('cards.controllers.Tools',[]);
 
-module.controller('ToolsController', ['$scope','CanvasService', function ($scope,CanvasService) {
+module.controller('ToolsController', ['$scope','$rootScope','CanvasService', function ($scope,$rootScope,CanvasService) {
 
 	$scope.canvas = {
 		width : CanvasService.canvasWidth
@@ -21,4 +21,16 @@ module.controller('ToolsController', ['$scope','CanvasService', function ($scope
 		CanvasService.setSpinning( $scope.canvas.spinning );
 	},true)
 
+	$scope.close = function () {
+		CanvasService.setFabricShowing( !CanvasService.fabricShowing );
+	}
+	$scope.write = function () {
+		$rootScope.$broadcast("add:write");
+	}
+	$scope.remove = function () {
+		$rootScope.$broadcast("remove");
+	}
+	$scope.apply = function () {
+		$rootScope.$broadcast("apply");
+	}
 }]);

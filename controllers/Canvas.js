@@ -9,6 +9,7 @@ module.controller('CanvasController', ['$scope','CanvasService', function ($scop
     $scope.scale = CanvasService.scale;
     $scope.materialType = CanvasService.materialType;
 	$scope.spinning = CanvasService.spinning;
+	$scope.fabricShowing = CanvasService.fabricShowing;
 
 	$scope.$watch( function() { return CanvasService }, function() { 
 		$scope.canvasWidth = CanvasService.canvasWidth;
@@ -17,7 +18,14 @@ module.controller('CanvasController', ['$scope','CanvasService', function ($scop
 		$scope.scale = CanvasService.scale;
 		$scope.materialType = CanvasService.materialType;
 		$scope.spinning = CanvasService.spinning;
+		$scope.fabricShowing = CanvasService.fabricShowing;
 	},true)
 	
-	$scope.showing = true;
+	$scope.$watch( function() { return $scope.fabricShowing }, function() { 
+		CanvasService.setFabricShowing( $scope.fabricShowing );
+	},true);
+	
+	$scope.$watch( function() { return $scope.materialType }, function() { 
+		CanvasService.setMaterialType( $scope.materialType );
+	},true)
 }]);
