@@ -69,9 +69,14 @@ module.directive('ngWebgl', function () {
 				var fabricCanvas = document.getElementById("fabricCanvasElement");
 				var texture = new THREE.Texture(fabricCanvas.getContext('2d').canvas);
 				texture.needsUpdate = true;
-				materials.custom = new THREE.MeshBasicMaterial({
-					map : texture
-				})
+				materials.custom = new THREE.MeshFaceMaterial([
+					new THREE.MeshBasicMaterial( { map: texture })
+					,new THREE.MeshBasicMaterial( )
+					,new THREE.MeshBasicMaterial( )
+					,new THREE.MeshBasicMaterial( )
+					,new THREE.MeshBasicMaterial( )
+					,new THREE.MeshBasicMaterial( )
+				]);
 				scope.materialType = "custom";
 				scope.fabricShowing = false;
 				//scope.$apply();
