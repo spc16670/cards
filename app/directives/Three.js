@@ -11,7 +11,8 @@ module.directive('ngWebgl', function () {
         'scale': '=',
         'materialType': '=',
 		'spinning': '=',
-		'fabricShowing':'='
+		'fabricShowing':'=',
+		'materialIndex' : '='
       },
       link: function postLink(scope, element, attrs) {
 
@@ -63,20 +64,20 @@ module.directive('ngWebgl', function () {
 				transparent: true 
 			});
 
-			materials.custom = new THREE.MeshBasicMaterial();
+			materials.custom = new THREE.MeshFaceMaterial([
+				new THREE.MeshBasicMaterial( )
+				,new THREE.MeshBasicMaterial( )
+				,new THREE.MeshBasicMaterial( )
+				,new THREE.MeshBasicMaterial( )
+				,new THREE.MeshBasicMaterial( )
+				,new THREE.MeshBasicMaterial( )
+			]);
 			
 			scope.$on("apply",function() {		
 				var fabricCanvas = document.getElementById("fabricCanvasElement");
 				var texture = new THREE.Texture(fabricCanvas.getContext('2d').canvas);
 				texture.needsUpdate = true;
-				materials.custom = new THREE.MeshFaceMaterial([
-					new THREE.MeshBasicMaterial( { map: texture })
-					,new THREE.MeshBasicMaterial( )
-					,new THREE.MeshBasicMaterial( )
-					,new THREE.MeshBasicMaterial( )
-					,new THREE.MeshBasicMaterial( )
-					,new THREE.MeshBasicMaterial( )
-				]);
+				materials.custom.materials[scope.materialIndex].map = texture;
 				scope.materialType = "custom";
 				scope.fabricShowing = false;
 				//scope.$apply();
@@ -126,6 +127,7 @@ module.directive('ngWebgl', function () {
 			if (intersected.length != 0) {
 				facePointed = intersected[0].face.materialIndex
 				console.log("intersected: ",intersected[0]);
+				scope.materialIndex = facePointed;
 				scope.fabricShowing = true;
 				scope.$apply();
 				//var start = new THREE.Vector3(0,0,0);

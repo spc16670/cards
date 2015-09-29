@@ -146,6 +146,7 @@
 					material-type="materialType"
 					spinning="spinning"
 					fabric-showing="fabricShowing"
+					material-index="materialIndex"
 				></div>
 				<div id="fabricCanvas" ng-show="fabricShowing"
 					ng-fabric
@@ -163,6 +164,14 @@
 				  <!-- Table -->
 					<table class="table table-condensed">
 						<tbody>
+							<tr>
+								<td>
+									<div id="canvas-background">
+										<label for="canvas-background-picker">Background:</label>
+										<input type="color" ng-model="canvas.bgColour">
+									</div>
+								</td>
+							</tr>
 							<tr>
 								<td>
 									<button type="button" class="btn btn-default" ng-click="write()">

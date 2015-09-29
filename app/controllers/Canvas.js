@@ -10,6 +10,7 @@ module.controller('CanvasController', ['$scope','CanvasService', function ($scop
     $scope.materialType = CanvasService.materialType;
 	$scope.spinning = CanvasService.spinning;
 	$scope.fabricShowing = CanvasService.fabricShowing;
+	$scope.materialIndex = CanvasService.materialIndex;
 
 	$scope.$watch( function() { return CanvasService }, function() { 
 		$scope.canvasWidth = CanvasService.canvasWidth;
@@ -19,6 +20,7 @@ module.controller('CanvasController', ['$scope','CanvasService', function ($scop
 		$scope.materialType = CanvasService.materialType;
 		$scope.spinning = CanvasService.spinning;
 		$scope.fabricShowing = CanvasService.fabricShowing;
+		$scope.materialIndex = CanvasService.materialIndex;
 	},true)
 	
 	$scope.$watch( function() { return $scope.fabricShowing }, function() { 
@@ -27,5 +29,9 @@ module.controller('CanvasController', ['$scope','CanvasService', function ($scop
 	
 	$scope.$watch( function() { return $scope.materialType }, function() { 
 		CanvasService.setMaterialType( $scope.materialType );
+	},true)
+	
+	$scope.$watch( function() { return $scope.materialIndex }, function() { 
+		CanvasService.setMaterialIndex( $scope.materialIndex );
 	},true)
 }]);
