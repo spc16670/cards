@@ -1,7 +1,7 @@
 'use strict';
 var module = angular.module('cards.directives.Fabric',[]);
 
-module.directive('ngFabric', function () {
+module.directive('ngFabric', [function () {
     return {
       restrict: 'A',
       scope: { 
@@ -90,4 +90,4 @@ module.directive('ngFabric', function () {
 
       }
     };
-  });
+  }]);

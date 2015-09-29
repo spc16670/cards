@@ -19,7 +19,7 @@ module.controller('ToolsController', ['$scope','$rootScope','CanvasService', fun
 		CanvasService.setScale( $scope.canvas.scale );
 		CanvasService.setMaterialType( $scope.canvas.material );
 		CanvasService.setSpinning( $scope.canvas.spinning );
-		CanvasService.setCanvasBgColour( $scope.canvas.bgColour );
+		CanvasService.setBgColour( $scope.canvas.bgColour );
 	},true)
 
 	

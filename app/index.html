@@ -30,6 +30,7 @@
 	<script src="controllers/Canvas.js"></script>
 	<script src="controllers/Groups.js"></script>
 	<script src="controllers/Tools.js"></script>
+	<script src="services/Bullet.js"></script>
 	<script src="services/Canvas.js"></script>
 	<script src="directives/Fabric.js"></script>
     <script src="directives/Three.js"></script>
@@ -77,62 +78,33 @@
     <div class="container">
 		<div class="row">
 			<div class="col-md-3" ng-controller="GroupController">
-			
-				<script type="text/ng-template" id="group-template.html">
-					<div class="panel {{panelClass || 'panel-default'}}">
-					  <div class="panel-heading">
-						<h4 class="panel-title" style="color:#fa39c3">
-						  <a href tabindex="0" class="accordion-toggle" ng-click="toggleOpen()" accordion-transclude="heading">
-						  <span ng-class="{'text-muted': isDisabled}">{{heading}}</span></a>
-						</h4>
-					  </div>
-					  <div class="panel-collapse collapse" collapse="!isOpen">
-						<div class="panel-body" style="text-align: right" ng-transclude></div>
-					  </div>
-					</div>
-				</script>
   
-				<accordion close-others="oneAtATime">
-					<accordion-group is-open="status.open">
-					  <accordion-heading>
-						Wedding <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-					  </accordion-heading>
-					  This is just some content to illustrate fancy headings.
-					</accordion-group>
-					<accordion-group >
-					  <accordion-heading>
-						Flyers <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-					  </accordion-heading>
-					  This is just some content to illustrate fancy headings.
-					</accordion-group>
-					<accordion-group >
-					  <accordion-heading>
-						Leaflet <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-					  </accordion-heading>
-					  This is just some content to illustrate fancy headings.
-					</accordion-group>
+				<accordion close-others="true">
 
-					<accordion-group heading="{{group.title}}" ng-repeat="group in groups">
-					  {{group.content}}
-					</accordion-group>
-					<accordion-group heading="Dynamic Body Content">
-					  <p>The body of the accordion group grows to fit the contents</p>
-					  <button type="button" class="btn btn-default btn-sm" ng-click="addItem()">Add Item</button>
-					  <div ng-repeat="item in items">{{item}}</div>
-					</accordion-group>
-					<accordion-group heading="Custom template" template-url="group-template.html">
-					  Hello
-					</accordion-group>
-					<accordion-group heading="Delete account" panel-class="panel-danger">
-					  <p>Please, to delete your account, click the button below</p>
-					  <button class="btn btn-danger">Delete</button>
-					</accordion-group>
-					<accordion-group is-open="status.open">
-					  <accordion-heading>
-						Business Card <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-					  </accordion-heading>
-					  This is just some content to illustrate fancy headings.
-					</accordion-group>
+				  <div accordion-group ng-repeat="group in groups">
+				    <div accordion-heading >
+				      <div ng-click='loadGroup(group)'>
+				        {{ group.title }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>   
+				      </div>
+				    </div>
+
+				    <table class="table table-condensed">
+						<tbody>
+							<tr ng-repeat="model in group.models">
+								<td ng-click="selectModel(model)">
+									<div class="row">
+										<div class="col-sm-6">{{ model.title }}</div>
+										<div class="col-sm-6">
+											<img ng-src="images/{{ model.icon }}" class="img-responsive" alt="Model Image" />
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+				  </div>
+
 				</accordion>
 
 			</div>

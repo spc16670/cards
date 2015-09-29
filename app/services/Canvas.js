@@ -12,6 +12,7 @@ module.service('CanvasService', [function () {
 		,fabricShowing : false
 		,materialIndex : 0
 		,bgColour : null
+		,sideMaterial : []
 	}
 
 	Service.setCanvasWidth = function(width) {
@@ -38,10 +39,10 @@ module.service('CanvasService', [function () {
 	Service.setMaterialIndex = function(index) {
 		Service.materialIndex = index;
 	}
-	
 	Service.setBgColour = function(colour) {
 		Service.bgColour = colour;
 	}
+	
 	return Service;
 
 }]);
