@@ -1,31 +1,29 @@
 var module = angular.module('cards.controllers.Tools',[]);
 
-module.controller('ToolsController', ['$scope','$rootScope','CanvasService', function ($scope,$rootScope,CanvasService) {
+module.controller('ToolsController', ['$scope','$rootScope','DisplayService', function ($scope,$rootScope,DisplayService) {
 
 	$scope.canvas = {
-		width : CanvasService.canvasWidth
-		,height : CanvasService.canvasHeight
-		,fill : CanvasService.dofillcontainer
-		,scale : CanvasService.scale
-		,material : CanvasService.materialType
-		,spinning : CanvasService.spinning
+		width : DisplayService.canvasWidth
+		,height : DisplayService.canvasHeight
+		,fill : DisplayService.dofillcontainer
+		,scale : DisplayService.scale
+		,material : DisplayService.materialType
+		,spinning : DisplayService.spinning
 		,bgColour : null
 	}
 	
 	$scope.$watch( function() { return $scope.canvas  }, function() { 
-		CanvasService.setCanvasWidth( $scope.canvas.width );
-		CanvasService.setCanvasHeight( $scope.canvas.height );
-		CanvasService.setFillContainer( $scope.canvas.fill );
-		CanvasService.setScale( $scope.canvas.scale );
-		CanvasService.setMaterialType( $scope.canvas.material );
-		CanvasService.setSpinning( $scope.canvas.spinning );
-		CanvasService.setBgColour( $scope.canvas.bgColour );
+		DisplayService.setCanvasWidth( $scope.canvas.width );
+		DisplayService.setCanvasHeight( $scope.canvas.height );
+		DisplayService.setFillContainer( $scope.canvas.fill );
+		DisplayService.setScale( $scope.canvas.scale );
+		DisplayService.setMaterialType( $scope.canvas.material );
+		DisplayService.setSpinning( $scope.canvas.spinning );
+		DisplayService.setBgColour( $scope.canvas.bgColour );
 	},true)
-
-	
 	
 	$scope.close = function () {
-		CanvasService.setFabricShowing( !CanvasService.fabricShowing );
+		DisplayService.setFabricShowing( !DisplayService.fabricShowing );
 	}
 	$scope.write = function () {
 		$rootScope.$broadcast("add:write");

@@ -1,18 +1,19 @@
 'use strict';
-var module = angular.module('cards.directives.Three',[]);
+var module = angular.module('cards.directives.Display',[]);
 
 module.directive('ngWebgl', [function () {
     return {
       restrict: 'A',
       scope: { 
-        'width': '=',
-        'height': '=',
-        'dofillcontainer': '=',
-        'scale': '=',
-        'materialType': '=',
-		'spinning': '=',
-		'fabricShowing':'=',
-		'materialIndex' : '='
+        'width': '='
+        ,'height': '='
+        ,'dofillcontainer': '='
+        ,'scale': '='
+        ,'materialType': '='
+		,'spinning': '='
+		,'fabricShowing':'='
+		,'materialIndex' : '='
+		,'mesh' : '='
       },
       link: function postLink(scope, element, attrs) {
 
@@ -100,7 +101,6 @@ module.directive('ngWebgl', [function () {
 			// element is provided by the angular directive
 			element[0].appendChild( renderer.domElement );
 			canvasPosition = element[0].getBoundingClientRect();
-			console.log("canvasPosition? ",canvasPosition);
 			element[0].addEventListener('mouseover', scope.mouseOver);
 			element[0].addEventListener('mouseout', scope.mouseOut);
 			element[0].addEventListener('click', scope.click );
@@ -164,7 +164,7 @@ module.directive('ngWebgl', [function () {
         };
 
         scope.changeMaterial = function () {
-          obj.material = materials[scope.materialType];
+			obj.material = materials[scope.materialType];
         };
 
 
@@ -192,6 +192,20 @@ module.directive('ngWebgl', [function () {
 
         scope.$watch('scale', function () {
           scope.resizeObject();
+        });
+		
+		scope.$watch('mesh', function () {
+			console.log("mesh changed",scope.mesh);
+			function isEmpty(obj) {
+				for(var prop in obj) {
+					if(obj.hasOwnProperty(prop))
+						return false;
+				}
+				return true;
+			}
+			if (!isEmpty(scope.mesh)) {
+				obj = scope.mesh;
+			}
         });
 
         scope.$watch('materialType', function () {

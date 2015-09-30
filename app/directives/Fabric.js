@@ -34,7 +34,7 @@ module.directive('ngFabric', [function () {
 				width: 20,
 				height: 20
 			});
-
+			canvas.add(rect);
 			//.addEventListener('click',function(e) {console.log("click"); scope.showing = true });
 
 			scope.$on("add:write",function() {
@@ -44,6 +44,7 @@ module.directive('ngFabric', [function () {
 					top: 100 
 				})
 				canvas.add(textItem);
+				console.log("JSON: ",JSON.stringify(canvas));
 			})
 			
 			scope.$on("remove",function() {

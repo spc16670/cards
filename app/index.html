@@ -27,13 +27,13 @@
     <script src="../lib/three/GeometryUtils.js"></script>
 	<script src="../lib/three/OrbitControls.js"></script>
 
-	<script src="controllers/Canvas.js"></script>
+	<script src="controllers/Display.js"></script>
 	<script src="controllers/Groups.js"></script>
 	<script src="controllers/Tools.js"></script>
 	<script src="services/Bullet.js"></script>
-	<script src="services/Canvas.js"></script>
+	<script src="services/Display.js"></script>
 	<script src="directives/Fabric.js"></script>
-    <script src="directives/Three.js"></script>
+    <script src="directives/Display.js"></script>
     <script src="app.js"></script>
 
   </head>
@@ -92,8 +92,11 @@
 						<tbody>
 							<tr ng-repeat="model in group.models">
 								<td ng-click="selectModel(model)">
+									<div class="row text-center"><h4>{{ model.title }}</h4></div>
 									<div class="row">
-										<div class="col-sm-6">{{ model.title }}</div>
+										<div class="col-sm-6 text-center">
+											{{ model.size.x }} x {{ model.size.y }}
+										</div>
 										<div class="col-sm-6">
 											<img ng-src="images/{{ model.icon }}" class="img-responsive" alt="Model Image" />
 										</div>
@@ -108,7 +111,7 @@
 				</accordion>
 
 			</div>
-			<div class="col-md-6" ng-controller="CanvasController">
+			<div class="col-md-6" ng-controller="DisplayController">
 				<div id="threeCanvas" ng-show="!fabricShowing"
 					ng-webgl
 					width="canvasWidth"
@@ -119,6 +122,7 @@
 					spinning="spinning"
 					fabric-showing="fabricShowing"
 					material-index="materialIndex"
+					mesh="mesh"
 				></div>
 				<div id="fabricCanvas" ng-show="fabricShowing"
 					ng-fabric

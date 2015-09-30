@@ -2,11 +2,12 @@
 
 var app = angular.module('CardsApp', [
   ,'ui.bootstrap'
-  ,'cards.services.Canvas'
-  ,'cards.controllers.Canvas'
+  ,'cards.services.Display'
+  ,'cards.services.Bullet'
+  ,'cards.controllers.Display'
   ,'cards.controllers.Tools'
   ,'cards.controllers.GroupController'
-  ,'cards.directives.Three'
+  ,'cards.directives.Display'
   ,'cards.directives.Fabric'
 ]);
 

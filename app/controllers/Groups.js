@@ -1,60 +1,53 @@
 
 var module = angular.module('cards.controllers.GroupController',[]);
 
-module.controller('GroupController', ['$scope', function ($scope) {
+module.controller('GroupController', ['$scope','DisplayService','BulletService'
+  , function ($scope,DisplayService,BulletService) {
 
   $scope.groups = [
     {
-      name: 'business_cards'
-      ,title: 'Business Cards'
-      ,models: []
+		id : 1
+		,name: 'business_cards'
+		,title: 'Business Cards'
+		,models: []
     }
     ,{
-      name: 'wedding_invitations'
-      ,title: 'Wedding Invitations'
-      ,models: []
+		id : 2
+		,name: 'wedding_invitations'
+		,title: 'Wedding Invitations'
+		,models: []
     }
     ,{
-      name: 'flyers'
-      ,title: 'Flyers'
-      ,models: []
+		id : 3
+		,name: 'flyers'
+		,title: 'Flyers'
+		,models: []
     }
     ,{
-      name: 'leaflets'
-      ,title: 'Leafets'
-      ,models: []
+		id : 4
+		,name: 'leaflets'
+		,title: 'Leafets'
+		,models: []
     }
   ];
 
   $scope.loadGroup = function (group) {
     if (group.models.length == 0) {
       if (group.name === "business_cards") {
-        group.models.push({ title: "Standard Card", icon: "card.jpg", id: 1});
+        group.models.push({ groupId : 1, title: "Standard Card", icon: "card.jpg", size: { x : 100, y: 160, z: 0 }, id: 1});
       } else if (group.name === "wedding_invitations") {
-        group.models.push({ title: "Standard Wedding Invitation", icon: "invitation.jpg", id: 1});
+        group.models.push({ groupId : 2, title: "Standard Wedding Invitation", icon: "invitation.jpg", size: { x : 100, y: 160, z: 0 }, id: 1});
       } else if (group.name === "flyers") {
-        group.models.push({ title: "Standard Flyer", icon: "flyer.jpg", id: 1});
+        group.models.push({ groupId : 3, title: "Standard Flyer", icon: "flyer.jpg", size: { x : 100, y: 160, z: 0 }, id: 1});
       } else if (group.name === "leaflets") {
-        group.models.push({ title: "Standard Leaflet", icon: "leaflet.jpg", id: 1});
+        group.models.push({ groupId : 4, title: "Standard Leaflet", icon: "leaflet.jpg", size: { x : 100, y: 160, z: 0 }, id: 1});
       } 
     }
   }
 
-  $scope.businessCards = [
-    { id: 1, dimensions: { x : 100, y: 160, z: 0 }}
-  ];
-  $scope.weddingInvitations = [
-    { id: 1, dimensions: { x : 100, y: 160, z: 0 }}
-  ];
-  $scope.flyers = [
-    { id: 1, dimensions: { x : 100, y: 160, z: 0 }}
-  ];
-  $scope.leaflets = [
-    { id: 1, dimensions: { x : 100, y: 160, z: 0 }}
-  ];
-
-  $scope.selectModel = function(model) {
-    console.log(model);
+  $scope.selectModel = function(minModel) {
+	  var model = BulletService.fetchModel(minModel);
+	  DisplayService.setModel(model);
   }
 
 }]);
