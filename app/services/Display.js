@@ -52,17 +52,35 @@ module.service('DisplayService', [function () {
 			console.log("Materializing model: ",Service.model);
 			var i;
 			// Fabric.js JSON -> BITMAP
-			var materials = [];
+			var material = new THREE.MeshFaceMaterial([
+				new THREE.MeshBasicMaterial( )
+				,new THREE.MeshBasicMaterial( )
+				,new THREE.MeshBasicMaterial( )
+				,new THREE.MeshBasicMaterial( )
+				,new THREE.MeshBasicMaterial( )
+				,new THREE.MeshBasicMaterial( )
+			]);
+
 			for (i=0;i<Service.model.fabrics.length;i++) {
 				var fabricJson = Service.model.fabrics[i];
-				var canvas = new fabric.Canvas();
-				canvas.loadFromJSON(fabricJson);			
+				var canvas = new fabric.Canvas('testCanvas');
+				
+				console.log("canvas",fabricJson.fabricJson);
+				canvas.loadFromJSON(fabricJson.fabricJson);
+				canvas.renderAll();				
+								
 				var texture = new THREE.Texture(canvas.getContext('2d').canvas);
+				console.log("new canvas",canvas.getContext('2d').canvas);
 				texture.needsUpdate = true;
 				var faceMaterial = new THREE.MeshBasicMaterial( { map : texture } );
-				materials[fabricJson.faceIndex] = faceMaterial;
+				material.materials[fabricJson.faceIndex] = faceMaterial;
 			}	
-			var material = new THREE.MeshFaceMaterial(materials); // 
+			
+			
+			//var material = new THREE.MeshFaceMaterial(materials);
+			
+			
+			material.needsUpdate = true;
 			Service.mesh = new THREE.Mesh(
 				Service.model.geometry
 				,material

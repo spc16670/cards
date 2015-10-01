@@ -77,6 +77,7 @@ module.directive('ngWebgl', [function () {
 			scope.$on("apply",function() {		
 				var fabricCanvas = document.getElementById("fabricCanvasElement");
 				var texture = new THREE.Texture(fabricCanvas.getContext('2d').canvas);
+				console.log("existing canvas",fabricCanvas.getContext('2d').canvas);
 				texture.needsUpdate = true;
 				materials.custom.materials[scope.materialIndex].map = texture;
 				scope.materialType = "custom";
@@ -164,6 +165,7 @@ module.directive('ngWebgl', [function () {
         };
 
         scope.changeMaterial = function () {
+			console.log("material: ",scope.materialType);
 			obj.material = materials[scope.materialType];
         };
 
@@ -195,7 +197,6 @@ module.directive('ngWebgl', [function () {
         });
 		
 		scope.$watch('mesh', function () {
-			console.log("mesh changed",scope.mesh);
 			function isEmpty(obj) {
 				for(var prop in obj) {
 					if(obj.hasOwnProperty(prop))
@@ -204,12 +205,15 @@ module.directive('ngWebgl', [function () {
 				return true;
 			}
 			if (!isEmpty(scope.mesh)) {
+				console.log("mesh changed",scope.mesh);
+				scene.remove(obj);
 				obj = scope.mesh;
+				scene.add(obj);
 			}
         });
 
         scope.$watch('materialType', function () {
-          scope.changeMaterial();
+          //scope.changeMaterial();
         });
 
 		function drawLine(start,end) {
