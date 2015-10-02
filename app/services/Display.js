@@ -13,8 +13,9 @@ module.service('DisplayService', [function () {
 		,materialIndex : 0
 		,bgColour : null
 		,sideMaterial : []
-		,model : null
+		,model : {}
 		,mesh : {}
+		,editingCanvas : new fabric.Canvas('fabricCanvasElement')
 	}
 
 	Service.setCanvasWidth = function(width) {
@@ -40,6 +41,7 @@ module.service('DisplayService', [function () {
 	}	
 	Service.setMaterialIndex = function(index) {
 		Service.materialIndex = index;
+		Service.applyCanvas(index);
 	}
 	Service.setBgColour = function(colour) {
 		Service.bgColour = colour;
@@ -47,30 +49,66 @@ module.service('DisplayService', [function () {
 	Service.setModel = function(model) {
 		Service.model = model;
 	}
+	
+	Service.applyCanvas = function(faceIndex) {
+		console.log("clicked",faceIndex);
+		if (!Service.isEmpty(Service.model)) {
+			var i;
+			for (i=0;i<Service.model.fabrics.length;i++) {
+				if (Service.model.fabrics[i].faceIndex == faceIndex) {
+					Service.editingCanvas.loadFromJSON(Service.model.fabrics[i].fabricJson);
+					return;
+				}
+			}
+			var textItem = new fabric.IText('Tap and Type', { 
+				fontFamily: 'arial black',
+				left: 10, 
+				top: 10 
+			})
+			Service.editingCanvas = new fabric.Canvas('fabricCanvasElement');
+			Service.editingCanvas.add(textItem);
+		}
+
+	}
+	
+	Service.updateModel = function () {
+		var i;
+		for (i=0;i<Service.model.fabrics.length;i++) {
+			if (Service.model.fabrics[i].faceIndex == Service.materialIndex) {
+				Service.model.fabrics[i].faricJson = Service.editingCanvas.toObject();
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	Service.isEmpty = function isEmpty(obj) {
+		for(var prop in obj) {
+			if(obj.hasOwnProperty(prop))
+				return false;
+		}
+		return true;
+	}
+	
 	Service.materializeMesh = function() {
-		if (Service.model != null) {
+		if (!Service.isEmpty(Service.model)) {
 			console.log("Materializing model: ",Service.model);
 			var i;
 			// Fabric.js JSON -> BITMAP
 			var material = new THREE.MeshFaceMaterial([
-				new THREE.MeshBasicMaterial( )
-				,new THREE.MeshBasicMaterial( )
-				,new THREE.MeshBasicMaterial( )
-				,new THREE.MeshBasicMaterial( )
-				,new THREE.MeshBasicMaterial( )
-				,new THREE.MeshBasicMaterial( )
+				new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
+				,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
+				,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
+				,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
+				,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
+				,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
 			]);
 
 			for (i=0;i<Service.model.fabrics.length;i++) {
 				var fabricJson = Service.model.fabrics[i];
-				var canvas = new fabric.Canvas('testCanvas');
-				
-				console.log("canvas",fabricJson.fabricJson);
-				canvas.loadFromJSON(fabricJson.fabricJson);
-				canvas.renderAll();				
-								
+				var canvas = new fabric.Canvas('fabricCanvasElement');
+				canvas.loadFromJSON(fabricJson.fabricJson);			
 				var texture = new THREE.Texture(canvas.getContext('2d').canvas);
-				console.log("new canvas",canvas.getContext('2d').canvas);
 				texture.needsUpdate = true;
 				var faceMaterial = new THREE.MeshBasicMaterial( { map : texture } );
 				material.materials[fabricJson.faceIndex] = faceMaterial;

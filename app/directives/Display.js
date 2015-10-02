@@ -1,7 +1,7 @@
 'use strict';
 var module = angular.module('cards.directives.Display',[]);
 
-module.directive('ngWebgl', [function () {
+module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
     return {
       restrict: 'A',
       scope: { 
@@ -11,8 +11,8 @@ module.directive('ngWebgl', [function () {
         ,'scale': '='
         ,'materialType': '='
 		,'spinning': '='
-		,'fabricShowing':'='
-		,'materialIndex' : '='
+//		,'fabricShowing':'='
+//		,'materialIndex' : '='
 		,'mesh' : '='
       },
       link: function postLink(scope, element, attrs) {
@@ -73,18 +73,6 @@ module.directive('ngWebgl', [function () {
 				,new THREE.MeshBasicMaterial( )
 				,new THREE.MeshBasicMaterial( )
 			]);
-			
-			scope.$on("apply",function() {		
-				var fabricCanvas = document.getElementById("fabricCanvasElement");
-				var texture = new THREE.Texture(fabricCanvas.getContext('2d').canvas);
-				console.log("existing canvas",fabricCanvas.getContext('2d').canvas);
-				texture.needsUpdate = true;
-				materials.custom.materials[scope.materialIndex].map = texture;
-				scope.materialType = "custom";
-				scope.fabricShowing = false;
-				//scope.$apply();
-			})
-	
 	
 			obj = new THREE.Mesh( objGeometry, materials[scope.materialType] );
 			scene.add( obj );
@@ -127,9 +115,8 @@ module.directive('ngWebgl', [function () {
 			var intersected = raycaster.intersectObjects( scene.children );
 			if (intersected.length != 0) {
 				facePointed = intersected[0].face.materialIndex
-				console.log("intersected: ",intersected[0]);
-				scope.materialIndex = facePointed;
-				scope.fabricShowing = true;
+				DisplayService.setMaterialIndex(facePointed);
+				DisplayService.setFabricShowing(true);
 				scope.$apply();
 				//var start = new THREE.Vector3(0,0,0);
 				//var end = new THREE.Vector3(camera.position.x,camera.position.y,camera.position.z + 200);
@@ -164,10 +151,10 @@ module.directive('ngWebgl', [function () {
 			obj.scale.set(scope.scale, scope.scale, scope.scale);
         };
 
-        scope.changeMaterial = function () {
-			console.log("material: ",scope.materialType);
-			obj.material = materials[scope.materialType];
-        };
+        //scope.changeMaterial = function () {
+		//	console.log("material: ",scope.materialType);
+		//	obj.material = materials[scope.materialType];
+        //};
 
 
         // -----------------------------------
@@ -197,14 +184,7 @@ module.directive('ngWebgl', [function () {
         });
 		
 		scope.$watch('mesh', function () {
-			function isEmpty(obj) {
-				for(var prop in obj) {
-					if(obj.hasOwnProperty(prop))
-						return false;
-				}
-				return true;
-			}
-			if (!isEmpty(scope.mesh)) {
+			if (!DisplayService.isEmpty(scope.mesh)) {
 				console.log("mesh changed",scope.mesh);
 				scene.remove(obj);
 				obj = scope.mesh;
@@ -212,9 +192,9 @@ module.directive('ngWebgl', [function () {
 			}
         });
 
-        scope.$watch('materialType', function () {
+        //scope.$watch('materialType', function () {
           //scope.changeMaterial();
-        });
+        //});
 
 		function drawLine(start,end) {
 			scene.remove(line);

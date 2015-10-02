@@ -26,12 +26,27 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		DisplayService.setFabricShowing( !DisplayService.fabricShowing );
 	}
 	$scope.write = function () {
-		$rootScope.$broadcast("add:write");
+		var textItem = new fabric.IText('Tap and Type', { 
+			fontFamily: 'arial black',
+			left: 100, 
+			top: 100 
+		})
+		DisplayService.editingCanvas.add(textItem);
 	}
 	$scope.remove = function () {
-		$rootScope.$broadcast("remove");
+		if(DisplayService.editingCanvas.getActiveGroup()) {
+			DisplayService.editingCanvas.getActiveGroup().forEachObject(function(o){ DisplayService.editingCanvas.remove(o) });
+			DisplayService.editingCanvas.discardActiveGroup().renderAll();
+		} else {
+			DisplayService.editingCanvas.remove(DisplayService.editingCanvas.getActiveObject());
+		}
 	}
 	$scope.apply = function () {
-		$rootScope.$broadcast("apply");
+		var texture = new THREE.Texture(DisplayService.editingCanvas.getContext('2d').canvas);
+		texture.needsUpdate = true;
+		DisplayService.mesh.material.materials[DisplayService.materialIndex] = new THREE.MeshBasicMaterial( { map: texture } );
+		//DisplayService.setMaterialType("custom");
+		DisplayService.setFabricShowing(false);
+		DisplayService.updateModel();
 	}
 }]);

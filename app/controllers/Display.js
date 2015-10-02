@@ -12,38 +12,52 @@ module.controller('DisplayController', ['$scope','DisplayService', function ($sc
 	$scope.fabricShowing = DisplayService.fabricShowing;
 	$scope.materialIndex = DisplayService.materialIndex;
 	$scope.mesh = DisplayService.mesh;
+	$scope.editingCanvas = DisplayService.editingCanvas;
 	
 	$scope.$watch( function() { return DisplayService.canvasWidth }, function() { 
 		$scope.canvasWidth = DisplayService.canvasWidth;
 	},true);
+	
 	$scope.$watch( function() { return DisplayService.canvasHeight }, function() { 
 		$scope.canvasHeight = DisplayService.canvasHeight;
 	},true);
+	
 	$scope.$watch( function() { return DisplayService.dofillcontainer }, function() { 
 		$scope.dofillcontainer = DisplayService.dofillcontainer;
 	},true);
+	
 	$scope.$watch( function() { return DisplayService.scale }, function() { 
 		$scope.scale = DisplayService.scale;
 	},true);
+	
 	$scope.$watch( function() { return DisplayService.materialType }, function() { 
 		$scope.materialType = DisplayService.materialType;
 	},true);
+	
 	$scope.$watch( function() { return DisplayService.spinning }, function() { 
 		$scope.spinning = DisplayService.spinning;
 	},true);
+	
 	$scope.$watch( function() { return DisplayService.fabricShowing }, function() { 
 		$scope.fabricShowing = DisplayService.fabricShowing;
 	},true);
+	
 	$scope.$watch( function() { return DisplayService.materialIndex }, function() { 
 		$scope.materialIndex = DisplayService.materialIndex;
 	},true);
+	
 	$scope.$watch( function() { return DisplayService.model }, function() { 
+		//console.log("model changed");
 		$scope.model = DisplayService.model;
-	},true);
+	},false);
 
 	$scope.$watch( function() { return DisplayService.mesh }, function() { 
 		$scope.mesh = DisplayService.mesh;
-	},false)
+	},false);
+	
+	$scope.$watch( function() { return DisplayService.editingCanvas }, function() { 
+		$scope.editingCanvas = DisplayService.editingCanvas;
+	},false);
 	
 	$scope.$watch( function() { return $scope.fabricShowing }, function() { 
 		DisplayService.setFabricShowing( $scope.fabricShowing );
