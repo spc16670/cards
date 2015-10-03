@@ -98,7 +98,7 @@
 											{{ model.size.x }} x {{ model.size.y }}
 										</div>
 										<div class="col-sm-6">
-											<img ng-src="images/{{ model.icon }}" class="img-responsive" alt="Model Image" />
+											<img ng-src="images/{{ model.icon }}" class="img-thumbnail" alt="Model Image" />
 										</div>
 									</div>
 								</td>
@@ -130,8 +130,9 @@
 					height="canvasHeight"
 					fabric-showing="fabricShowing"
 					editing-canvas="editingCanvas"
-				></div>
-				<canvas id="fabricCanvasElement" style="border:1px solid"/>
+				>
+					<canvas id="fabricCanvasElement" style="border:1px solid"/>
+				</div>
 			</div>
 			<div class="col-md-3" ng-controller="ToolsController">
 				<div class="panel panel-default">

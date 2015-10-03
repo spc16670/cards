@@ -9,7 +9,7 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		,scale : DisplayService.scale
 		,material : DisplayService.materialType
 		,spinning : DisplayService.spinning
-		,bgColour : null
+		,bgColour : "#f0f0f0"
 	}
 	
 	$scope.$watch( function() { return $scope.canvas  }, function() { 
@@ -19,8 +19,11 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		DisplayService.setScale( $scope.canvas.scale );
 		DisplayService.setMaterialType( $scope.canvas.material );
 		DisplayService.setSpinning( $scope.canvas.spinning );
-		DisplayService.setBgColour( $scope.canvas.bgColour );
 	},true)
+	
+	$scope.$watch(function(){return $scope.canvas.bgColour}, function(colour) {
+		DisplayService.setBgColour(colour);
+    });
 	
 	$scope.close = function () {
 		DisplayService.setFabricShowing( !DisplayService.fabricShowing );
@@ -42,11 +45,8 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		}
 	}
 	$scope.apply = function () {
-		var texture = new THREE.Texture(DisplayService.editingCanvas.getContext('2d').canvas);
-		texture.needsUpdate = true;
-		DisplayService.mesh.material.materials[DisplayService.materialIndex] = new THREE.MeshBasicMaterial( { map: texture } );
-		//DisplayService.setMaterialType("custom");
-		DisplayService.setFabricShowing(false);
-		DisplayService.updateModel();
+		DisplayService.updateModel(); // saves editingCanvas in model's fabricJson
+		DisplayService.materializeMesh();
+		DisplayService.setFabricShowing(false);	
 	}
 }]);

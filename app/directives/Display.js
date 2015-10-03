@@ -13,7 +13,7 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
 		,'spinning': '='
 //		,'fabricShowing':'='
 //		,'materialIndex' : '='
-		,'mesh' : '='
+//		,'mesh' : '='
       },
       link: function postLink(scope, element, attrs) {
 
@@ -115,7 +115,9 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
 			var intersected = raycaster.intersectObjects( scene.children );
 			if (intersected.length != 0) {
 				facePointed = intersected[0].face.materialIndex
+				console.log("face clicked: ",facePointed);
 				DisplayService.setMaterialIndex(facePointed);
+				DisplayService.updateCanvas(facePointed);
 				DisplayService.setFabricShowing(true);
 				scope.$apply();
 				//var start = new THREE.Vector3(0,0,0);
@@ -183,11 +185,11 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
           scope.resizeObject();
         });
 		
-		scope.$watch('mesh', function () {
-			if (!DisplayService.isEmpty(scope.mesh)) {
-				console.log("mesh changed",scope.mesh);
+		scope.$watch(function () {return DisplayService.mesh}, function () {
+			if (!DisplayService.isEmpty(DisplayService.mesh)) {
+				console.log("mesh changed",DisplayService.mesh);
 				scene.remove(obj);
-				obj = scope.mesh;
+				obj = DisplayService.mesh;
 				scene.add(obj);
 			}
         });
