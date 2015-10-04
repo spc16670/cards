@@ -11,9 +11,6 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
         ,'scale': '='
         ,'materialType': '='
 		,'spinning': '='
-//		,'fabricShowing':'='
-//		,'materialIndex' : '='
-//		,'mesh' : '='
       },
       link: function postLink(scope, element, attrs) {
 

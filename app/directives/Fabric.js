@@ -1,15 +1,12 @@
 'use strict';
 var module = angular.module('cards.directives.Fabric',[]);
 
-module.directive('ngFabric', [function () {
+module.directive('ngFabric', ['DisplayService',function (DisplayService) {
     return {
       restrict: 'A',
       scope: { 
-        'face': '=',
 		'width': '=',
-        'height': '=',
-		'fabricShowing': '=',
-		'editingCanvas' : '='
+        'height': '='
       },
       link: function postLink(scope, element, attrs) {
 		  
@@ -18,7 +15,7 @@ module.directive('ngFabric', [function () {
 			
         scope.init = function () {
 			scope.resizeCanvas();
-			scope.editingCanvas.on('text:changed',function(e){console.log("changed")});
+			DisplayService.editingCanvas.on('text:changed',function(e){console.log("changed")});
 			window.addEventListener('resize', scope.onWindowResize, false );
         };
 		
@@ -36,8 +33,8 @@ module.directive('ngFabric', [function () {
         scope.resizeCanvas = function () {
 			contW = element[0].clientWidth;
 			contH = scope.height;
-			scope.editingCanvas.width = contW;
-			scope.editingCanvas.height = contH;
+			DisplayService.editingCanvas.width = contW;
+			DisplayService.editingCanvas.height = contH;
         };
 		
         // -----------------------------------
