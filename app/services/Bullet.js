@@ -10,10 +10,14 @@ module.service('BulletService', [function () {
 			groupId: 1
 			, id: 1
 			//http://mrdoob.github.io/three.js/editor/
-			, geometry : new THREE.BoxGeometry( 200, 100, 20 )
+			, geometry : new THREE.BoxGeometry( 200, 100, 20, 40 )
 			, fabrics : [
-				{ faceIndex : 4, fabricJson : JSON.parse("{\"objects\":[{\"type\":\"rect\",\"originX\":\"left\",\"originY\":\"top\",\"left\":100,\"top\":100,\"width\":20,\"height\":20,\"fill\":\"red\",\"stroke\":null,\"strokeWidth\":1,\"strokeDashArray\":null,\"strokeLineCap\":\"butt\",\"strokeLineJoin\":\"miter\",\"strokeMiterLimit\":10,\"scaleX\":1,\"scaleY\":1,\"angle\":0,\"flipX\":false,\"flipY\":false,\"opacity\":1,\"shadow\":null,\"visible\":true,\"clipTo\":null,\"backgroundColor\":\"\",\"fillRule\":\"nonzero\",\"globalCompositeOperation\":\"source-over\",\"rx\":0,\"ry\":0},{\"type\":\"i-text\",\"originX\":\"left\",\"originY\":\"top\",\"left\":100,\"top\":100,\"width\":295.64,\"height\":52.43,\"fill\":\"rgb(0,0,0)\",\"stroke\":null,\"strokeWidth\":1,\"strokeDashArray\":null,\"strokeLineCap\":\"butt\",\"strokeLineJoin\":\"miter\",\"strokeMiterLimit\":10,\"scaleX\":1,\"scaleY\":1,\"angle\":0,\"flipX\":false,\"flipY\":false,\"opacity\":1,\"shadow\":null,\"visible\":true,\"clipTo\":null,\"backgroundColor\":\"\",\"fillRule\":\"nonzero\",\"globalCompositeOperation\":\"source-over\",\"text\":\"Tap and Type\",\"fontSize\":40,\"fontWeight\":\"normal\",\"fontFamily\":\"arial black\",\"fontStyle\":\"\",\"lineHeight\":1.16,\"textDecoration\":\"\",\"textAlign\":\"left\",\"textBackgroundColor\":\"\",\"styles\":{}}],\"background\":\"red\"}") }
-				,{ faceIndex : 3, fabricJson : { objects : [], background : "yellow"} }
+				//{ faceIndex : 0, size: { x : 20, y : 100 }, fabricJson : { objects : [], background : "white"} } // not clickable
+				//,{ faceIndex : 1, size: { x : 20, y : 100 }, fabricJson : { objects : [], background : "white"} } // not clickable
+				{ faceIndex : 2, size: { x : 200, y : 20 }, fabricJson : { objects : [], background : "pink"} }
+				,{ faceIndex : 3, size: { x : 200, y : 20 }, fabricJson : { objects : [], background : "yellow"} }
+				,{ faceIndex : 4, size: { x : 200, y : 100 }, fabricJson : JSON.parse("{\"objects\":[{\"type\":\"i-text\",\"originX\":\"left\",\"originY\":\"top\",\"left\":10,\"top\":60,\"width\":295.64,\"height\":52.43,\"fill\":\"rgb(0,0,0)\",\"stroke\":null,\"strokeWidth\":1,\"strokeDashArray\":null,\"strokeLineCap\":\"butt\",\"strokeLineJoin\":\"miter\",\"strokeMiterLimit\":10,\"scaleX\":1,\"scaleY\":1,\"angle\":0,\"flipX\":false,\"flipY\":false,\"opacity\":1,\"shadow\":null,\"visible\":true,\"clipTo\":null,\"backgroundColor\":\"\",\"fillRule\":\"nonzero\",\"globalCompositeOperation\":\"source-over\",\"text\":\"Front Face (4)\",\"fontSize\":40,\"fontWeight\":\"normal\",\"fontFamily\":\"arial black\",\"fontStyle\":\"\",\"lineHeight\":1.16,\"textDecoration\":\"\",\"textAlign\":\"left\",\"textBackgroundColor\":\"\",\"styles\":{}}],\"background\":\"red\"}") }
+				,{ faceIndex : 5, size: { x : 200, y : 100 }, fabricJson : { objects : [], background : "blue"} }
 			] 
 		}
 		,{ 

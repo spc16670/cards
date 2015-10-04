@@ -12,6 +12,8 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		,bgColour : "#f0f0f0"
 	}
 	
+	$scope.selectedImgFile = null;
+	
 	$scope.$watch( function() { return $scope.canvas  }, function() { 
 		DisplayService.setDisplayWidth( $scope.canvas.width );
 		DisplayService.setDisplayHeight( $scope.canvas.height );
@@ -21,18 +23,47 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		DisplayService.setSpinning( $scope.canvas.spinning );
 	},true)
 	
+	$scope.$watch(function(){return $scope.selectedImgFile}, function(colour) {
+		console.log("file: ",$scope.selectedImgFile);
+    });
+	
 	$scope.$watch(function(){return $scope.canvas.bgColour}, function(colour) {
 		DisplayService.setBgColour(colour);
     });
 	
+	$scope.loadImage = function () {
+		document.getElementById('imgLoader').onchange = function handleImage(e) {
+		var reader = new FileReader();
+		  reader.onload = function (event){
+			var imgObj = new Image();
+			imgObj.src = event.target.result;
+			imgObj.onload = function () {
+			  var image = new fabric.Image(imgObj);
+			  image.set({
+					angle: 0,
+					padding: 10,
+					cornersize:10,
+					height:110,
+					width:110,
+			  });
+			  canvas.centerObject(image);
+			  canvas.add(image);
+			  canvas.renderAll();
+			}
+		  }
+		  reader.readAsDataURL(e.target.files[0]);
+		}
+	}
 	$scope.close = function () {
 		DisplayService.setFabricShowing( !DisplayService.fabricShowing );
 	}
 	$scope.write = function () {
+		var left = (DisplayService.editingCanvas.width / 2);
+		var top = (DisplayService.editingCanvas.height / 2);
 		var textItem = new fabric.IText('Tap and Type', { 
 			fontFamily: 'arial black',
-			left: 100, 
-			top: 100 
+			left: left, 
+			top: top 
 		})
 		DisplayService.editingCanvas.add(textItem);
 	}

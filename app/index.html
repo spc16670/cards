@@ -35,6 +35,7 @@
 	<script src="services/Display.js"></script>
 	<script src="directives/Fabric.js"></script>
     <script src="directives/Display.js"></script>
+	<script src="directives/Util.js"></script>
     <script src="app.js"></script>
 
   </head>
@@ -140,6 +141,16 @@
 										<label for="canvas-background-picker">Background:</label>
 										<input type="color" ng-model="canvas.bgColour">
 									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<!--<input type="file" name="file" accept="image/*" style="visibility:hidden;" 
+									id="fabricImgFile" ng-model="selectedImgFile"/>
+									<button type="button" class="btn btn-default" >
+										<span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Load Image
+									</button>-->
+									<file-field class="btn btn-default" ng-model="selectedImgFile"></file-field>
 								</td>
 							</tr>
 							<tr>

@@ -190,7 +190,6 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
 		
 		scope.$watch(function () {return DisplayService.mesh}, function () {
 			if (!DisplayService.isEmpty(DisplayService.mesh)) {
-				console.log("mesh changed",DisplayService.mesh);
 				scene.remove(obj);
 				obj = DisplayService.mesh;
 				scene.add(obj);
