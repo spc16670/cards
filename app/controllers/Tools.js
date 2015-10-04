@@ -3,8 +3,8 @@ var module = angular.module('cards.controllers.Tools',[]);
 module.controller('ToolsController', ['$scope','$rootScope','DisplayService', function ($scope,$rootScope,DisplayService) {
 
 	$scope.canvas = {
-		width : DisplayService.canvasWidth
-		,height : DisplayService.canvasHeight
+		width : DisplayService.displayWidth
+		,height : DisplayService.displayHeight
 		,fill : DisplayService.dofillcontainer
 		,scale : DisplayService.scale
 		,material : DisplayService.materialType
@@ -13,9 +13,9 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 	}
 	
 	$scope.$watch( function() { return $scope.canvas  }, function() { 
-		DisplayService.setCanvasWidth( $scope.canvas.width );
-		DisplayService.setCanvasHeight( $scope.canvas.height );
-		DisplayService.setFillContainer( $scope.canvas.fill );
+		DisplayService.setDisplayWidth( $scope.canvas.width );
+		DisplayService.setDisplayHeight( $scope.canvas.height );
+		//DisplayService.setFillContainer( $scope.canvas.fill );
 		DisplayService.setScale( $scope.canvas.scale );
 		DisplayService.setMaterialType( $scope.canvas.material );
 		DisplayService.setSpinning( $scope.canvas.spinning );

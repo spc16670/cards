@@ -1,11 +1,13 @@
 var module = angular.module('cards.services.Display',[]);
 
-module.service('DisplayService', [function () {
+module.service('DisplayService', ['$rootScope',function ($rootScope) {
 
+	
 	var Service = {
-		canvasWidth : 400
-		,canvasHeight : 400
-		,dofillcontainer : true
+		fabricWidth : 200
+		,fabricHeight : 150
+		,displayWidth : 0
+		,displayHeight : 400
 		,scale : 1
 		,materialType : 'basic'
 		,spinning : true
@@ -15,18 +17,33 @@ module.service('DisplayService', [function () {
 		,sideMaterial : []
 		,model : {}
 		,mesh : {}
-		,editingCanvas : new fabric.Canvas('fabricCanvasElement')
+		,editingCanvas : null
 	}
 
-	Service.setCanvasWidth = function(width) {
-		Service.canvasWidth = width;
+	Service.resizeCanvases = function() {
+		console.log("resizing");
+		$rootScope.$broadcast("display:resize");
+		$rootScope.$broadcast("fabric:resize");
 	}
-	Service.setFillContainer = function(fill) {
-		Service.dofillcontainer = fill;
+	
+	window.addEventListener('resize', Service.resizeCanvases, false );
+	
+	Service.setResizeFabric = function(value) {
+		Service.resizeFabric = value;
 	}
-	Service.setCanvasHeight = function(height) {
-		Service.canvasHeight = height;
+	
+	Service.setDisplayWidth = function(width) {
+		Service.displayWidth = width;
 	}
+	
+	Service.setDisplayHeight = function(height) {
+		Service.displayHeight = height;
+	}
+	
+	Service.setResizeDisplay = function(value) {
+		Service.resizeDisplay = value;
+	}
+
 	Service.setScale = function(sc) {
 		Service.scale = sc;
 	}
@@ -42,12 +59,19 @@ module.service('DisplayService', [function () {
 	Service.setMaterialIndex = function(index) {
 		Service.materialIndex = index;
 	}
+	Service.setEditingCanvas = function(canvas) {
+		Service.editingCanvas = canvas;
+	}
 	Service.setBgColour = function(colour) {
 		Service.bgColour = colour;
 		Service.editingCanvas.setBackgroundColor(Service.bgColour,Service.editingCanvas.renderAll.bind(Service.editingCanvas));
 	}
 	Service.setModel = function(model) {
 		Service.model = model;
+		Service.fabricWidth = model.geometry.parameters.width;
+		Service.fabricHeight = model.geometry.parameters.height;
+		console.log(model.geometry.parameters.width,model.geometry.parameters.height);
+		//$rootScope.$broadcast("fabric:resize");
 		Service.materializeMesh();
 	}
 	

@@ -13,6 +13,7 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="../css/template.css" rel="stylesheet">
+	<link href="../css/cards.css" rel="stylesheet">
 	
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -114,19 +115,15 @@
 			<div class="col-md-6" ng-controller="DisplayController">
 				<div id="threeCanvas" ng-show="!fabricShowing"
 					ng-webgl
-					width="canvasWidth"
-					height="canvasHeight"
-					dofillcontainer="dofillcontainer"
 					scale="scale"
 					material-type="materialType"
 					spinning="spinning"
 				></div>
 				<div id="fabricCanvas" ng-show="fabricShowing"
 					ng-fabric
-					width="canvasWidth"
-					height="canvasHeight"
+					width="fabricWidth"
+					height="fabricHeight"
 				>
-					<canvas id="fabricCanvasElement" style="border:1px solid"/>
 				</div>
 			</div>
 			<div class="col-md-3" ng-controller="ToolsController">
@@ -208,7 +205,6 @@
 			
 		</div>
     </div>
-
     <footer class="footer">
 		<div class="container">
 			<p class="text-muted">Place sticky footer content here.</p>

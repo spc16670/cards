@@ -3,9 +3,8 @@ var module = angular.module('cards.controllers.Display',[]);
 
 module.controller('DisplayController', ['$scope','DisplayService', function ($scope,DisplayService) {
 
-    $scope.canvasWidth = DisplayService.canvasWidth;
-    $scope.canvasHeight = DisplayService.canvasHeight;
-    $scope.dofillcontainer = DisplayService.dofillcontainer;
+    $scope.fabricWidth = DisplayService.fabricWidth;
+    $scope.fabricHeight = DisplayService.fabricHeight;
     $scope.scale = DisplayService.scale;
     $scope.materialType = DisplayService.materialType;
 	$scope.spinning = DisplayService.spinning;
@@ -14,19 +13,14 @@ module.controller('DisplayController', ['$scope','DisplayService', function ($sc
 	$scope.mesh = DisplayService.mesh;
 	$scope.editingCanvas = DisplayService.editingCanvas;
 	
-	$scope.$watch( function() { return DisplayService.canvasWidth }, function() { 
-		console.log("$scope.canvasWidth");
-		$scope.canvasWidth = DisplayService.canvasWidth;
+	$scope.$watch( function() { return DisplayService.fabricWidth }, function() { 
+		console.log("$scope.fabricWidth");
+		$scope.fabricWidth = DisplayService.fabricWidth;
 	},true);
 	
-	$scope.$watch( function() { return DisplayService.canvasHeight }, function() { 
-	console.log("$scope.canvasHeight");
-		$scope.canvasHeight = DisplayService.canvasHeight;
-	},true);
-	
-	$scope.$watch( function() { return DisplayService.dofillcontainer }, function() { 
-	console.log("$scope.canvasWidth");
-		$scope.dofillcontainer = DisplayService.dofillcontainer;
+	$scope.$watch( function() { return DisplayService.fabricHeight }, function() { 
+	console.log("$scope.fabricHeight");
+		$scope.fabricHeight = DisplayService.fabricHeight;
 	},true);
 	
 	$scope.$watch( function() { return DisplayService.scale }, function() { 

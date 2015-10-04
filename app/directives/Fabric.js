@@ -12,11 +12,16 @@ module.directive('ngFabric', ['DisplayService',function (DisplayService) {
 		  
 		var contW;
 		var contH;
-			
+		var canvas;
+		
         scope.init = function () {
+			canvas = document.createElement('canvas');
+			canvas.id = "fabricCanvasElement";
+			canvas.style.border = "1px solid";
+			element[0].appendChild(canvas);
+			DisplayService.setEditingCanvas(new fabric.Canvas('fabricCanvasElement'));
 			scope.resizeCanvas();
 			DisplayService.editingCanvas.on('text:changed',function(e){console.log("changed")});
-			window.addEventListener('resize', scope.onWindowResize, false );
         };
 		
         // -----------------------------------
@@ -31,10 +36,14 @@ module.directive('ngFabric', ['DisplayService',function (DisplayService) {
         // Updates
         // -----------------------------------
         scope.resizeCanvas = function () {
-			contW = element[0].clientWidth;
+			contW = scope.width; //element[0].clientWidth;
 			contH = scope.height;
-			DisplayService.editingCanvas.width = contW;
-			DisplayService.editingCanvas.height = contH;
+			canvas.width = contW;
+			canvas.height = contH;
+			console.log("fabric resize w h",contW,contH);
+			DisplayService.editingCanvas.setWidth(contW);
+			DisplayService.editingCanvas.setHeight(contH);
+			DisplayService.editingCanvas.calcOffset();
         };
 		
         // -----------------------------------
@@ -44,6 +53,11 @@ module.directive('ngFabric', ['DisplayService',function (DisplayService) {
 			scope.resizeCanvas();
         });
 
+        scope.$on("fabric:resize",function() {
+			console.log("fabric:resize");
+			scope.resizeCanvas();
+		})
+		
 		scope.init();
 
       }

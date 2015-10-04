@@ -5,10 +5,7 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
     return {
       restrict: 'A',
       scope: { 
-        'width': '='
-        ,'height': '='
-        ,'dofillcontainer': '='
-        ,'scale': '='
+        'scale': '='
         ,'materialType': '='
 		,'spinning': '='
       },
@@ -24,12 +21,11 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
 		var hoovering;
 		var mouse;
 		var raycaster;
-		var canvasPosition;
 		var facePointed;
 		var line;
 		
-		contW = (scope.dofillcontainer) ? element[0].clientWidth : scope.width,
-		contH = scope.height, 
+		contW = DisplayService.displayWidth == 0 ? element[0].clientWidth : DisplayService.displayWidth;
+		contH = DisplayService.displayHeight == 0 ? element[0].clientHeight : DisplayService.displayHeight;
 		materials = {};
 		hoovering = true;
 		raycaster = new THREE.Raycaster();
@@ -83,18 +79,28 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
 			renderer.setClearColor( 0xffffff );
 			renderer.setPixelRatio( window.devicePixelRatio );
 			renderer.setSize( contW, contH );
-
+			
+			//renderer.domElement.className = "text-center";
+			//renderer.domElement.style.float = "none"
+			//renderer.domElement.style.marginLeft = "auto"
+			//renderer.domElement.style.marginRight = "auto"
+			//renderer.domElement.style.display = "table";
 			// element is provided by the angular directive
+			
+			
 			element[0].appendChild( renderer.domElement );
-			canvasPosition = element[0].getBoundingClientRect();
+			
+			//var div = document.createElement('div');
+			//canvas.id = "fabricCanvasElement";
+			//canvas.style.border = "1px solid";
+			//element[0].appendChild(canvas);
+			
 			element[0].addEventListener('mouseover', scope.mouseOver);
 			element[0].addEventListener('mouseout', scope.mouseOut);
 			element[0].addEventListener('click', scope.click );
 			//element[0].addEventListener('mousedown', scope.onRendereMouseDown );
 			controls = new THREE.OrbitControls( camera, renderer.domElement );
 			controls.addEventListener('change', scope.render );
-			window.addEventListener('resize', scope.onWindowResize, false );
-
         };
 		
 		scope.mouseOver = function () {
@@ -106,6 +112,7 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
 		}
 
 		scope.click = function (event) {
+			var canvasPosition = element[0].getBoundingClientRect();
 			mouse.x = ( (event.clientX - canvasPosition.left) / contW ) * 2 - 1;
 			mouse.y = - ( (event.clientY - canvasPosition.top) / contH ) * 2 + 1;
 			raycaster.setFromCamera( mouse, camera );
@@ -138,9 +145,8 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
         // Updates
         // -----------------------------------
         scope.resizeCanvas = function () {
-			contW = (scope.dofillcontainer) ? element[0].clientWidth : scope.width;
-			contH = scope.height;
-			canvasPosition = element[0].getBoundingClientRect();
+			contW = DisplayService.displayWidth == 0 ? element[0].clientWidth : DisplayService.displayWidth;
+			contH = DisplayService.displayHeight == 0 ? element[0].clientHeight : DisplayService.displayHeight;
 			camera.aspect = contW / contH;
 			camera.updateProjectionMatrix();
 			renderer.setSize( contW, contH );
@@ -174,9 +180,9 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
         // -----------------------------------
         // Watches
         // -----------------------------------
-        scope.$watch('dofillcontainer + width + height', function () {
-			scope.resizeCanvas();
-        });
+        //scope.$watch('dofillcontainer + width + height', function () {
+		//	scope.resizeCanvas();
+        //});
 
         scope.$watch('scale', function () {
           scope.resizeObject();
@@ -191,9 +197,10 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
 			}
         });
 
-        //scope.$watch('materialType', function () {
-          //scope.changeMaterial();
-        //});
+        scope.$on("display:resize",function() {
+			console.log("display:resize");
+			scope.resizeCanvas();
+		})
 
 		function drawLine(start,end) {
 			scene.remove(line);
