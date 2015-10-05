@@ -145,12 +145,12 @@
 							</tr>
 							<tr>
 								<td>
-									<!--<input type="file" name="file" accept="image/*" style="visibility:hidden;" 
-									id="fabricImgFile" ng-model="selectedImgFile"/>
+									<input type="file" onchange="angular.element(this).scope().fileSelected(this)" accept="image/*" class="form-control" id="fabricImgFile" ng-model="selectedImgFile"/>
+									<!--
 									<button type="button" class="btn btn-default" >
 										<span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Load Image
 									</button>-->
-									<file-field class="btn btn-default" ng-model="selectedImgFile"></file-field>
+									<!--<file-field class="btn btn-default" ng-model="selectedImgFile"></file-field>-->
 								</td>
 							</tr>
 							<tr>

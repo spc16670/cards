@@ -24,36 +24,33 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 	},true)
 	
 	$scope.$watch(function(){return $scope.selectedImgFile}, function(colour) {
-		console.log("file: ",$scope.selectedImgFile);
+		fabric.util.loadImage($scope.selectedImgFile, function(img) {
+			var oImg = new fabric.Image(img);
+			oImg.scale(0.2).set({
+				left: 10,
+				top: 10,
+			});
+			DisplayService.editingCanvas.add(oImg);
+			DisplayService.editingCanvas.renderOnAddiation = true;
+            DisplayService.editingCanvas.renderAll();
+		});
     });
 	
 	$scope.$watch(function(){return $scope.canvas.bgColour}, function(colour) {
 		DisplayService.setBgColour(colour);
     });
 	
-	$scope.loadImage = function () {
-		document.getElementById('imgLoader').onchange = function handleImage(e) {
-		var reader = new FileReader();
-		  reader.onload = function (event){
-			var imgObj = new Image();
-			imgObj.src = event.target.result;
-			imgObj.onload = function () {
-			  var image = new fabric.Image(imgObj);
-			  image.set({
-					angle: 0,
-					padding: 10,
-					cornersize:10,
-					height:110,
-					width:110,
-			  });
-			  canvas.centerObject(image);
-			  canvas.add(image);
-			  canvas.renderAll();
-			}
-		  }
-		  reader.readAsDataURL(e.target.files[0]);
-		}
-	}
+	$scope.fileSelected = function(element) {
+		$scope.$apply(function(scope) {
+			var photofile = element.files[0];
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$scope.selectedImgFile = e.target.result;
+			};
+			reader.readAsDataURL(photofile);
+		});
+	};
+
 	$scope.close = function () {
 		DisplayService.setFabricShowing( !DisplayService.fabricShowing );
 	}
@@ -67,6 +64,7 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		})
 		DisplayService.editingCanvas.add(textItem);
 	}
+	
 	$scope.remove = function () {
 		if(DisplayService.editingCanvas.getActiveGroup()) {
 			DisplayService.editingCanvas.getActiveGroup().forEachObject(function(o){ DisplayService.editingCanvas.remove(o) });
