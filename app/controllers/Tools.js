@@ -12,7 +12,7 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		,bgColour : "#f0f0f0"
 	}
 	
-	$scope.selectedImgFile = null;
+	$scope.selectedImgFile = { };
 	
 	$scope.$watch( function() { return $scope.canvas  }, function() { 
 		DisplayService.setDisplayWidth( $scope.canvas.width );
@@ -23,21 +23,8 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		DisplayService.setSpinning( $scope.canvas.spinning );
 	},true)
 	
-	$scope.$watch(function(){return $scope.selectedImgFile}, function(colour) {
-		fabric.util.loadImage($scope.selectedImgFile, function(img) {
-			var oImg = new fabric.Image(img);
-			oImg.scale(0.2).set({
-				left: 10,
-				top: 10,
-			});
-			DisplayService.editingCanvas.add(oImg);
-			DisplayService.editingCanvas.renderOnAddiation = true;
-            DisplayService.editingCanvas.renderAll();
-		});
-    });
-	
-	$scope.$watch(function(){return $scope.canvas.bgColour}, function(colour) {
-		DisplayService.setBgColour(colour);
+	$scope.$watch(function(){return $scope.canvas.bgColour}, function() {
+		DisplayService.setBgColour($scope.canvas.bgColour);
     });
 	
 	$scope.fileSelected = function(element) {
@@ -45,7 +32,14 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 			var photofile = element.files[0];
 			var reader = new FileReader();
 			reader.onload = function(e) {
-				$scope.selectedImgFile = e.target.result;
+				//console.log(element.value.replace(/^.*\\/, ""));
+				$scope.selectedImgFile = { base64 : e.target.result };
+				console.log("fabric.Image.fromURL");
+				fabric.Image.fromURL($scope.selectedImgFile.base64, function(img) {
+					img.scale(0.2).setLeft(10).setTop(10);
+					DisplayService.editingCanvas.add(img);
+					//DisplayService.editingCanvas.renderAll();
+				});
 			};
 			reader.readAsDataURL(photofile);
 		});
@@ -77,5 +71,8 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		DisplayService.updateModel(); // saves editingCanvas in model's fabricJson
 		DisplayService.materializeMesh();
 		DisplayService.setFabricShowing(false);	
+	}
+	$scope.test = function () {
+		window.open(DisplayService.editingCanvas.toDataURL('png'));
 	}
 }]);

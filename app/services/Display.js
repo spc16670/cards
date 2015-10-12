@@ -18,6 +18,15 @@ module.service('DisplayService', ['$rootScope',function ($rootScope) {
 		,model : {}
 		,mesh : {}
 		,editingCanvas : null
+		,rendered : 0
+		,material : new THREE.MeshFaceMaterial([
+			new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
+			,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
+			,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
+			,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
+			,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
+			,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
+		])
 	}
 
 	Service.resizeCanvases = function() {
@@ -72,10 +81,12 @@ module.service('DisplayService', ['$rootScope',function ($rootScope) {
 		Service.bgColour = colour;
 		Service.editingCanvas.setBackgroundColor(Service.bgColour,Service.editingCanvas.renderAll.bind(Service.editingCanvas));
 	}
+	
+	/**
+	* setModel() is called from GroupController.
+	*/
 	Service.setModel = function(model) {
 		Service.model = model;
-		//$rootScope.$broadcast("fabric:resize");
-		Service.materializeMesh();
 	}
 	
 	Service.updateCanvas = function(faceIndex) {
@@ -87,17 +98,6 @@ module.service('DisplayService', ['$rootScope',function ($rootScope) {
 					return;
 				}
 			}
-			/*
-			var canvas = Service.sideCanvasInstance(faceIndex);
-			var textItem = new fabric.IText('Tap and Type', { 
-				fontFamily: 'arial black',
-				left: 10, 
-				top: 10 
-			});
-			canvas.add(textItem)
-			canvas.backgroundColor = "white";
-			canvasObj = canvas.toObject();
-			Service.editingCanvas.loadFromJSON(canvasObj);	*/
 		}
 	}
 	
@@ -132,48 +132,41 @@ module.service('DisplayService', ['$rootScope',function ($rootScope) {
 		return undefined;
 	}
 	
-	Service.sideCanvasInstance = function (face) {
-		var name = "model_side_" + face.faceIndex;
-		var canvas = document.getElementById(name);
-		if (canvas == null) {
-			canvas = document.createElement('canvas');
-			canvas.id = name;
-		}
-		canvas.width = face.size.x;
-		canvas.height = face.size.y;
-		return new fabric.Canvas(canvas.id);
+	Service.beenRendered = function (index) {
+		var fabric = Service.model.fabrics[index];
+		
+		//var dataUrl = fabric.canvas.getContext('2d').canvas.toDataURL();
+		//fabric.canvas.renderAll();
+		var image = fabric.canvas.getContext('2d').canvas;
+		//console.log("image to url: ",image.toDataURL());
+		var texture = new THREE.Texture(image);
+		
+		//var texture = THREE.ImageUtils.loadTexture(dataUrl,undefined,function(){console.log("loaded")},function(){console.log("end")});
+		//console.log("needsUpdate",texture);
+		texture.needsUpdate = true;
+		var faceMaterial = new THREE.MeshBasicMaterial( { map : texture } );
+		
+		Service.material.materials[fabric.faceIndex] = faceMaterial;
+		Service.rendered++;
+		if (Service.rendered == Service.model.fabrics.length) {
+			Service.rendered = 0;
+			Service.material.needsUpdate = true;
+			Service.mesh = new THREE.Mesh(
+				Service.model.geometry
+				,Service.material
+			);
+		} 
 	}
 	
 	Service.materializeMesh = function() {
-		if (!Service.isEmpty(Service.model)) {
-			var i;
-			// Fabric.js JSON -> BITMAP
-			var material = new THREE.MeshFaceMaterial([
-				new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
-				,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
-				,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
-				,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
-				,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
-				,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
-			]);
-
-			for (i=0;i<Service.model.fabrics.length;i++) {
-				var fabric = Service.model.fabrics[i];
-				var canvas = Service.sideCanvasInstance(fabric);
-				canvas.loadFromJSON(fabric.fabricJson);		
-				var texture = new THREE.Texture(canvas.getContext('2d').canvas);
-				texture.needsUpdate = true;
-				var faceMaterial = new THREE.MeshBasicMaterial( { map : texture } );
-				material.materials[fabric.faceIndex] = faceMaterial;
-			}	
-			
-			material.needsUpdate = true;
-			Service.mesh = new THREE.Mesh(
-				Service.model.geometry
-				,material
-			);
-		}
+		var fabricIndex;
+		for (fabricIndex=0;fabricIndex<Service.model.fabrics.length;fabricIndex++) {
+			var fabric = Service.model.fabrics[fabricIndex];
+			fabric.canvas.loadFromJSON(fabric.fabricJson,Service.beenRendered(fabricIndex));		
+		}	
 	}
+	
+	
 	return Service;
 
 }]);

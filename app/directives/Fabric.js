@@ -15,6 +15,7 @@ module.directive('ngFabric', ['DisplayService',function (DisplayService) {
 		var canvas;
 		
         scope.init = function () {
+			console.log("scope.init");
 			canvas = document.createElement('canvas');
 			canvas.id = "fabricCanvasElement";
 			canvas.style.border = "1px solid";
@@ -40,7 +41,6 @@ module.directive('ngFabric', ['DisplayService',function (DisplayService) {
 			contH = scope.height;
 			canvas.width = contW;
 			canvas.height = contH;
-			console.log("fabric resize w h",contW,contH);
 			DisplayService.editingCanvas.setWidth(contW);
 			DisplayService.editingCanvas.setHeight(contH);
 			DisplayService.editingCanvas.calcOffset();

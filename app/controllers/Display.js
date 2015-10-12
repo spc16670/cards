@@ -39,7 +39,6 @@ module.controller('DisplayController', ['$scope','DisplayService', function ($sc
 	},true);
 	
 	$scope.$watch( function() { return DisplayService.fabricShowing }, function() { 
-	console.log("$scope.fabricShowing");
 		$scope.fabricShowing = DisplayService.fabricShowing;
 	},true);
 	

@@ -1,6 +1,6 @@
 var module = angular.module('cards.services.Bullet',[]);
 
-module.service('BulletService', [function () {
+module.service('BulletService', ['DisplayService',function (DisplayService) {
 
 	var Service = {
 	}
@@ -37,8 +37,21 @@ module.service('BulletService', [function () {
 	Service.fetchModel = function(minModel) {
 		var i;
 		for (i=0;i<Service.models.length;i++) {
-			if (Service.models[i].groupId == minModel.groupId) {
-				return Service.models[i];
+			model = Service.models[i];
+			if (model.groupId == minModel.groupId) {
+				var f;
+				for (f=0;f<model.fabrics.length;f++) {
+					faceFabric = model.fabrics[f];
+					var canvas = document.createElement('canvas');
+					//document.body.appendChild(canvas);
+					var name = "model_side_" + faceFabric.faceIndex;
+					canvas.id = name;
+					canvas.width = faceFabric.size.x;
+					canvas.height = faceFabric.size.y;
+					//faceFabric['c'] = canvas;
+					faceFabric['canvas'] = new fabric.Canvas(canvas.id);
+				}
+				return model;
 			}
 		}
 		return null;

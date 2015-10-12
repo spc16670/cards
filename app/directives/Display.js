@@ -119,7 +119,6 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
 			var intersected = raycaster.intersectObjects( scene.children );
 			if (intersected.length != 0) {
 				facePointed = intersected[0].face.materialIndex
-				console.log("face clicked: ",facePointed);
 				DisplayService.setMaterialIndex(facePointed);
 				DisplayService.updateCanvas(facePointed);
 				DisplayService.setFabricShowing(true);
@@ -197,7 +196,6 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
         });
 
         scope.$on("display:resize",function() {
-			console.log("display:resize");
 			scope.resizeCanvas();
 		})
 
