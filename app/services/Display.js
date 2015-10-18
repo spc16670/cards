@@ -1,6 +1,6 @@
 var module = angular.module('cards.services.Display',[]);
 
-module.service('DisplayService', ['$rootScope',function ($rootScope) {
+module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$timeout) {
 
 	
 	var Service = {
@@ -18,6 +18,7 @@ module.service('DisplayService', ['$rootScope',function ($rootScope) {
 		,model : {}
 		,mesh : {}
 		,editingCanvas : null
+		,facePointed : 0
 		,rendered : 0
 		,material : new THREE.MeshFaceMaterial([
 			new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
@@ -65,35 +66,45 @@ module.service('DisplayService', ['$rootScope',function ($rootScope) {
 	Service.setFabricShowing = function(showing) {
 		Service.fabricShowing = showing;
 	}	
-	Service.setMaterialIndex = function(index) {
-		Service.materialIndex = index;
-		var canvasSize = Service.getEditingCanvasSize(index);
-		if (canvasSize != undefined) {
-			Service.fabricWidth = canvasSize.x;
-			Service.fabricHeight = canvasSize.y;	
-		}
-		//Service.editingCanvas.renderAll();
-	}
 	Service.setEditingCanvas = function(canvas) {
 		Service.editingCanvas = canvas;
 	}
 	Service.setBgColour = function(colour) {
-		Service.bgColour = colour;
-		Service.editingCanvas.setBackgroundColor(Service.bgColour,Service.editingCanvas.renderAll.bind(Service.editingCanvas));
+		Service.bgColour = colour || "#ffffff";
+		if (Service.editingCanvas != null) {
+			Service.editingCanvas.setBackgroundColor(Service.bgColour,Service.editingCanvas.renderAll.bind(Service.editingCanvas));
+		}
+	}
+	
+	Service.setMesh = function(m) {
+		Service.mesh = m;
 	}
 	
 	/**
 	* setModel() is called from GroupController.
 	*/
 	Service.setModel = function(model) {
-		Service.model = model;
+		this.model = model;
 	}
 	
-	Service.updateCanvas = function(faceIndex) {
+	Service.setFacePointed = function(face) {
+		this.facePointed = face;
+		var canvasSize = Service.getEditingCanvasSize(face);
+		if (canvasSize != undefined) {
+			Service.fabricWidth = canvasSize.x;
+			Service.fabricHeight = canvasSize.y;	
+		}
+	}
+	
+	/**
+	* Fabric directive update the facePointed value first and then call the 
+	* method to update the canvas.
+	*/
+	Service.updateCanvas = function() {
 		if (!Service.isEmpty(Service.model)) {
 			var i;
 			for (i=0;i<Service.model.fabrics.length;i++) {
-				if (Service.model.fabrics[i].faceIndex == faceIndex) {
+				if (Service.model.fabrics[i].faceIndex == this.facePointed) {
 					Service.editingCanvas.loadFromJSON(Service.model.fabrics[i].fabricJson);
 					return;
 				}
@@ -105,12 +116,11 @@ module.service('DisplayService', ['$rootScope',function ($rootScope) {
 		var i;
 		var save = Service.editingCanvas.toObject();
 		for (i=0;i<Service.model.fabrics.length;i++) {
-			if (Service.model.fabrics[i].faceIndex == Service.materialIndex) {
+			if (Service.model.fabrics[i].faceIndex == this.facePointed) {
 				Service.model.fabrics[i].fabricJson = save;
 				return;
 			}
 		}
-		//Service.model.fabrics.push({ faceIndex: Service.materialIndex, fabricJson: save });
 	}
 	
 	Service.isEmpty = function isEmpty(obj) {
@@ -132,38 +142,31 @@ module.service('DisplayService', ['$rootScope',function ($rootScope) {
 		return undefined;
 	}
 	
-	Service.beenRendered = function (index) {
-		var fabric = Service.model.fabrics[index];
-		
-		//var dataUrl = fabric.canvas.getContext('2d').canvas.toDataURL();
-		//fabric.canvas.renderAll();
+
+	/**
+	*
+	* @param index - fabric index from the fabric array in model fabrics properties
+	*/
+	Service.render = function (index) {
+		var fabric = this.model.fabrics[index];
 		var image = fabric.canvas.getContext('2d').canvas;
-		//console.log("image to url: ",image.toDataURL());
 		var texture = new THREE.Texture(image);
-		
-		//var texture = THREE.ImageUtils.loadTexture(dataUrl,undefined,function(){console.log("loaded")},function(){console.log("end")});
-		//console.log("needsUpdate",texture);
+		Service.material.materials[fabric.faceIndex].map = texture;
 		texture.needsUpdate = true;
-		var faceMaterial = new THREE.MeshBasicMaterial( { map : texture } );
-		
-		Service.material.materials[fabric.faceIndex] = faceMaterial;
-		Service.rendered++;
-		if (Service.rendered == Service.model.fabrics.length) {
-			Service.rendered = 0;
-			Service.material.needsUpdate = true;
-			Service.mesh = new THREE.Mesh(
-				Service.model.geometry
-				,Service.material
-			);
+		this.rendered++;
+		if (this.rendered == this.model.fabrics.length) {
+			this.rendered = 0;
+			$timeout(function(){ Service.setFabricShowing(false); },1)
 		} 
 	}
 	
 	Service.materializeMesh = function() {
 		var fabricIndex;
-		for (fabricIndex=0;fabricIndex<Service.model.fabrics.length;fabricIndex++) {
-			var fabric = Service.model.fabrics[fabricIndex];
-			fabric.canvas.loadFromJSON(fabric.fabricJson,Service.beenRendered(fabricIndex));		
-		}	
+		Service.mesh = new THREE.Mesh( Service.model.geometry, Service.material );
+		for (fabricIndex=0;fabricIndex<this.model.fabrics.length;fabricIndex++) {
+			var fabric = this.model.fabrics[fabricIndex];
+			fabric.canvas.loadFromJSON(fabric.fabricJson,Service.render(fabricIndex));		
+		}
 	}
 	
 	

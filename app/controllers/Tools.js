@@ -70,9 +70,13 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 	$scope.apply = function () {
 		DisplayService.updateModel(); // saves editingCanvas in model's fabricJson
 		DisplayService.materializeMesh();
-		DisplayService.setFabricShowing(false);	
 	}
 	$scope.test = function () {
 		window.open(DisplayService.editingCanvas.toDataURL('png'));
 	}
+	
+	$scope.$on('model:materialised', function () {
+		console.log('model:materialised');
+        DisplayService.setFabricShowing(false);
+	})
 }]);

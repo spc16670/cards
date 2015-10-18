@@ -9,20 +9,22 @@ module.directive('ngFabric', ['DisplayService',function (DisplayService) {
         'height': '='
       },
       link: function postLink(scope, element, attrs) {
-		  
-		var contW;
-		var contH;
-		var canvas;
 		
-        scope.init = function () {
-			console.log("scope.init");
-			canvas = document.createElement('canvas');
-			canvas.id = "fabricCanvasElement";
-			canvas.style.border = "1px solid";
-			element[0].appendChild(canvas);
+		var directive = {
+			canvas : null
+			,contW : 0
+			,contH : 0
+		}
+		
+        function init() {
+			console.log("scope init()");
+			directive.canvas = document.createElement('canvas');
+			directive.canvas.id = "fabricCanvasElement";
+			directive.canvas.style.border = "1px solid";
+			element[0].appendChild(directive.canvas);
 			DisplayService.setEditingCanvas(new fabric.Canvas('fabricCanvasElement'));
+			DisplayService.updateCanvas();
 			scope.resizeCanvas();
-			DisplayService.editingCanvas.on('text:changed',function(e){console.log("changed")});
         };
 		
         // -----------------------------------
@@ -37,12 +39,12 @@ module.directive('ngFabric', ['DisplayService',function (DisplayService) {
         // Updates
         // -----------------------------------
         scope.resizeCanvas = function () {
-			contW = scope.width; //element[0].clientWidth;
-			contH = scope.height;
-			canvas.width = contW;
-			canvas.height = contH;
-			DisplayService.editingCanvas.setWidth(contW);
-			DisplayService.editingCanvas.setHeight(contH);
+			directive.contW = scope.width; //element[0].clientWidth;
+			directive.contH = scope.height;
+			directive.canvas.width = directive.contW;
+			directive.canvas.height = directive.contH;
+			DisplayService.editingCanvas.setWidth(directive.contW);
+			DisplayService.editingCanvas.setHeight(directive.contH);
 			DisplayService.editingCanvas.calcOffset();
 			//DisplayService.editingCanvas.renderAll();
         };
@@ -59,7 +61,19 @@ module.directive('ngFabric', ['DisplayService',function (DisplayService) {
 			scope.resizeCanvas();
 		})
 		
-		scope.init();
+		scope.$on('$destroy', function() {
+			function empty(elem) {
+				while (elem.lastChild) elem.removeChild(elem.lastChild);
+			}
+            console.log("DESTROYING FABRIC DIRECTIVE.");
+			scope.onWindowResize = null;
+			directive.canvas = null;
+			empty(element[0]);
+			element[0].remove();
+			directive = null;
+        });
+		
+		init();
 
       }
     };

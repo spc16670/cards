@@ -11,34 +11,32 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
       },
       link: function postLink(scope, element, attrs) {
 
-		var container;
-		var camera, scene, renderer;
-		var obj;
-		var contW;
-		var contH;
-		var materials; 
-		var controls;
-		var hoovering;
-		var mouse;
-		var raycaster;
-		var facePointed;
-		var line;
+		var directive = {
+			camera : null
+			,scene : null
+			,renderer : null
+			,rafId : null 
+			,obj : null
+			,contW : 0
+			,contH : 0
+			,materials : {}
+			,controls : null
+			,hoovering : true
+			,raycaster : new THREE.Raycaster()
+			,mouse : new THREE.Vector2()
+		}
 		
-		contW = DisplayService.displayWidth == 0 ? element[0].clientWidth : DisplayService.displayWidth;
-		contH = DisplayService.displayHeight == 0 ? element[0].clientHeight : DisplayService.displayHeight;
-		materials = {};
-		hoovering = true;
-		raycaster = new THREE.Raycaster();
-		mouse = new THREE.Vector2();
+		directive.contW = DisplayService.displayWidth == 0 ? element[0].clientWidth : DisplayService.displayWidth;
+		directive.contH = DisplayService.displayHeight == 0 ? element[0].clientHeight : DisplayService.displayHeight;
 			
-        scope.init = function () {
-
+         function init() {
+			console.log("display init()");
 			// Camera
-			camera = new THREE.PerspectiveCamera( 20, contW / contH, 1, 10000 );
-			camera.position.z = 1800;
+			directive.camera = new THREE.PerspectiveCamera( 20, directive.contW / directive.contH, 1, 10000 );
+			directive.camera.position.z = 1800;
 
 			// Scene
-			scene = new THREE.Scene();
+			directive.scene = new THREE.Scene();
 
 			var objGeometry = new THREE.BoxGeometry( 200, 200, 200 );
 
@@ -48,17 +46,17 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
 				objGeometry.faces[ i + 1 ].color.setHex( hex );
 			}
 
-			materials.basic = new THREE.MeshBasicMaterial( 
+			directive.materials.basic = new THREE.MeshBasicMaterial( 
 				{ vertexColors: THREE.FaceColors, overdraw: 0.5 } );
 
-			materials.wireframe = new THREE.MeshBasicMaterial({ 
+			directive.materials.wireframe = new THREE.MeshBasicMaterial({ 
 				color: 0x000000, 
 				shading: THREE.FlatShading, 
 				wireframe: true, 
 				transparent: true 
 			});
 
-			materials.custom = new THREE.MeshFaceMaterial([
+			directive.materials.custom = new THREE.MeshFaceMaterial([
 				new THREE.MeshBasicMaterial( )
 				,new THREE.MeshBasicMaterial( )
 				,new THREE.MeshBasicMaterial( )
@@ -67,60 +65,41 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
 				,new THREE.MeshBasicMaterial( )
 			]);
 	
-			obj = new THREE.Mesh( objGeometry, materials[scope.materialType] );
-			scene.add( obj );
-
-			//var axes = new THREE.AxisHelper(1000);
-			//scene.add(axes);
-			//var gridXZ = new THREE.GridHelper(1000, 100);
-			//scene.add(gridXZ);
+			directive.obj = new THREE.Mesh( objGeometry, directive.materials[scope.materialType] );
+			directive.scene.add( directive.obj );
 			
-			renderer = new THREE.CanvasRenderer();
-			renderer.setClearColor( 0xffffff );
-			renderer.setPixelRatio( window.devicePixelRatio );
-			renderer.setSize( contW, contH );
+			directive.renderer = new THREE.CanvasRenderer();
+			directive.renderer.setClearColor( 0xffffff );
+			directive.renderer.setPixelRatio( window.devicePixelRatio );
+			directive.renderer.setSize( directive.contW, directive.contH );
 			
-			//renderer.domElement.className = "text-center";
-			//renderer.domElement.style.float = "none"
-			//renderer.domElement.style.marginLeft = "auto"
-			//renderer.domElement.style.marginRight = "auto"
-			//renderer.domElement.style.display = "table";
-			// element is provided by the angular directive
-			
-			
-			element[0].appendChild( renderer.domElement );
-			
-			//var div = document.createElement('div');
-			//canvas.id = "fabricCanvasElement";
-			//canvas.style.border = "1px solid";
-			//element[0].appendChild(canvas);
+			element[0].appendChild( directive.renderer.domElement );
 			
 			element[0].addEventListener('mouseover', scope.mouseOver);
 			element[0].addEventListener('mouseout', scope.mouseOut);
 			element[0].addEventListener('click', scope.click );
-			//element[0].addEventListener('mousedown', scope.onRendereMouseDown );
-			controls = new THREE.OrbitControls( camera, renderer.domElement );
-			controls.addEventListener('change', scope.render );
+
+			directive.controls = new THREE.OrbitControls( directive.camera, directive.renderer.domElement );
+			directive.controls.addEventListener('change', render );
         };
 		
 		scope.mouseOver = function () {
-			hoovering = true;
+			directive.hoovering = true;
 		}
 		
 		scope.mouseOut = function () {
-			hoovering = false;
+			directive.hoovering = false;
 		}
 
 		scope.click = function (event) {
 			var canvasPosition = element[0].getBoundingClientRect();
-			mouse.x = ( (event.clientX - canvasPosition.left) / contW ) * 2 - 1;
-			mouse.y = - ( (event.clientY - canvasPosition.top) / contH ) * 2 + 1;
-			raycaster.setFromCamera( mouse, camera );
-			var intersected = raycaster.intersectObjects( scene.children );
+			directive.mouse.x = ( (event.clientX - canvasPosition.left) / directive.contW ) * 2 - 1;
+			directive.mouse.y = - ( (event.clientY - canvasPosition.top) / directive.contH ) * 2 + 1;
+			directive.raycaster.setFromCamera( directive.mouse, directive.camera );
+			var intersected = directive.raycaster.intersectObjects( directive.scene.children );
 			if (intersected.length != 0) {
-				facePointed = intersected[0].face.materialIndex
-				DisplayService.setMaterialIndex(facePointed);
-				DisplayService.updateCanvas(facePointed);
+				var facePointed = intersected[0].face.materialIndex
+				DisplayService.setFacePointed(facePointed);
 				DisplayService.setFabricShowing(true);
 				scope.$apply();
 				//var start = new THREE.Vector3(0,0,0);
@@ -129,7 +108,7 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
 				//camera.position.set(0,0,1200);
 				//camera.lookAt(scene.position);
 			} else {
-				facePointed = null;
+
 			}
 		}
 
@@ -144,15 +123,15 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
         // Updates
         // -----------------------------------
         scope.resizeCanvas = function () {
-			contW = DisplayService.displayWidth == 0 ? element[0].clientWidth : DisplayService.displayWidth;
-			contH = DisplayService.displayHeight == 0 ? element[0].clientHeight : DisplayService.displayHeight;
-			camera.aspect = contW / contH;
-			camera.updateProjectionMatrix();
-			renderer.setSize( contW, contH );
+			directive.contW = DisplayService.displayWidth == 0 ? element[0].clientWidth : DisplayService.displayWidth;
+			directive.contH = DisplayService.displayHeight == 0 ? element[0].clientHeight : DisplayService.displayHeight;
+			directive.camera.aspect = directive.contW / directive.contH;
+			directive.camera.updateProjectionMatrix();
+			directive.renderer.setSize( directive.contW, directive.contH );
         };
 
         scope.resizeObject = function () {
-			obj.scale.set(scope.scale, scope.scale, scope.scale);
+			directive.obj.scale.set(scope.scale, scope.scale, scope.scale);
         };
 
         //scope.changeMaterial = function () {
@@ -164,16 +143,16 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
         // -----------------------------------
         // Draw and Animate
         // -----------------------------------
-        scope.animate = function () {
-			requestAnimationFrame( scope.animate );
-			scope.render();
+        function animate () {
+			directive.rafId = requestAnimationFrame( animate );
+			render();
         };
 
-		scope.render = function () {
-			if (!hoovering && scope.spinning) {
-				obj.rotation.y += 0.01
+		function render () {
+			if (!directive.hoovering && scope.spinning) {
+				directive.obj.rotation.y += 0.01
 			}
-			renderer.render( scene, camera );
+			directive.renderer.render( directive.scene, directive.camera );
 		};
 
         // -----------------------------------
@@ -189,9 +168,10 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
 		
 		scope.$watch(function () {return DisplayService.mesh}, function () {
 			if (!DisplayService.isEmpty(DisplayService.mesh)) {
-				scene.remove(obj);
-				obj = DisplayService.mesh;
-				scene.add(obj);
+				console.log("....changing mesh in service....");
+				directive.scene.remove(directive.obj);
+				directive.obj = DisplayService.mesh;
+				directive.scene.add(directive.obj);
 			}
         });
 
@@ -199,21 +179,30 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
 			scope.resizeCanvas();
 		})
 
-		function drawLine(start,end) {
-			scene.remove(line);
-			var material = new THREE.LineBasicMaterial({
-				color: 0x0000ff
-			});
-			var geometry = new THREE.Geometry();
-			geometry.vertices.push(start);
-			geometry.vertices.push(end);
-			line = new THREE.Line(geometry, material);
-			scene.add(line);
-		}
-        // Begin
+		scope.$on('$destroy', function() {
+			function empty(elem) {
+				while (elem.lastChild) elem.removeChild(elem.lastChild);
+			}
+            console.log("DESTROYING DISPLAY DIRECTIVE.")
+			cancelAnimationFrame(directive.rafId);// Stop the animation
+			directive.renderer.domElement.addEventListener('mouseover', null, false); //remove listener to render
+			directive.renderer.domElement.addEventListener('mouseout', null, false); //remove listener to render
+			directive.renderer.domElement.addEventListener('click', null, false); //remove listener to render
+			directive.scene = null;
+			directive.projector = null;
+			directive.camera = null;
+			directive.controls = null;
+			directive.raycaster = null;
+			directive.materials = null;
+			directive.mouse = null;
+			directive.obj = null;
+			empty(element[0]);
+			element[0].remove();
+			directive = null;
+        });
 
-		scope.init();
-        scope.animate();
+		init();
+        animate();
 			
 
       }

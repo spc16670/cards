@@ -47,11 +47,21 @@ module.controller('GroupController', ['$scope','DisplayService','BulletService'
 
 	$scope.selectModel = function(minModel) {
 		if (minModel.groupId != DisplayService.model.groupId) {
-		var model = BulletService.fetchModel(minModel);
-			console.log("model",model);
+			var model = BulletService.fetchModel(minModel);
 			DisplayService.setModel(model);  
 			DisplayService.materializeMesh();
 		}
+	}
+	
+	$scope.setModel = function() {
+		var imgElement = document.getElementById('card_image');
+		var imgInstance = new fabric.Image(imgElement, {
+			left: 10,
+			top: 10,
+			angle: 30,
+			opacity: 0.85
+		});
+		DisplayService.editingCanvas.add(imgInstance);
 	}
 
 }]);

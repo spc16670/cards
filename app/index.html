@@ -15,8 +15,8 @@
     <link href="../css/template.css" rel="stylesheet">
 	<link href="../css/cards.css" rel="stylesheet">
 	
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.5.0/fabric.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r72/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular.min.js"></script>
@@ -111,16 +111,18 @@
 				  </div>
 
 				</accordion>
-
+				<div>
+					<img id="card_image" src="images/leaflet.jpg" style="width:100px;height:60px" ng-click="setModel()"/>
+				</div>
 			</div>
 			<div class="col-md-6" ng-controller="DisplayController">
-				<div id="threeCanvas" ng-show="!fabricShowing"
+				<div id="threeCanvas" ng-if="!fabricShowing"
 					ng-webgl
 					scale="scale"
 					material-type="materialType"
 					spinning="spinning"
 				></div>
-				<div id="fabricCanvas" ng-show="fabricShowing"
+				<div id="fabricCanvas" ng-if="fabricShowing"
 					ng-fabric
 					width="fabricWidth"
 					height="fabricHeight"
