@@ -134,12 +134,6 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
 			directive.obj.scale.set(scope.scale, scope.scale, scope.scale);
         };
 
-        //scope.changeMaterial = function () {
-		//	console.log("material: ",scope.materialType);
-		//	obj.material = materials[scope.materialType];
-        //};
-
-
         // -----------------------------------
         // Draw and Animate
         // -----------------------------------

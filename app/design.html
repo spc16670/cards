@@ -7,23 +7,198 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Sticky Footer Navbar Template for Bootstrap</title>
+    <title>Whale: Model Test Harness</title>
 
     <!-- Bootstrap core CSS -->
+
     <script src="../static/lib/three-r72/three.min.js"></script>
     <script src="../static/lib/three-r72/Projector.js"></script>
     <script src="../static/lib/three-r72/CanvasRenderer.js"></script>
     <script src="../static/lib/three-r72/GeometryUtils.js"></script>
     <script src="../static/lib/three-r72/OrbitControls.js"></script>
-  </head>
+	<script src="../static/lib/angular-1.4.7/angular.min.js"></script>
+    <script src="../static/lib/angular-ui-bootstrap-0.13.4/ui-bootstrap-tpls.js"></script>
+	
+	<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+	</style>
+	
+	<script>
+	var module = angular.module('whale.directives.Display',[]);
+	module.directive('ngWebgl', [function () {
+    return {
+      restrict: 'A',
+      scope: { 
+        'materialType': '='
+      },
+      link: function postLink(scope, element, attrs) {
+	  
+		var element = document.getElementById("scene");
+		var directive = {
+			camera : null
+			,scene : null
+			,renderer : null
+			,rafId : null 
+			,obj : null
+			,materials : {}
+			,controls : null
+			,hoovering : true
+			,raycaster : new THREE.Raycaster()
+			,mouse : new THREE.Vector2()
+			,contW : window.innerWidth
+			,contH : window.innerHeight
+		}
+			
+         function init() {
+			// Camera
+			directive.camera = new THREE.PerspectiveCamera( 20, directive.contW/directive.contH, 1, 10000 );
+			directive.camera.position.z = 1800;
 
-  <body>
+			// Scene
+			directive.scene = new THREE.Scene();
 
-    <script>
-    
+			var objGeometry = new THREE.BoxGeometry( 200, 200, 200 );
+
+			for ( var i = 0; i < objGeometry.faces.length; i += 2 ) {
+				var hex = Math.random() * 0xffffff;
+				objGeometry.faces[ i ].color.setHex( hex );
+				objGeometry.faces[ i + 1 ].color.setHex( hex );
+			}
+
+			directive.materials.basic = new THREE.MeshBasicMaterial( 
+				{ vertexColors: THREE.FaceColors, overdraw: 0.5 } );
+
+			directive.materials.wireframe = new THREE.MeshBasicMaterial({ 
+				color: 0x000000, 
+				shading: THREE.FlatShading, 
+				wireframe: true, 
+				transparent: true 
+			});
+
+			directive.materials.custom = new THREE.MeshFaceMaterial([
+				new THREE.MeshBasicMaterial( )
+				,new THREE.MeshBasicMaterial( )
+				,new THREE.MeshBasicMaterial( )
+				,new THREE.MeshBasicMaterial( )
+				,new THREE.MeshBasicMaterial( )
+				,new THREE.MeshBasicMaterial( )
+			]);
+	
+			directive.obj = new THREE.Mesh( objGeometry, directive.materials["basic"] );
+			directive.scene.add( directive.obj );
+			
+			directive.renderer = new THREE.CanvasRenderer();
+			directive.renderer.setClearColor( 0xffffff );
+			directive.renderer.setPixelRatio( window.devicePixelRatio );
+			directive.renderer.setSize( directive.contW, directive.contH );
+			
+			document.body.appendChild( directive.renderer.domElement );
+			
+			document.body.addEventListener('mouseover', mouseOver);
+			document.body.addEventListener('mouseout', mouseOut);
+			document.body.addEventListener('click', click );
+
+			directive.controls = new THREE.OrbitControls( directive.camera, directive.renderer.domElement );
+			directive.controls.addEventListener('change', render );
+        };
+		
+		var mouseOver = function () {
+			directive.hoovering = true;
+		}
+		
+		var mouseOut = function () {
+			directive.hoovering = false;
+		}
+
+		var click = function (event) {
+			var canvasPosition = document.body.getBoundingClientRect();
+			directive.mouse.x = ( (event.clientX - canvasPosition.left) / directive.contW ) * 2 - 1;
+			directive.mouse.y = - ( (event.clientY - canvasPosition.top) / directive.contH ) * 2 + 1;
+			directive.raycaster.setFromCamera( directive.mouse, directive.camera );
+			var intersected = directive.raycaster.intersectObjects( directive.scene.children );
+			if (intersected.length != 0) {
+				var facePointed = intersected[0].face.materialIndex
+				console.log("facePointed: " + facePointed)
+			} else {
+
+			}
+		}
+
+        // -----------------------------------
+        // Event listeners
+        // -----------------------------------
+        var onWindowResize = function () {
+			resizeCanvas();
+        };
+		
+        // -----------------------------------
+        // Updates
+        // -----------------------------------
+        var resizeCanvas = function () {
+			directive.contW = contW == 0 ?  window.innerWidth : contW;
+			directive.contH = contH == 0 ?  window.innerHeight : contH;
+			directive.camera.aspect = directive.contW / directive.contH;
+			directive.camera.updateProjectionMatrix();
+			directive.renderer.setSize( directive.contW, directive.contH );
+        };
+		
+		scope.$watch('materialType', function () {
+			if (scope.materialType != null) {directive.obj.material = directive.materials[scope.materialType]};
+        });
+        // -----------------------------------
+        // Draw and Animate
+        // -----------------------------------
+        function animate () {
+			directive.rafId = requestAnimationFrame( animate );
+			render();
+        };
+
+		function render () {
+			if (!directive.hoovering && true) {
+				directive.obj.rotation.y += 0.01
+			}
+			directive.renderer.render( directive.scene, directive.camera );
+		};
+
+		init();
+        animate();
+		}
+	};
+	}]);
     </script>
 
-    <div id="scene"> </div>
+	<script>
+	var app = angular.module('WhaleTestHarnessApp', [
+		,'ui.bootstrap'
+		,'whale.controllers.Main'
+		,'whale.directives.Display'
+	]);
+	
+	var module = angular.module('whale.controllers.Main',[]);
+    module.controller('MainController', ['$scope',function ($scope) {
+		$scope.materialType = "basic";
+	}]);
+	
+	</script>
+  </head>
+
+  <body ng-app="WhaleTestHarnessApp">
+
+	<div id="sceneControls" ng-controller="MainController">
+	<div ng-webgl material-type="materialType" > </div>
+		<br>
+		<label for="materialsList">Material Type</label>
+		<select id="materialsList" ng-model="materialType">
+			<option value="basic">Basic</option>
+			<option value="wireframe">Wire Frame</option>
+			<option value="custom">Custom</option>
+		</select>
+		<br>
+	</div>
+				
+				
+    
   </body>
 
 </html>
