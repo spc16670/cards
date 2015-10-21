@@ -57,13 +57,55 @@
 
 			// Scene
 			directive.scene = new THREE.Scene();
+			
+			//axes
+			var axes = new THREE.AxisHelper(1200);
+			directive.scene.add(axes);
+			
+			//grid xz
+			var gridXZ = new THREE.GridHelper(1000, 100);
+			directive.scene.add(gridXZ);
 
-			var objGeometry = new THREE.BoxGeometry( 200, 200, 200 );
+			//var objGeometry = new THREE.BoxGeometry( 200, 200, 200 );
+			
+			/*
+			var objGeometry = new THREE.Geometry(); 
+			var v1 = new THREE.Vector3(0,0,0);
+			var v2 = new THREE.Vector3(0,100,0);
+			var v3 = new THREE.Vector3(0,100,100);
+	
+			objGeometry.vertices.push(v1);
+			objGeometry.vertices.push(v2);
+			objGeometry.vertices.push(v3);
+			
+			objGeometry.faces.push( new THREE.Face3( 0, 1, 2 ) );
+			*/
+			
+			
+			var rectLength = 120, rectWidth = 40;
 
-			for ( var i = 0; i < objGeometry.faces.length; i += 2 ) {
+			var rectShape = new THREE.Shape();
+			rectShape.moveTo( 0,0 );
+			rectShape.lineTo( 0, rectWidth );
+			rectShape.lineTo( rectLength, rectWidth );
+			rectShape.lineTo( rectLength, 0 );
+			rectShape.lineTo( 0, 0 );
+
+			var objGeometry = new THREE.ShapeGeometry( rectShape );
+			
+			
+			/*
+			var objGeometry = new THREE.Geometry();
+			objGeometry.vertices.push(new THREE.Vertex(new THREE.Vector3(   0, 100, 0)));
+			objGeometry.vertices.push(new THREE.Vertex(new THREE.Vector3(-120,-100, 0)));
+			objGeometry.vertices.push(new THREE.Vertex(new THREE.Vector3( 120,-100, 0)));
+			objGeometry.faces.push( new THREE.Face3(0, 1, 2));
+			*/
+			
+			for ( var i = 0; i < objGeometry.faces.length; i ++ ) {
 				var hex = Math.random() * 0xffffff;
 				objGeometry.faces[ i ].color.setHex( hex );
-				objGeometry.faces[ i + 1 ].color.setHex( hex );
+				//objGeometry.faces[ i + 1 ].color.setHex( hex );
 			}
 
 			directive.materials.basic = new THREE.MeshBasicMaterial( 
@@ -144,7 +186,7 @@
         };
 		
 		scope.$watch('materialType', function () {
-			if (scope.materialType != null) {directive.obj.material = directive.materials[scope.materialType]};
+			if (scope.materialType != null && directive.obj != null) {directive.obj.material = directive.materials[scope.materialType]};
         });
         // -----------------------------------
         // Draw and Animate
