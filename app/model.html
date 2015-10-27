@@ -16,6 +16,7 @@
     <script src="../static/lib/three-r72/CanvasRenderer.js"></script>
     <script src="../static/lib/three-r72/GeometryUtils.js"></script>
     <script src="../static/lib/three-r72/OrbitControls.js"></script>
+	<script src="../static/lib/whale-0.0.1/whale.js"></script>
 	<script src="../static/lib/angular-1.4.7/angular.min.js"></script>
     <script src="../static/lib/angular-ui-bootstrap-0.13.4/ui-bootstrap-tpls.js"></script>
 	
@@ -66,64 +67,13 @@
 			var gridXZ = new THREE.GridHelper(1000, 10);
 			directive.scene.add(gridXZ);
 
-			// ########################## MESH ##############################
-			var randomPoints = [];
-			randomPoints.push( new THREE.Vector3( 160 , 0 , 100 ) );
-			randomPoints.push( new THREE.Vector3( 160 , 260 , 5 ) );
-			randomPoints.push( new THREE.Vector3( 160 , 260 , 0 ) );
-			randomPoints.push( new THREE.Vector3( 160 , 260 , -5 ) );
-			randomPoints.push( new THREE.Vector3( 160 , 0 , -100 ) );
+			// ########################## GEOMETRY ##############################
 			
-			var randomSpline =  new THREE.CatmullRomCurve3( randomPoints );
-
-			//
-			var extrudeSettings = {
-				steps			: 12,
-				bevelEnabled	: true,
-				bevelSize		: 0,
-				curveSegments	: 1,
-				extrudePath		: randomSpline
-			};
-
-
-			var rectLength = 320, rectWidth = 20;
-
-			var rectShape = new THREE.Shape();
-			rectShape.moveTo( 0,0 );
-			rectShape.lineTo( 0, rectWidth );
-			rectShape.lineTo( rectLength, rectWidth );
-			rectShape.lineTo( rectLength, 0 );
-			rectShape.lineTo( 0, 0 );
-
-
-			var objGeometry = new THREE.ExtrudeGeometry( rectShape, extrudeSettings );
+			var geometry = new WHALE.HorizontallyFoldedCard();
+			console.log("geometry: ",geometry);
 			
+			// ################################################################
 			
-			console.log("JSON GEOMETRY:",objGeometry.toJSON())
-				
-				
-			// ###########################################
-			
-
-			var geometry = new THREE.Geometry();
-			geometry.vertices.push(new THREE.Vector3(0, 0, 10));
-			geometry.vertices.push(new THREE.Vector3(0, 10, 1));
-			geometry.vertices.push(new THREE.Vector3(0, 10, 0));
-			geometry.vertices.push(new THREE.Vector3(0, 0, -10));
-			var material = new THREE.LineBasicMaterial( { color : 0xff0000 } );
-
-			// Create the final Object3d to add to the scene
-			var ellipse = new THREE.Line( geometry, material );
-			directive.scene.add( ellipse );
-				
-				
-			for ( var i = 0; i < objGeometry.faces.length; i ++ ) {
-				var hex = Math.random() * 0xffffff;
-				objGeometry.faces[ i ].color.setHex( hex );
-				objGeometry.faces[i].materialIndex = i;
-				//objGeometry.faces[ i + 1 ].color.setHex( hex );
-			}
-
 			directive.materials.basic = new THREE.MeshBasicMaterial( 
 				{ vertexColors: THREE.FaceColors, overdraw: 0.5 } );
 
@@ -134,17 +84,23 @@
 				transparent: true 
 			});
 
+			
+			var texture = THREE.ImageUtils.loadTexture("images/svg-tux.jpg");
+			
 			directive.materials.custom = new THREE.MeshFaceMaterial([
-				new THREE.MeshBasicMaterial( )
-				,new THREE.MeshBasicMaterial( )
-				,new THREE.MeshBasicMaterial( )
-				,new THREE.MeshBasicMaterial( )
-				,new THREE.MeshBasicMaterial( )
-				,new THREE.MeshBasicMaterial( )
+				new THREE.MeshBasicMaterial( { map : texture } )
+				,new THREE.MeshBasicMaterial( { map : texture } )
+				,new THREE.MeshBasicMaterial( { map : texture } )
+				,new THREE.MeshBasicMaterial( { map : texture } )
 			]);
 	
-			directive.obj = new THREE.Mesh( objGeometry, directive.materials["basic"] );
+			directive.obj = new THREE.Mesh( geometry, directive.materials["basic"] );
+			
+			var edges = new THREE.FaceNormalsHelper( directive.obj, 20, 0x00ff00, 1 );
+			
 			directive.scene.add( directive.obj );
+			directive.scene.add( edges );
+			
 			
 			directive.renderer = new THREE.CanvasRenderer();
 			directive.renderer.setClearColor( 0xffffff );
@@ -170,7 +126,8 @@
 		}
 
 		var click = function (event) {
-			var canvasPosition = document.body.getBoundingClientRect();
+			var canvasPosition = document.getElementsByTagName("canvas");//document.body.getBoundingClientRect();
+			canvasPosition = canvasPosition[0].getBoundingClientRect();
 			directive.mouse.x = ( (event.clientX - canvasPosition.left) / directive.contW ) * 2 - 1;
 			directive.mouse.y = - ( (event.clientY - canvasPosition.top) / directive.contH ) * 2 + 1;
 			directive.raycaster.setFromCamera( directive.mouse, directive.camera );
