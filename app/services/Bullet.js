@@ -23,6 +23,14 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 		,{ 
 			groupId: 2
 			, id: 1
+			, size : { x : 250, y : 120, z : 90 } 
+			, geometry : 'HorizontallyFoldedCard'
+			, fabrics : [
+				{ materialIndex : 0, fabricJson : { objects : [], background : "pink"} }
+				,{ materialIndex : 1, fabricJson : { objects : [], background : "pink"} }
+				,{ materialIndex : 2, fabricJson : { objects : [], background : "pink"} }
+				,{ materialIndex : 3, fabricJson : { objects : [], background : "pink"} }
+			]
 		}
 		,{ 
 			groupId: 3
@@ -39,14 +47,17 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 		for (i=0;i<Service.models.length;i++) {
 			var model = Service.models[i];
 			if (model.groupId == minModel.groupId) {
+				model.geometry = new WHALE[model.geometry](model.size.x,model.size.y,model.size.z);
+				// instantiate canvases
 				var f;
 				for (f=0;f<model.fabrics.length;f++) {
 					var faceFabric = model.fabrics[f];
 					var canvas = document.createElement('canvas');
-					var name = "model_side_" + faceFabric.faceIndex;
+					var name = "model_side_" + faceFabric.materialIndex;
 					canvas.id = name;
-					canvas.width = faceFabric.size.x;
-					canvas.height = faceFabric.size.y;
+					var size = model.geometry.getMaterialSize();
+					canvas.width = size.x;
+					canvas.height = size.y;
 					faceFabric['canvas'] = new fabric.Canvas(canvas.id);
 				}
 				return model;

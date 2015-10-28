@@ -17,7 +17,6 @@ module.directive('ngFabric', ['DisplayService',function (DisplayService) {
 		}
 		
         function init() {
-			console.log("scope init()");
 			directive.canvas = document.createElement('canvas');
 			directive.canvas.id = "fabricCanvasElement";
 			directive.canvas.style.border = "1px solid";
@@ -46,6 +45,7 @@ module.directive('ngFabric', ['DisplayService',function (DisplayService) {
 			DisplayService.editingCanvas.setWidth(directive.contW);
 			DisplayService.editingCanvas.setHeight(directive.contH);
 			DisplayService.editingCanvas.calcOffset();
+			console.log("resizeCanvas xy",directive.contW , directive.contH);
 			//DisplayService.editingCanvas.renderAll();
         };
 		
@@ -65,7 +65,6 @@ module.directive('ngFabric', ['DisplayService',function (DisplayService) {
 			function empty(elem) {
 				while (elem.lastChild) elem.removeChild(elem.lastChild);
 			}
-            console.log("DESTROYING FABRIC DIRECTIVE.");
 			scope.onWindowResize = null;
 			directive.canvas = null;
 			empty(element[0]);

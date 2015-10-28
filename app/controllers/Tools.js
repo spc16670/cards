@@ -45,6 +45,16 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		});
 	};
 
+	$scope.fitImage = function () {
+		var shape = DisplayService.editingCanvas.getActiveObject();
+		shape.set({
+			top: 0,
+			left: 0,
+			scaleY: DisplayService.editingCanvas.height / shape.height,
+			scaleX: DisplayService.editingCanvas.width / shape.width
+		});
+		DisplayService.editingCanvas.renderAll();
+	}
 	$scope.close = function () {
 		DisplayService.setFabricShowing( !DisplayService.fabricShowing );
 	}

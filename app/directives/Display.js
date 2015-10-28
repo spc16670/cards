@@ -30,7 +30,6 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
 		directive.contH = DisplayService.displayHeight == 0 ? element[0].clientHeight : DisplayService.displayHeight;
 			
          function init() {
-			console.log("display init()");
 			// Camera
 			directive.camera = new THREE.PerspectiveCamera( 20, directive.contW / directive.contH, 1, 10000 );
 			directive.camera.position.z = 1800;
@@ -177,7 +176,6 @@ module.directive('ngWebgl', ['DisplayService',function (DisplayService) {
 			function empty(elem) {
 				while (elem.lastChild) elem.removeChild(elem.lastChild);
 			}
-            console.log("DESTROYING DISPLAY DIRECTIVE.")
 			cancelAnimationFrame(directive.rafId);// Stop the animation
 			directive.renderer.domElement.addEventListener('mouseover', null, false); //remove listener to render
 			directive.renderer.domElement.addEventListener('mouseout', null, false); //remove listener to render

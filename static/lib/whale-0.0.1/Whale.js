@@ -19,13 +19,17 @@ WHALE.HorizontallyFoldedCard = function (width,height,stretch) {
 	this.type = 'HorizontallyFoldedCard';
 	this.sides = 4;
 	this.width = width || 200;
-	this.height = height || 150;
+	this.height = height || 100;
 	this.stretch = stretch || 100;
+
+	this.getMaterialSize = function (material) {
+		return { x: width, y: height }
+	};
 	
 	var scope = this; // this in build() is different so we need a global var
 	
 	var width_half = this.width / 2;
-	var height_half = this.height / 2;
+	var height_full = this.height;
 	var stretch_half = this.stretch / 2;
 	
 	build();
@@ -49,15 +53,13 @@ WHALE.HorizontallyFoldedCard = function (width,height,stretch) {
 		scope.vertices = [
 			new THREE.Vector3(-width_half, 0, stretch_half) // front left lower corner
 			,new THREE.Vector3(width_half, 0, stretch_half) // front right lower corner
-			,new THREE.Vector3(width_half, height_half, 0)  // front right upper corner
-			,new THREE.Vector3(-width_half, height_half, 0) // front left upper corner
+			,new THREE.Vector3(width_half, height_full, 0)  // front right upper corner
+			,new THREE.Vector3(-width_half, height_full, 0) // front left upper corner
 			
 			,new THREE.Vector3(-width_half, 0, -stretch_half) // back left lower corner
 			,new THREE.Vector3(width_half, 0, -stretch_half) // back right lower corner
-			,new THREE.Vector3(width_half, height_half, 0)  // back right upper corner
-			,new THREE.Vector3(-width_half, height_half, 0) // back left upper corner
-			
-			
+			,new THREE.Vector3(width_half, height_full, 0)  // back right upper corner
+			,new THREE.Vector3(-width_half, height_full, 0) // back left upper corner	
 		];
 		
 		scope.faces = [
@@ -97,7 +99,7 @@ WHALE.HorizontallyFoldedCard = function (width,height,stretch) {
 		scope.computeVertexNormals();
 		scope.mergeVertices();
 		
-		console.log("JSON GEOMETRY:",scope.toJSON());
+		//console.log("JSON GEOMETRY:",scope.toJSON());
 	}
 
 };

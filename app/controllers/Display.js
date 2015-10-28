@@ -18,12 +18,12 @@ module.controller('DisplayController', ['$scope','DisplayService', function ($sc
 	},true);
 	
 	$scope.$watch( function() { return DisplayService.fabricHeight }, function() { 
-	console.log("$scope.fabricHeight");
+		console.log("$scope.fabricHeight");
 		$scope.fabricHeight = DisplayService.fabricHeight;
 	},true);
 	
 	$scope.$watch( function() { return DisplayService.scale }, function() { 
-	console.log("$scope.scale");
+		console.log("$scope.scale");
 		$scope.scale = DisplayService.scale;
 	},true);
 	
@@ -33,7 +33,7 @@ module.controller('DisplayController', ['$scope','DisplayService', function ($sc
 	},true);
 	
 	$scope.$watch( function() { return DisplayService.spinning }, function() { 
-	console.log("$scope.spinning");
+		console.log("$scope.spinning");
 		$scope.spinning = DisplayService.spinning;
 	},true);
 	
