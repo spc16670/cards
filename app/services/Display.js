@@ -115,7 +115,7 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 	Service.updateModel = function () {
 		var i;
 		var save = Service.editingCanvas.toObject();
-		console.log("save:",save.objects[0]);
+		//console.log("save:",save.objects[0]);
 		for (i=0;i<Service.model.fabrics.length;i++) {
 			if (Service.model.fabrics[i].materialIndex == this.facePointed) {
 				Service.model.fabrics[i].fabricJson = save;
@@ -138,7 +138,7 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 			var face = Service.model.fabrics[i];
 			if (face.materialIndex == faceIndex) {
 				var materialSize = Service.model.geometry.getMaterialSize();
-				console.log("getEditingCanvasSize xy",materialSize.x , materialSize.y);
+				//console.log("getEditingCanvasSize xy",materialSize.x , materialSize.y);
 				return { x : materialSize.x  , y : materialSize.y  };
 				//return { x : 300  , y : 150  };
 			}
@@ -154,10 +154,10 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 	Service.render = function (index) {
 		var f = this.model.fabrics[index];
 		var image = f.canvas.getContext('2d').canvas;
-		console.log("fabric",f);
+		//console.log("fabric",f);
 		//window.open(image.toDataURL());
 		var texture = new THREE.Texture(image);
-		console.log("texture" + index,texture);
+		//console.log("texture" + index,texture);
 		Service.material.materials[f.materialIndex].map = texture;
 		texture.needsUpdate = true;
 		this.rendered++;
@@ -172,7 +172,8 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 		var fabricIndex;
 		Service.mesh = new THREE.Mesh( Service.model.geometry, Service.material );
 		for (fabricIndex=0;fabricIndex<this.model.fabrics.length;fabricIndex++) {
-			var f = this.model.fabrics[fabricIndex];
+			var f = Service.model.fabrics[fabricIndex];
+			//console.log("fabric canvas",f.canvas);
 			f.canvas.loadFromJSON(f.fabricJson,Service.render(fabricIndex));		
 		}
 	}

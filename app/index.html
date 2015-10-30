@@ -18,7 +18,7 @@
     <script src="../static/lib/three-r72/three.min.js"></script>
     <script src="../static/lib/angular-1.4.7/angular.min.js"></script>
 	
-    <script src="../static/lib/angular-ui-bootstrap-0.13.4/ui-bootstrap-tpls.js"></script>
+    <script src="../static/lib/angular-ui-bootstrap-0.14.3/ui-bootstrap-tpls.min.js"></script>
 	
     <script src="../static/lib/three-r72/Projector.js"></script>
     <script src="../static/lib/three-r72/CanvasRenderer.js"></script>
@@ -30,19 +30,21 @@
     <script src="controllers/Display.js"></script>
     <script src="controllers/Groups.js"></script>
     <script src="controllers/Tools.js"></script>
+	 <script src="controllers/Categories.js"></script>
     <script src="services/Bullet.js"></script>
     <script src="services/Display.js"></script>
     <script src="directives/Fabric.js"></script>
     <script src="directives/Display.js"></script>
     <script src="directives/Util.js"></script>
+	<script src="directives/Slidable.js"></script>
     <script src="app.js"></script>
 
   </head>
 
   <body ng-app="CardsApp">
 
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-default navbar-fixed-top">
+       <!-- Static navbar -->
+    <nav class="navbar navbar-default navbar-static-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -51,16 +53,16 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="#">Kreska Print</a>
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
+        <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-              <ul class="dropdown-menu">
+            <li><a href="#" slide-toggle="#businessCards">Business Cards</a></li>
+            <li><a href="#" slide-toggle="#invitations">Invitations</a></li>
+            <li class="dropdown" uib-dropdown >
+              <a href="#" class="dropdown-toggle" uib-dropdown-toggle role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+              <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
                 <li><a href="#">Action</a></li>
                 <li><a href="#">Another action</a></li>
                 <li><a href="#">Something else here</a></li>
@@ -71,12 +73,47 @@
               </ul>
             </li>
           </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Default</a></li>
+            <li class="active"><a href="#">Static top <span class="sr-only">(current)</span></a></li>
+            <li><a href="#">Fixed top</a></li>
+          </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+	
 
     <!-- Begin page content -->
     <div class="container">
+	
+		<div id="Categories" ng-controller="CategoriesController" >
+			<div id="businessCards" class="row slideable">
+			    <table class="table table-condensed">
+					<tbody>
+						<tr ng-repeat="model in group.models">
+							<td ng-click="selectModel(model)">
+								<div class="row text-center"><h4>{{ model.title }}</h4></div>
+								<div class="row">
+									<div class="col-sm-6 text-center">
+										{{ model.size.x }} x {{ model.size.y }}
+									</div>
+									<div class="col-sm-6">
+										<img ng-src="images/{{ model.icon }}" class="img-thumbnail" alt="Model Image" />
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div id="invitations" class="row slideable">
+				<p>Bespoke aesthetic Bushwick craft beer. Qui aesthetic butcher, cardigan ex scenester Neutra American Apparel mumblecore.</p>
+				<p>Ethical adipisicing before they sold out, sriracha Thundercats cardigan dolor deep v placeat. Flannel tattooed meggings direct trade banh mi tousled sriracha. Portland VHS ut dreamcatcher. Butcher eu irony, Banksy leggings eiusmod Pinterest hashtag Etsy asymmetrical lo-fi Helvetica quis incididunt adipisicing. YOLO cliche minim mlkshk dreamcatcher excepteur, Austin McSweeney's.</p>
+				<p>Coded @ Kinfolk Studios in Williamsburg, Brooklyn, 2013.</p>
+			</div>
+		</div>
+		
+		
 		<div class="row">
 			<div class="col-md-3" ng-controller="GroupController">
   
@@ -199,33 +236,6 @@
 						</tbody>
 					</table>
 				</div>
-			
-				<br><br>
-				<label for="scale">Scale Object</label>
-				<input type="range" name="scale" min="0.1" max="1.2" step="0.1" ng-model="canvas.scale" class="add-bottom">
-
-				<label for="canvasWidth">Canvas Width</label>
-				<input type="text" id="canvasWidth" ng-model="canvas.width" ng-disabled="canvas.fill"><br>
-
-				<label for="canvasHeight">Canvas Height</label>
-				<input type="text" id="canvasHeight" ng-model="canvas.height" ng-disabled="canvas.fill"><br>
-
-				<label for="materialsList">Material Type</label>
-				<select id="materialsList" ng-model="canvas.material">
-					<option value="basic">Basic</option>
-					<option value="wireframe">Wire Frame</option>
-					<option value="custom">Custom</option>
-				</select><br>
-
-				<label for="dofillcontainer">
-					<input type="checkbox" id="dofillcontainer" ng-model="canvas.fill"/>
-					<span>Responsive Canvas</span>
-				</label>
-
-				<label for="spinning">
-					<input type="checkbox" id="spinning" ng-model="canvas.spinning"/>
-					<span>Spinning</span>
-				</label>
 
 			</div>
 			

@@ -1,10 +1,8 @@
+var module = angular.module('cards.controllers.Categories',[]);
 
-var module = angular.module('cards.controllers.Groups',[]);
-
-module.controller('GroupController', ['$scope','DisplayService','BulletService'
-  , function ($scope,DisplayService,BulletService) {
-
-	$scope.groups = [
+module.controller('CategoriesController', ['$scope','DisplayService', function ($scope,DisplayService) {
+	
+		$scope.groups = [
 		{
 			id : 1
 			,name: 'business_cards'
@@ -52,5 +50,5 @@ module.controller('GroupController', ['$scope','DisplayService','BulletService'
 			DisplayService.materializeMesh();
 		}
 	}
-
+	
 }]);

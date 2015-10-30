@@ -45,7 +45,7 @@ module.directive('ngFabric', ['DisplayService',function (DisplayService) {
 			DisplayService.editingCanvas.setWidth(directive.contW);
 			DisplayService.editingCanvas.setHeight(directive.contH);
 			DisplayService.editingCanvas.calcOffset();
-			console.log("resizeCanvas xy",directive.contW , directive.contH);
+			//console.log("resizeCanvas xy",directive.contW , directive.contH);
 			//DisplayService.editingCanvas.renderAll();
         };
 		

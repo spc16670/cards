@@ -58,7 +58,10 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 					var size = model.geometry.getMaterialSize();
 					canvas.width = size.x;
 					canvas.height = size.y;
+					//console.log("canvas",canvas);
 					faceFabric['canvas'] = new fabric.Canvas(canvas.id);
+					faceFabric.canvas.setWidth(size.x);
+					faceFabric.canvas.setHeight(size.y);
 				}
 				return model;
 			}
