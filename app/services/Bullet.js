@@ -7,7 +7,7 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 
 	Service.models = [
     	{ 
-			groupId: 1
+			type : 'businessCards'
 			, id: 1
 			//http://mrdoob.github.io/three.js/editor/
 			, geometry : new THREE.BoxGeometry( 200, 100, 20, 40 )
@@ -21,7 +21,7 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 			] 
 		}
 		,{ 
-			groupId: 2
+			type : 'invitations'
 			, id: 1
 			, size : { x : 250, y : 120, z : 90 } 
 			, geometry : 'HorizontallyFoldedCard'
@@ -33,11 +33,11 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 			]
 		}
 		,{ 
-			groupId: 3
+			type : 'businessCards'
 			, id: 1
 		}
 		,{ 
-			groupId: 4
+			type : 'businessCards'
 			, id: 1
 		}
 	];
@@ -46,7 +46,7 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 		var i;
 		for (i=0;i<Service.models.length;i++) {
 			var model = Service.models[i];
-			if (model.groupId == minModel.groupId) {
+			if ((model.id == minModel.id) && (model.type === minModel.type) ) {
 				model.geometry = new WHALE[model.geometry](model.size.x,model.size.y,model.size.z);
 				// instantiate canvases
 				var f;

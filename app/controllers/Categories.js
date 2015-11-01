@@ -1,54 +1,47 @@
 var module = angular.module('cards.controllers.Categories',[]);
 
-module.controller('CategoriesController', ['$scope','DisplayService', function ($scope,DisplayService) {
+module.controller('CategoriesController', ['$scope','CategoriesService','BulletService'
+  ,'DisplayService', function ($scope,CategoriesService,BulletService,DisplayService) {
 	
-		$scope.groups = [
-		{
-			id : 1
-			,name: 'business_cards'
-			,title: 'Business Cards'
-			,models: []
+	$scope.categories = CategoriesService;
+	
+	$scope.expand = function(view) {
+		for (var key in CategoriesService) {
+			if (CategoriesService.hasOwnProperty(key)) {
+				if (key !== view) {
+					if (CategoriesService[key].expanded == true) {
+						$scope.toggle(key);
+					}
+				} else {
+					$scope.toggle(key);
+				}
+			}
 		}
-		,{
-			id : 2
-			,name: 'wedding_invitations'
-			,title: 'Wedding Invitations'
-			,models: []
+	};
+  
+	$scope.toggle = function (id) {
+		var target, content;
+		if (!target) target = document.querySelector('#'+id);
+		if (!content) content = target.querySelector('.slideable_content');
+		if(!CategoriesService[id].expanded) {
+			content.style.border = '1px solid rgba(0,0,0,0)';
+			var y = content.clientHeight;
+			content.style.border = 0;
+			target.style.height = y + 'px';
+		} else {
+			target.style.height = '0px';
 		}
-		,{
-			id : 3
-			,name: 'flyers'
-			,title: 'Flyers'
-			,models: []
-		}
-		,{
-			id : 4
-			,name: 'leaflets'
-			,title: 'Leafets'
-			,models: []
-		}
-	];
-
-	$scope.loadGroup = function (group) {
-		if (group.models.length == 0) {
-			if (group.name === "business_cards") {
-				group.models.push({ groupId : 1, title: "Standard Card", icon: "card.jpg", size: { x : 100, y: 160, z: 0 }, id: 1});
-			} else if (group.name === "wedding_invitations") {
-				group.models.push({ groupId : 2, title: "Standard Wedding Invitation", icon: "invitation.jpg", size: { x : 100, y: 160, z: 0 }, id: 1});
-			} else if (group.name === "flyers") {
-				group.models.push({ groupId : 3, title: "Standard Flyer", icon: "flyer.jpg", size: { x : 100, y: 160, z: 0 }, id: 1});
-			} else if (group.name === "leaflets") {
-				group.models.push({ groupId : 4, title: "Standard Leaflet", icon: "leaflet.jpg", size: { x : 100, y: 160, z: 0 }, id: 1});
-			} 
-		}
+		CategoriesService[id].expanded = !CategoriesService[id].expanded;
 	}
 
-	$scope.selectModel = function(minModel) {
-		if (minModel.groupId != DisplayService.model.groupId) {
-			var model = BulletService.fetchModel(minModel);
+	
+	$scope.clicked = function (selected) {
+		if ((selected.type !== DisplayService.model.type) && (selected.id != DisplayService.model.id)) {
+			var model = BulletService.fetchModel(selected);
 			DisplayService.setModel(model);  
 			DisplayService.materializeMesh();
 		}
+		$scope.toggle(selected.type);
 	}
 	
 }]);

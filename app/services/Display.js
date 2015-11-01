@@ -21,12 +21,12 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 		,facePointed : 0
 		,rendered : 0
 		,material : new THREE.MeshFaceMaterial([
-			new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
-			,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
-			,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
-			,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
-			,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
-			,new THREE.MeshBasicMaterial( { color: 0xd3d3d3 } )
+			new THREE.MeshBasicMaterial( { color: 0xd3d3d3, overdraw : true } )
+			,new THREE.MeshBasicMaterial( { color: 0xd3d3d3, overdraw : true } )
+			,new THREE.MeshBasicMaterial( { color: 0xd3d3d3, overdraw : true } )
+			,new THREE.MeshBasicMaterial( { color: 0xd3d3d3, overdraw : true } )
+			,new THREE.MeshBasicMaterial( { color: 0xd3d3d3, overdraw : true } )
+			,new THREE.MeshBasicMaterial( { color: 0xd3d3d3, overdraw : true } )
 		])
 	}
 
