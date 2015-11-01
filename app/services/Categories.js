@@ -44,7 +44,7 @@ module.service('CategoriesService', [function () {
 					, title: "Standard Wedding Invitation"
 					, icon: "images/invitation.jpg"
 					, size: { x : 100, y: 160, z: 0 }
-					, thumbnailSize : 2
+					, thumbnailSize : 12
 					, desc : "Standard wedding invitation"
 				}
 			]
