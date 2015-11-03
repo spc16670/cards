@@ -27,3 +27,14 @@ body {
 .navbar-static-top {
   margin-bottom: 19px;
 }
+
+/* ----------- Fonts --------------- */
+
+@font-face {
+  font-family: 'Aaargh';
+  src: url('../../fonts/editor/Aaargh/Aaargh.ttf'); /* IE9 Compat Modes */
+  src: url('../../fonts/editor/Aaargh/Aaargh.ttf?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../../fonts/editor/Aaargh/Aaargh.ttf') format('ttf'), /* Super Modern Browsers */
+       url('../../fonts/editor/Aaargh/Aaargh.ttf') format('ttf'), /* Pretty Modern Browsers */
+       url('../../fonts/editor/Aaargh/Aaargh.ttf') format('truetype'), /* Safari, Android, iOS */
+}

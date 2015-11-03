@@ -59,7 +59,7 @@ module.service('CategoriesService', [function () {
 					, title: "One Sided Leaflet"
 					, icon: "images/leaflet.jpg"
 					, size: { x : 100, y: 160, z: 0 }
-					, thumbnailSize : 2
+					, thumbnailSize : 3
 					, desc : "One sided leaflet"
 				}
 				,{ 
@@ -67,7 +67,7 @@ module.service('CategoriesService', [function () {
 					, type : "leaflet"
 					, title: "Double Sided Leaflet"
 					, icon: "images/leaflet.jpg"
-					, thumbnailSize : 2
+					, thumbnailSize : 3
 					, desc : "Double sided leaflet"
 				}
 				,{ 
@@ -76,7 +76,7 @@ module.service('CategoriesService', [function () {
 					, title: "Horizontally Folded Leaflet"
 					, icon: "images/leaflet.jpg"
 					, size: { x : 100, y: 160, z: 0 }
-					, thumbnailSize : 2
+					, thumbnailSize : 3
 					, desc : "Horizontally folded card"
 				}
 				,{ 
@@ -85,7 +85,7 @@ module.service('CategoriesService', [function () {
 					, title: "Vertically Folded Leaflet"
 					, icon: "images/leaflet.jpg"
 					, size: { x : 100, y: 160, z: 0 }
-					, thumbnailSize : 2
+					, thumbnailSize : 3
 					, desc : "Vertically folded card"
 				}
 			]

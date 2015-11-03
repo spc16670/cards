@@ -2,6 +2,19 @@ var module = angular.module('cards.controllers.Tools',[]);
 
 module.controller('ToolsController', ['$scope','$rootScope','DisplayService', function ($scope,$rootScope,DisplayService) {
 
+	$scope.fonts = [
+		{ name : "Aaargh", style: { fontFamily : "Aaargh" } }
+	];
+	
+	$scope.toggled = function(open) {
+		console.log('Dropdown is now: ', open);
+	};
+
+	$scope.toggleDropdown = function($event) {
+		$event.preventDefault();
+		$event.stopPropagation();
+	};
+	
 	$scope.canvas = {
 		width : DisplayService.displayWidth
 		,height : DisplayService.displayHeight
