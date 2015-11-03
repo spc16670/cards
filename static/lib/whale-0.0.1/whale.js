@@ -26,6 +26,8 @@ WHALE.HorizontallyFoldedCard = function (width,height,stretch) {
 		return { x: width, y: height }
 	};
 	
+	this.BUILD_STATE = { vertices : [] };
+	
 	var scope = this; // this in build() is different so we need a global var
 	
 	var width_half = this.width / 2;
@@ -49,18 +51,25 @@ WHALE.HorizontallyFoldedCard = function (width,height,stretch) {
 		// http://stackoverflow.com/questions/21462851/flip-normals-in-three-js-on-sphere
 		// http://paulyg.f2s.com/uv.htm
 		
-		// Card Front FrontSide
-		scope.vertices = [
-			new THREE.Vector3(-width_half, 0, stretch_half) // front left lower corner
-			,new THREE.Vector3(width_half, 0, stretch_half) // front right lower corner
-			,new THREE.Vector3(width_half, height_full, 0)  // front right upper corner
-			,new THREE.Vector3(-width_half, height_full, 0) // front left upper corner
-			
-			,new THREE.Vector3(-width_half, 0, -stretch_half) // back left lower corner
-			,new THREE.Vector3(width_half, 0, -stretch_half) // back right lower corner
-			,new THREE.Vector3(width_half, height_full, 0)  // back right upper corner
-			,new THREE.Vector3(-width_half, height_full, 0) // back left upper corner	
-		];
+		var frontLeftLowerCorner = new THREE.Vector3(-width_half, 0, stretch_half) // front left lower corner
+		var frontRightLowerCorner = new THREE.Vector3(width_half, 0, stretch_half) // front right lower corner
+		var frontRightUpperCorner = new THREE.Vector3(width_half, height_full, 0)  // front right upper corner
+		var frontLeftUpperCorner = new THREE.Vector3(-width_half, height_full, 0) // front left upper corner
+
+		var backLeftLowerCorner = new THREE.Vector3(width_half, 0, -stretch_half) // back left lower corner
+		var backRightLowerCorner = new THREE.Vector3(-width_half, 0, -stretch_half) // back right lower corner
+		var backRightUpperCorner = new THREE.Vector3(-width_half, height_full, 0)  // back right upper corner
+		var backLeftUpperCorner = new THREE.Vector3(width_half, height_full, 0) // back left upper corner	
+		
+		scope.vertices.push(frontLeftLowerCorner);	scope.BUILD_STATE.vertices.push(frontLeftLowerCorner.clone());
+		scope.vertices.push(frontRightLowerCorner);	scope.BUILD_STATE.vertices.push(frontRightLowerCorner.clone());
+		scope.vertices.push(frontRightUpperCorner);	scope.BUILD_STATE.vertices.push(frontRightUpperCorner.clone());
+		scope.vertices.push(frontLeftUpperCorner);	scope.BUILD_STATE.vertices.push(frontLeftUpperCorner.clone());
+		
+		scope.vertices.push(backLeftLowerCorner);	scope.BUILD_STATE.vertices.push(backLeftLowerCorner.clone());
+		scope.vertices.push(backRightLowerCorner);	scope.BUILD_STATE.vertices.push(backRightLowerCorner.clone());
+		scope.vertices.push(backRightUpperCorner);	scope.BUILD_STATE.vertices.push(backRightUpperCorner.clone());
+		scope.vertices.push(backLeftUpperCorner);	scope.BUILD_STATE.vertices.push(backLeftUpperCorner.clone());
 		
 		scope.faces = [
 			// front front
@@ -78,7 +87,6 @@ WHALE.HorizontallyFoldedCard = function (width,height,stretch) {
 			,new THREE.Face3( 7, 6, 4, new THREE.Vector3(), new THREE.Color( 0x88dd00 ), 3 )
 		]
 
-		//The UV mapping for one of the faces looks like this: (0,1),(0,0),(1,0),(1,1).
 		scope.faceVertexUvs[ 0 ] = [
 			// front front side
 			[ new THREE.Vector2( 0, 0),new THREE.Vector2( 1, 0 ),new THREE.Vector2( 1, 1 ) ]
@@ -92,13 +100,27 @@ WHALE.HorizontallyFoldedCard = function (width,height,stretch) {
 			// back back side
 			,[ new THREE.Vector2( 1, 1),new THREE.Vector2( 1, 0 ),new THREE.Vector2( 0, 0 ) ]
 			,[ new THREE.Vector2( 0, 1),new THREE.Vector2( 1, 1 ),new THREE.Vector2( 0, 0 ) ]
-			
 		] ;
 		
+		/**
+		* http://stackoverflow.com/questions/23052306/what-is-the-meaning-of-skin-indices-and-skin-weights
+		* http://threejs.org/docs/#Reference/Objects/SkinnedMesh
+		* Canvas renderer does not support skinning
+		
+		scope.skinIndices = [
+			// all vertices from Front Fornt Side  and Front Back Side belong to bone 1 
+			new THREE.Vector4(   0,   5,   9, 0 )
+		];
+		
+		scope.skinWeights = [
+			new THREE.Vector4( 0.2, 0.5, 0.3, 0 )
+		];
+		*/
 		scope.computeFaceNormals();
 		scope.computeVertexNormals();
 		scope.mergeVertices();
 		
+		console.log(scope.type,scope);
 		//console.log("JSON GEOMETRY:",scope.toJSON());
 	}
 
@@ -106,4 +128,19 @@ WHALE.HorizontallyFoldedCard = function (width,height,stretch) {
 
 WHALE.HorizontallyFoldedCard.prototype = Object.create( THREE.Geometry.prototype );
 WHALE.HorizontallyFoldedCard.prototype.constructor = WHALE.HorizontallyFoldedCard;
+
+WHALE.HorizontallyFoldedCard.prototype.reset = function () {
+	var i;
+	for(i=0;i<this.BUILD_STATE.vertices.length;i++) {
+		var originalVertex = this.BUILD_STATE.vertices[i].clone()
+		this.vertices[i] = originalVertex;
+	}
+}
+
+WHALE.HorizontallyFoldedCard.prototype.play = function () {
+	this.vertices[0].z = this.vertices[0].z + 1;
+	this.vertices[0].y = this.vertices[0].y + 1;
+	this.vertices[1].y = this.vertices[1].y + 1;
+	this.vertices[1].z = this.vertices[1].z + 1;
+}
 

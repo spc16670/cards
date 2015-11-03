@@ -3,6 +3,7 @@ var module = angular.module('cards.controllers.Categories',[]);
 module.controller('CategoriesController', ['$scope','CategoriesService','BulletService'
   ,'DisplayService', function ($scope,CategoriesService,BulletService,DisplayService) {
 	
+	$scope.isCollapsed = false;
 	$scope.categories = CategoriesService;
 	
 	$scope.expand = function(view) {

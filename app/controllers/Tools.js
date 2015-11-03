@@ -3,7 +3,8 @@ var module = angular.module('cards.controllers.Tools',[]);
 module.controller('ToolsController', ['$scope','$rootScope','DisplayService', function ($scope,$rootScope,DisplayService) {
 
 	$scope.fonts = [
-		{ name : "Aaargh", style: { fontFamily : "Aaargh" } }
+		{ name : "arial black", style: { fontFamily : "arial black" } }
+		,{ name : "Aaargh", style: { fontFamily : "Aaargh" } }
 	];
 	
 	$scope.toggled = function(open) {
@@ -23,6 +24,7 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		,material : DisplayService.materialType
 		,spinning : DisplayService.spinning
 		,bgColour : "#f0f0f0"
+		,font : null
 	}
 	
 	$scope.selectedImgFile = { };
@@ -75,9 +77,9 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		var left = (DisplayService.editingCanvas.width / 2);
 		var top = (DisplayService.editingCanvas.height / 2);
 		var textItem = new fabric.IText('Tap and Type', { 
-			fontFamily: 'arial black',
-			left: left, 
-			top: top 
+			fontFamily: $scope.canvas.font.name || 'arial black'
+			,left: left 
+			,top: top 
 		})
 		DisplayService.editingCanvas.add(textItem);
 	}
@@ -96,6 +98,11 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 	}
 	$scope.test = function () {
 		window.open(DisplayService.editingCanvas.toDataURL('png'));
+	}
+	
+	$scope.selectedFont = function (font) {
+		$scope.canvas.font = font;
+		console.log("selected font:",$scope.canvas.font);
 	}
 	
 	$scope.$on('model:materialised', function () {
