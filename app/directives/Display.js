@@ -22,7 +22,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 			,materials : {}
 			,controls : null
 			,hoovering : false
-			,meshClicked : false
+			,sceneClicked : false
 			,clickPromise : null 
 			,clickIsValid : true
 			,raycaster : new THREE.Raycaster()
@@ -86,29 +86,34 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 			directive.controls.addEventListener('change', render );
         };
 		
+		scope.resetAnimation = function () {
+			directive.sceneClicked = false;
+			if (directive.obj.geometry.reset != undefined) { 
+				directive.obj.geometry.reset();
+			}
+		}
+		
 		scope.mouseOver = function () {
 			directive.hoovering = true;
 		}
 		
 		scope.mouseOut = function () {
 			directive.hoovering = false;
-			directive.meshClicked = false;
-			if (directive.obj.geometry.reset != undefined) { 
-				directive.obj.geometry.reset();
-			}
+			scope.resetAnimation();
 		}
 
 		scope.mouseUp = function (event) {
 			$timeout.cancel(directive.clickPromise);
 			if (directive.clickIsValid) {
-				if (directive.meshClicked) {
+				if (directive.sceneClicked) {
 					var canvasPosition = element[0].getBoundingClientRect();
 					directive.mouse.x = ( (event.clientX - canvasPosition.left) / directive.contW ) * 2 - 1;
 					directive.mouse.y = - ( (event.clientY - canvasPosition.top) / directive.contH ) * 2 + 1;
 					directive.raycaster.setFromCamera( directive.mouse, directive.camera );
 					var intersected = directive.raycaster.intersectObjects( directive.scene.children );
 					if (intersected.length != 0) {
-						directive.meshClicked = false;
+						directive.sceneClicked = false;
+						scope.resetAnimation();
 						var facePointed = intersected[0].face.materialIndex
 						DisplayService.setFacePointed(facePointed);
 						DisplayService.setFabricShowing(true);
@@ -119,10 +124,10 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 						//camera.position.set(0,0,1200);
 						//camera.lookAt(scene.position);
 					} else {
-						
+						scope.resetAnimation();
 					}	
 				} else {
-					directive.meshClicked = true;
+					directive.sceneClicked = true;
 					directive.obj.rotation.x = 0;
 					directive.obj.rotation.y = 0;
 					directive.obj.rotation.z = 0;
@@ -179,7 +184,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
         });
 		
 		scope.$watch('materialType', function () {
-          directive.obj.material = directive.materials[scope.materialType] ;
+			directive.obj.material = directive.materials[scope.materialType] ;
         });
 		
 		scope.$watch(function () {return DisplayService.mesh}, function () {
@@ -233,7 +238,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 			}
 			
 			if (directive.obj.geometry.play != undefined) {
-				if (directive.meshClicked) { 
+				if (directive.sceneClicked) { 
 					directive.obj.geometry.play(); 
 				}
 			}

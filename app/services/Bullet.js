@@ -26,10 +26,10 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 			, size : { x : 250, y : 120, z : 90 } 
 			, geometry : 'HorizontallyFoldedCard'
 			, fabrics : [
-				{ materialIndex : 0, fabricJson : { objects : [], background : "pink"} }
-				,{ materialIndex : 1, fabricJson : { objects : [], background : "pink"} }
-				,{ materialIndex : 2, fabricJson : { objects : [], background : "pink"} }
-				,{ materialIndex : 3, fabricJson : { objects : [], background : "pink"} }
+				{ materialIndex : 0, fabricJson : { objects : [], background : "#BBDDFF"} }
+				,{ materialIndex : 1, fabricJson : { objects : [], background : "#BBDDFF"} }
+				,{ materialIndex : 2, fabricJson : { objects : [], background : "#6EB7FF"} }
+				,{ materialIndex : 3, fabricJson : { objects : [], background : "#6EB7FF" } }
 			]
 		}
 		,{ 

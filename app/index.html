@@ -187,7 +187,7 @@
 				  </div>
 				</uib-accordion>
 			</div>
-			<div class="col-md-6" ng-controller="DisplayController">
+			<div class="col-md-6" ng-controller="DisplayController">  
 				<div id="threeCanvas" ng-if="!fabricShowing"
 					ng-webgl
 					scale="scale"
@@ -200,6 +200,7 @@
 					height="fabricHeight"
 				>
 				</div>
+				<div id="scrollColumn" class="visible-xs"></div>
 			</div>
 			<div class="col-md-3" ng-controller="ToolsController">
 				<div class="panel panel-default">

@@ -94,6 +94,7 @@ WHALE.HorizontallyFoldedCard = function (width,height,stretch) {
 			// front back side
 			,[ new THREE.Vector2( 1, 1),new THREE.Vector2( 1, 0 ),new THREE.Vector2( 0, 0 ) ]
 			,[ new THREE.Vector2( 0, 1),new THREE.Vector2( 1, 1 ),new THREE.Vector2( 0, 0 ) ]
+			
 			// back front side
 			,[ new THREE.Vector2( 0, 0),new THREE.Vector2( 1, 0 ),new THREE.Vector2( 1, 1 ) ]
 			,[ new THREE.Vector2( 0, 0),new THREE.Vector2( 1, 1 ),new THREE.Vector2( 0, 1 ) ]
@@ -141,71 +142,61 @@ WHALE.HorizontallyFoldedCard.prototype.reset = function () {
 	}
 }
 
+WHALE.HorizontallyFoldedCard.prototype.circleEquation = function(val,negative) {
+	// y = +/- (r^2 - (x-h)^2)^1/2 + k -- eg: y = -(128^2 - 46^2)^1/2 + 120
+	return ( Math.sqrt( Math.pow( this.sideLength, 2 ) - Math.pow(val, 2) ) * ((negative) ? -1 : 1)) + this.height
+} 
+
 WHALE.HorizontallyFoldedCard.prototype.play = function () {
-
-	var EasingFunctions = {
-		// no easing, no acceleration
-		linear: function (t) { return t },
-		// accelerating from zero velocity
-		easeInQuad: function (t) { return t*t },
-		// decelerating to zero velocity
-		easeOutQuad: function (t) { return t*(2-t) },
-		// acceleration until halfway, then deceleration
-		easeInOutQuad: function (t) { return t<.5 ? 2*t*t : -1+(4-2*t)*t },
-		// accelerating from zero velocity 
-		easeInCubic: function (t) { return t*t*t },
-		// decelerating to zero velocity 
-		easeOutCubic: function (t) { return (--t)*t*t+1 },
-		// acceleration until halfway, then deceleration 
-		easeInOutCubic: function (t) { return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 },
-		// accelerating from zero velocity 
-		easeInQuart: function (t) { return t*t*t*t },
-		// decelerating to zero velocity 
-		easeOutQuart: function (t) { return 1-(--t)*t*t*t },
-		// acceleration until halfway, then deceleration
-		easeInOutQuart: function (t) { return t<.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t },
-		// accelerating from zero velocity
-		easeInQuint: function (t) { return t*t*t*t*t },
-		// decelerating to zero velocity
-		easeOutQuint: function (t) { return 1+(--t)*t*t*t*t },
-		// acceleration until halfway, then deceleration 
-		easeInOutQuint: function (t) { return t<.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t }
-	}
-
-	var speed = 5; //213
-	//console.log("easeInOutCubic",EasingFunctions.easeInOutQuad(5));
+	/**
+	* y goes from 0 to ((this.height + this.sideLength) - 10)
+	* z goes from 45 to this.sideLength and back to 45
+	* NOTE: isNaN() check is needed to unless speed is odd
+	*/
+	var speed = 5; //for 1 = 213 frames
 	if (this.vertices[1].y < ((this.height + this.sideLength) - 10)|| isNaN(this.vertices[1].y)) {
 		if (this.vertices[0].y < this.height) {
 			this.vertices[0].z = this.vertices[0].z + speed;
-			this.vertices[0].y = ( Math.sqrt( Math.pow( this.sideLength, 2 ) - Math.pow(this.vertices[0].z, 2) ) * -1) + this.height
+			this.vertices[0].y = this.circleEquation(this.vertices[0].z,true);
 		} else {
 			this.vertices[0].z =  this.vertices[0].z - speed;
-			this.vertices[0].y = Math.sqrt( Math.pow( this.sideLength, 2 ) - Math.pow(this.vertices[0].z, 2) ) + this.height
+			this.vertices[0].y = this.circleEquation(this.vertices[0].z,false);
 		}
 
 		if (this.vertices[1].y < this.height) {
 			this.vertices[1].z = this.vertices[1].z + speed;		
-			this.vertices[1].y = ( Math.sqrt( Math.pow( this.sideLength, 2 ) - Math.pow(this.vertices[1].z, 2) ) * -1) + this.height
+			this.vertices[1].y = this.circleEquation(this.vertices[1].z,true);
 		} else {
 			this.vertices[1].z =  this.vertices[1].z - speed;
-			this.vertices[1].y = Math.sqrt( Math.pow( this.sideLength, 2 ) - Math.pow(this.vertices[1].z, 2) ) + this.height
+			this.vertices[1].y = this.circleEquation(this.vertices[1].z,false);
 		}		
 		this.countFrames++;
-		
-		//this.vertices[5].y++;
-		/*
-		if (this.vertices[1].y < this.height) {
-			this.vertices[1].z = this.vertices[1].z + speed;		
-			this.vertices[1].y = ( Math.sqrt( Math.pow( this.sideLength, 2 ) - Math.pow(this.vertices[1].z, 2) ) * -1) + this.height
-		} else {
-			this.vertices[1].z =  this.vertices[1].z - speed;
-			this.vertices[1].y = Math.sqrt( Math.pow( this.sideLength, 2 ) - Math.pow(this.vertices[1].z, 2) ) + this.height
-		}*/	
 	}
 	
-	//console.log(this.vertices[0].z,this.vertices[0].y,this.vertices[1].z,this.vertices[1].y);
-	//console.log("y:",this.vertices[0].y,"z:",this.vertices[0].z,this.countFrames);
 	
-
+	/**
+	* z goes from -45 to 45
+	* y goes from 0 to -8 and again to 0 
+	* NOTE: when z rem 2 != 0 then goes haywire
+	*/
+	var speed = 4;
+	if ( (this.vertices[5].y <= 0) ) {
+		this.vertices[5].z = this.vertices[5].z + speed;
+		if (this.vertices[5].y > (this.height - this.sideLength)) {	
+			this.vertices[5].y = this.circleEquation(this.vertices[5].z,true);
+		} else {
+			this.vertices[5].y = this.circleEquation(this.vertices[5].z,false);
+		}
+	}
+	if ( (this.vertices[4].y <= 0) ) {
+		this.vertices[4].z = this.vertices[4].z + speed;
+		if (this.vertices[4].y > (this.height - this.sideLength)) {	
+			this.vertices[4].y = this.circleEquation(this.vertices[4].z,true);
+		} else {
+			this.vertices[4].y = this.circleEquation(this.vertices[4].z,false);
+		}
+	}
+	//console.log("z",this.vertices[5].z,"y",this.vertices[5].y,"z",this.vertices[6].z,"y",this.vertices[6].y);
+	//console.log("y:",this.vertices[0].y,"z:",this.vertices[0].z,this.countFrames);
 }
 
