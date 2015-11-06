@@ -22,6 +22,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 			,materials : {}
 			,controls : null
 			,hoovering : false
+			,meshClicked : false
 			,clickPromise : null 
 			,clickIsValid : true
 			,raycaster : new THREE.Raycaster()
@@ -91,6 +92,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 		
 		scope.mouseOut = function () {
 			directive.hoovering = false;
+			directive.meshClicked = false;
 			if (directive.obj.geometry.reset != undefined) { 
 				directive.obj.geometry.reset();
 			}
@@ -99,23 +101,36 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 		scope.mouseUp = function (event) {
 			$timeout.cancel(directive.clickPromise);
 			if (directive.clickIsValid) {
-			   	var canvasPosition = element[0].getBoundingClientRect();
-				directive.mouse.x = ( (event.clientX - canvasPosition.left) / directive.contW ) * 2 - 1;
-				directive.mouse.y = - ( (event.clientY - canvasPosition.top) / directive.contH ) * 2 + 1;
-				directive.raycaster.setFromCamera( directive.mouse, directive.camera );
-				var intersected = directive.raycaster.intersectObjects( directive.scene.children );
-				if (intersected.length != 0) {
-					var facePointed = intersected[0].face.materialIndex
-					DisplayService.setFacePointed(facePointed);
-					DisplayService.setFabricShowing(true);
-					scope.$apply();
-					//var start = new THREE.Vector3(0,0,0);
-					//var end = new THREE.Vector3(camera.position.x,camera.position.y,camera.position.z + 200);
-					//drawLine(start,end);
-					//camera.position.set(0,0,1200);
-					//camera.lookAt(scene.position);
+				if (directive.meshClicked) {
+					var canvasPosition = element[0].getBoundingClientRect();
+					directive.mouse.x = ( (event.clientX - canvasPosition.left) / directive.contW ) * 2 - 1;
+					directive.mouse.y = - ( (event.clientY - canvasPosition.top) / directive.contH ) * 2 + 1;
+					directive.raycaster.setFromCamera( directive.mouse, directive.camera );
+					var intersected = directive.raycaster.intersectObjects( directive.scene.children );
+					if (intersected.length != 0) {
+						directive.meshClicked = false;
+						var facePointed = intersected[0].face.materialIndex
+						DisplayService.setFacePointed(facePointed);
+						DisplayService.setFabricShowing(true);
+						scope.$apply();
+						//var start = new THREE.Vector3(0,0,0);
+						//var end = new THREE.Vector3(camera.position.x,camera.position.y,camera.position.z + 200);
+						//drawLine(start,end);
+						//camera.position.set(0,0,1200);
+						//camera.lookAt(scene.position);
+					} else {
+						
+					}	
 				} else {
-					
+					directive.meshClicked = true;
+					directive.obj.rotation.x = 0;
+					directive.obj.rotation.y = 0;
+					directive.obj.rotation.z = 0;
+					directive.obj.lookAt(directive.camera.position);
+					directive.obj.rotation.x = 0;
+					directive.obj.rotation.y = 0;
+					directive.obj.rotation.z = 0;
+
 				}
 			} else {
 				directive.clickIsValid = true;
@@ -218,7 +233,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 			}
 			
 			if (directive.obj.geometry.play != undefined) {
-				if (directive.hoovering) { 
+				if (directive.meshClicked) { 
 					directive.obj.geometry.play(); 
 				}
 			}

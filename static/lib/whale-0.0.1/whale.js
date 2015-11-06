@@ -21,10 +21,6 @@ WHALE.HorizontallyFoldedCard = function (width,height,stretch) {
 	this.width = width || 200;
 	this.height = height || 100;
 	this.stretch = stretch || 100;
-
-	this.getMaterialSize = function (material) {
-		return { x: width, y: height }
-	};
 	
 	this.BUILD_STATE = { vertices : [] };
 	
@@ -33,6 +29,10 @@ WHALE.HorizontallyFoldedCard = function (width,height,stretch) {
 	var width_half = this.width / 2;
 	var height_full = this.height;
 	var stretch_half = this.stretch / 2;
+	
+	this.countFrames = 0;
+	
+	this.sideLength = Math.sqrt( Math.pow(stretch_half,2) + Math.pow(this.height,2) );
 	
 	build();
 	
@@ -129,6 +129,10 @@ WHALE.HorizontallyFoldedCard = function (width,height,stretch) {
 WHALE.HorizontallyFoldedCard.prototype = Object.create( THREE.Geometry.prototype );
 WHALE.HorizontallyFoldedCard.prototype.constructor = WHALE.HorizontallyFoldedCard;
 
+WHALE.HorizontallyFoldedCard.prototype.getMaterialSize = function () {
+	return { x: this.width, y: this.sideLength }
+};
+
 WHALE.HorizontallyFoldedCard.prototype.reset = function () {
 	var i;
 	for(i=0;i<this.BUILD_STATE.vertices.length;i++) {
@@ -138,9 +142,70 @@ WHALE.HorizontallyFoldedCard.prototype.reset = function () {
 }
 
 WHALE.HorizontallyFoldedCard.prototype.play = function () {
-	this.vertices[0].z = this.vertices[0].z + 1;
-	this.vertices[0].y = this.vertices[0].y + 1;
-	this.vertices[1].y = this.vertices[1].y + 1;
-	this.vertices[1].z = this.vertices[1].z + 1;
+
+	var EasingFunctions = {
+		// no easing, no acceleration
+		linear: function (t) { return t },
+		// accelerating from zero velocity
+		easeInQuad: function (t) { return t*t },
+		// decelerating to zero velocity
+		easeOutQuad: function (t) { return t*(2-t) },
+		// acceleration until halfway, then deceleration
+		easeInOutQuad: function (t) { return t<.5 ? 2*t*t : -1+(4-2*t)*t },
+		// accelerating from zero velocity 
+		easeInCubic: function (t) { return t*t*t },
+		// decelerating to zero velocity 
+		easeOutCubic: function (t) { return (--t)*t*t+1 },
+		// acceleration until halfway, then deceleration 
+		easeInOutCubic: function (t) { return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 },
+		// accelerating from zero velocity 
+		easeInQuart: function (t) { return t*t*t*t },
+		// decelerating to zero velocity 
+		easeOutQuart: function (t) { return 1-(--t)*t*t*t },
+		// acceleration until halfway, then deceleration
+		easeInOutQuart: function (t) { return t<.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t },
+		// accelerating from zero velocity
+		easeInQuint: function (t) { return t*t*t*t*t },
+		// decelerating to zero velocity
+		easeOutQuint: function (t) { return 1+(--t)*t*t*t*t },
+		// acceleration until halfway, then deceleration 
+		easeInOutQuint: function (t) { return t<.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t }
+	}
+
+	var speed = 5; //213
+	//console.log("easeInOutCubic",EasingFunctions.easeInOutQuad(5));
+	if (this.vertices[1].y < ((this.height + this.sideLength) - 10)|| isNaN(this.vertices[1].y)) {
+		if (this.vertices[0].y < this.height) {
+			this.vertices[0].z = this.vertices[0].z + speed;
+			this.vertices[0].y = ( Math.sqrt( Math.pow( this.sideLength, 2 ) - Math.pow(this.vertices[0].z, 2) ) * -1) + this.height
+		} else {
+			this.vertices[0].z =  this.vertices[0].z - speed;
+			this.vertices[0].y = Math.sqrt( Math.pow( this.sideLength, 2 ) - Math.pow(this.vertices[0].z, 2) ) + this.height
+		}
+
+		if (this.vertices[1].y < this.height) {
+			this.vertices[1].z = this.vertices[1].z + speed;		
+			this.vertices[1].y = ( Math.sqrt( Math.pow( this.sideLength, 2 ) - Math.pow(this.vertices[1].z, 2) ) * -1) + this.height
+		} else {
+			this.vertices[1].z =  this.vertices[1].z - speed;
+			this.vertices[1].y = Math.sqrt( Math.pow( this.sideLength, 2 ) - Math.pow(this.vertices[1].z, 2) ) + this.height
+		}		
+		this.countFrames++;
+		
+		//this.vertices[5].y++;
+		/*
+		if (this.vertices[1].y < this.height) {
+			this.vertices[1].z = this.vertices[1].z + speed;		
+			this.vertices[1].y = ( Math.sqrt( Math.pow( this.sideLength, 2 ) - Math.pow(this.vertices[1].z, 2) ) * -1) + this.height
+		} else {
+			this.vertices[1].z =  this.vertices[1].z - speed;
+			this.vertices[1].y = Math.sqrt( Math.pow( this.sideLength, 2 ) - Math.pow(this.vertices[1].z, 2) ) + this.height
+		}*/	
+	}
+	
+	//console.log(this.vertices[0].z,this.vertices[0].y,this.vertices[1].z,this.vertices[1].y);
+	//console.log("y:",this.vertices[0].y,"z:",this.vertices[0].z,this.countFrames);
+	
+
 }
 
