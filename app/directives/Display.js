@@ -33,13 +33,22 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 		directive.contH = DisplayService.displayHeight == 0 ? element[0].clientHeight : DisplayService.displayHeight;
 			
          function init() {
+			
 			// Camera
 			directive.camera = new THREE.PerspectiveCamera( 20, directive.contW / directive.contH, 1, 10000 );
-			directive.camera.position.z = 1400;
-
+			directive.camera.position.set( 0, 200, 1400 );
+			
 			// Scene
 			directive.scene = new THREE.Scene();
 
+			//axes
+			var axes = new THREE.AxisHelper(1200);
+			directive.scene.add(axes);
+			
+			//grid xz
+			var gridXZ = new THREE.GridHelper(1000, 10);
+			directive.scene.add(gridXZ);
+			
 			var objGeometry = new THREE.BoxGeometry( 200, 200, 200 );
 
 			for ( var i = 0; i < objGeometry.faces.length; i += 2 ) {
@@ -84,6 +93,9 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 
 			directive.controls = new THREE.OrbitControls( directive.camera, directive.renderer.domElement );
 			directive.controls.addEventListener('change', render );
+			//directive.controls.target.set(directive.camera.position.x,directive.camera.position.y,0);
+			console.log("camera position: ",directive.camera.position);
+			
         };
 		
 		scope.resetAnimation = function () {
@@ -114,7 +126,8 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 					if (intersected.length != 0) {
 						directive.sceneClicked = false;
 						scope.resetAnimation();
-						var facePointed = intersected[0].face.materialIndex
+						var facePointed = intersected[0].face.materialIndex;
+						console.log("material POINTED:",facePointed);
 						DisplayService.setFacePointed(facePointed);
 						DisplayService.setFabricShowing(true);
 						scope.$apply();
@@ -129,13 +142,12 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 				} else {
 					directive.sceneClicked = true;
 					directive.obj.rotation.x = 0;
-					directive.obj.rotation.y = 0;
 					directive.obj.rotation.z = 0;
+					directive.obj.rotation.y = 0;
 					directive.obj.lookAt(directive.camera.position);
 					directive.obj.rotation.x = 0;
-					directive.obj.rotation.y = 0;
 					directive.obj.rotation.z = 0;
-
+					directive.obj.rotation.y = 0;
 				}
 			} else {
 				directive.clickIsValid = true;
@@ -191,8 +203,12 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 			if (!DisplayService.isEmpty(DisplayService.mesh)) {
 				console.log("....changing mesh in service....");
 				directive.scene.remove(directive.obj);
-				directive.obj = DisplayService.mesh;
+				directive.obj = DisplayService.mesh;;
+				console.log("positon",directive.camera.position);
+				var edges = new THREE.FaceNormalsHelper( directive.obj, 20, 0x00ff00, 1 );
+				directive.scene.add( edges );
 				directive.scene.add(directive.obj);
+				
 			}
         });
 

@@ -37,10 +37,6 @@ WHALE.HorizontallyFoldedCard = function (width,height,stretch) {
 	build();
 	
 	function build() {
-		
-		var getColour = function () {
-			return Math.random() * 0xffffff;
-		}
 
 		// https://github.com/mrdoob/three.js/blob/master/src/extras/geometries/BoxGeometry.js
 		// http://threejs.org/docs/#Reference/Core/Face3
@@ -51,75 +47,101 @@ WHALE.HorizontallyFoldedCard = function (width,height,stretch) {
 		// http://stackoverflow.com/questions/21462851/flip-normals-in-three-js-on-sphere
 		// http://paulyg.f2s.com/uv.htm
 		
-		var frontLeftLowerCorner = new THREE.Vector3(-width_half, 0, stretch_half) // front left lower corner
-		var frontRightLowerCorner = new THREE.Vector3(width_half, 0, stretch_half) // front right lower corner
-		var frontRightUpperCorner = new THREE.Vector3(width_half, height_full, 0)  // front right upper corner
-		var frontLeftUpperCorner = new THREE.Vector3(-width_half, height_full, 0) // front left upper corner
+		/**
+		* FRONT SIDE VERTICES
+		*/
+		var frontFrontLeftLowerCorner = new THREE.Vector3(-width_half, 0, stretch_half); // front front left lower corner
+		var frontFrontRightLowerCorner = new THREE.Vector3(width_half, 0, stretch_half); // front front right lower corner
+		var frontFrontRightUpperCorner = new THREE.Vector3(width_half, height_full, 0);  // front front right upper corner
+		var frontFrontLeftUpperCorner = new THREE.Vector3(-width_half, height_full, 0); // front front left upper corner
+		
+		var frontBackLeftLowerCorner = new THREE.Vector3(-width_half, 0, stretch_half); // front back left lower corner
+		var frontBackRightLowerCorner = new THREE.Vector3(width_half, 0, stretch_half); // front back right lower corner
+		var frontBackRightUpperCorner =  new THREE.Vector3(width_half, height_full, 0);  // front back right upper corner
+		var frontBackLeftUpperCorner = new THREE.Vector3(-width_half, height_full, 0); // front back left upper corner
 
-		var backLeftLowerCorner = new THREE.Vector3(width_half, 0, -stretch_half) // back left lower corner
-		var backRightLowerCorner = new THREE.Vector3(-width_half, 0, -stretch_half) // back right lower corner
-		var backRightUpperCorner = new THREE.Vector3(-width_half, height_full, 0)  // back right upper corner
-		var backLeftUpperCorner = new THREE.Vector3(width_half, height_full, 0) // back left upper corner	
+		/**
+		* BACK SIDE VERTICES
+		*/
+		var backFrontLeftLowerCorner = new THREE.Vector3(-width_half, 0, -stretch_half); // back front left lower corner
+		var backFrontRightLowerCorner = new THREE.Vector3(width_half, 0, -stretch_half); // back front right lower corner
+		var backFrontRightUpperCorner = new THREE.Vector3(width_half, height_full, 0);  // back front right upper corner
+		var backFrontLeftUpperCorner = new THREE.Vector3(-width_half, height_full, 0); // back front left upper corner	
 		
-		scope.vertices.push(frontLeftLowerCorner);	scope.BUILD_STATE.vertices.push(frontLeftLowerCorner.clone());
-		scope.vertices.push(frontRightLowerCorner);	scope.BUILD_STATE.vertices.push(frontRightLowerCorner.clone());
-		scope.vertices.push(frontRightUpperCorner);	scope.BUILD_STATE.vertices.push(frontRightUpperCorner.clone());
-		scope.vertices.push(frontLeftUpperCorner);	scope.BUILD_STATE.vertices.push(frontLeftUpperCorner.clone());
+		var backBackLeftLowerCorner = new THREE.Vector3(-width_half, 0, -stretch_half); // back back left lower corner
+		var backBackRightLowerCorner = new THREE.Vector3(width_half, 0, -stretch_half); // back back right lower corner
+		var backBackRightUpperCorner = new THREE.Vector3(width_half, height_full, 0); // back back right upper corner
+		var backBackLeftUpperCorner = new THREE.Vector3(-width_half, height_full, 0); // back back left upper corner	
 		
-		scope.vertices.push(backLeftLowerCorner);	scope.BUILD_STATE.vertices.push(backLeftLowerCorner.clone());
-		scope.vertices.push(backRightLowerCorner);	scope.BUILD_STATE.vertices.push(backRightLowerCorner.clone());
-		scope.vertices.push(backRightUpperCorner);	scope.BUILD_STATE.vertices.push(backRightUpperCorner.clone());
-		scope.vertices.push(backLeftUpperCorner);	scope.BUILD_STATE.vertices.push(backLeftUpperCorner.clone());
+		
+		
+		scope.vertices.push(frontFrontLeftLowerCorner);	scope.BUILD_STATE.vertices.push(frontFrontLeftLowerCorner.clone());
+		scope.vertices.push(frontFrontRightLowerCorner);scope.BUILD_STATE.vertices.push(frontFrontRightLowerCorner.clone());
+		scope.vertices.push(frontFrontRightUpperCorner);scope.BUILD_STATE.vertices.push(frontFrontRightUpperCorner.clone());
+		scope.vertices.push(frontFrontLeftUpperCorner);	scope.BUILD_STATE.vertices.push(frontFrontLeftUpperCorner.clone());
+		
+		scope.vertices.push(frontBackLeftLowerCorner);	scope.BUILD_STATE.vertices.push(frontBackLeftLowerCorner.clone());
+		scope.vertices.push(frontBackRightLowerCorner);	scope.BUILD_STATE.vertices.push(frontBackRightLowerCorner.clone());
+		scope.vertices.push(frontBackRightUpperCorner);	scope.BUILD_STATE.vertices.push(frontBackRightUpperCorner.clone());
+		scope.vertices.push(frontBackLeftUpperCorner);	scope.BUILD_STATE.vertices.push(frontBackLeftUpperCorner.clone());
+		
+		scope.vertices.push(backFrontLeftLowerCorner);	scope.BUILD_STATE.vertices.push(backFrontLeftLowerCorner.clone());
+		scope.vertices.push(backFrontRightLowerCorner);	scope.BUILD_STATE.vertices.push(backFrontRightLowerCorner.clone());
+		scope.vertices.push(backFrontRightUpperCorner);	scope.BUILD_STATE.vertices.push(backFrontRightUpperCorner.clone());
+		scope.vertices.push(backFrontLeftUpperCorner);	scope.BUILD_STATE.vertices.push(backFrontLeftUpperCorner.clone());
+		
+		scope.vertices.push(backBackLeftLowerCorner);	scope.BUILD_STATE.vertices.push(backBackLeftLowerCorner.clone());
+		scope.vertices.push(backBackRightLowerCorner);	scope.BUILD_STATE.vertices.push(backBackRightLowerCorner.clone());
+		scope.vertices.push(backBackRightUpperCorner);	scope.BUILD_STATE.vertices.push(backBackRightUpperCorner.clone());
+		scope.vertices.push(backBackLeftUpperCorner);	scope.BUILD_STATE.vertices.push(backBackLeftUpperCorner.clone());
 		
 		scope.faces = [
 			// front front
 			new THREE.Face3( 0, 1, 2, new THREE.Vector3(), new THREE.Color( 0xffaa00 ), 0 )
 			,new THREE.Face3( 0, 2, 3, new THREE.Vector3(), new THREE.Color( 0xffaa00 ), 0 )
 			// front back
-			,new THREE.Face3( 2, 1, 0, new THREE.Vector3(), new THREE.Color( 0x11bb00 ), 1 )
-			,new THREE.Face3( 3, 2, 0, new THREE.Vector3(), new THREE.Color( 0x11bb00 ), 1 )
+			,new THREE.Face3( 6, 5, 4, new THREE.Vector3(), new THREE.Color( 0x11bb00 ), 1 )
+			,new THREE.Face3( 7, 6, 4, new THREE.Vector3(), new THREE.Color( 0x11bb00 ), 1 )
 			
 			// back front
-			,new THREE.Face3( 4, 5, 6, new THREE.Vector3(), new THREE.Color( 0xddcc00 ), 2 )
-			,new THREE.Face3( 4, 6, 7, new THREE.Vector3(), new THREE.Color( 0xddcc00 ), 2 )
+			,new THREE.Face3( 8, 9, 10, new THREE.Vector3(), new THREE.Color( 0xddcc00 ), 2 )
+			,new THREE.Face3( 8, 10, 11, new THREE.Vector3(), new THREE.Color( 0xddcc00 ), 2 )
 			// back back
-			,new THREE.Face3( 6, 5, 4, new THREE.Vector3(), new THREE.Color( 0x88dd00 ), 3 )
-			,new THREE.Face3( 7, 6, 4, new THREE.Vector3(), new THREE.Color( 0x88dd00 ), 3 )
+			,new THREE.Face3( 14, 13, 12, new THREE.Vector3(), new THREE.Color( 0x88dd00 ), 3 )
+			,new THREE.Face3( 12, 15, 14, new THREE.Vector3(), new THREE.Color( 0x88dd00 ), 3 )
 		]
 
+		/**
+		* 01 11
+		* 00 10
+		*/
+		var uvs = [];
+		uvs.push( new THREE.Vector2( 0.0, 0.0 ) );
+		uvs.push( new THREE.Vector2( 1.0, 0.0 ) );
+		uvs.push( new THREE.Vector2( 0.0, 1.0 ) );
+		uvs.push( new THREE.Vector2( 1.0, 1.0 ) );
+	
 		scope.faceVertexUvs[ 0 ] = [
 			// front front side
-			[ new THREE.Vector2( 0, 0),new THREE.Vector2( 1, 0 ),new THREE.Vector2( 1, 1 ) ]
-			,[ new THREE.Vector2( 0, 0),new THREE.Vector2( 1, 1 ),new THREE.Vector2( 0, 1 ) ]
+			[ uvs[0], uvs[1], uvs[3] ]
+			,[ uvs[0], uvs[3], uvs[2] ]
 			// front back side
-			,[ new THREE.Vector2( 1, 1),new THREE.Vector2( 1, 0 ),new THREE.Vector2( 0, 0 ) ]
-			,[ new THREE.Vector2( 0, 1),new THREE.Vector2( 1, 1 ),new THREE.Vector2( 0, 0 ) ]
-			
+			,[ uvs[1], uvs[3], uvs[2] ]
+			,[ uvs[0], uvs[1], uvs[2] ]
 			// back front side
-			,[ new THREE.Vector2( 0, 0),new THREE.Vector2( 1, 0 ),new THREE.Vector2( 1, 1 ) ]
-			,[ new THREE.Vector2( 0, 0),new THREE.Vector2( 1, 1 ),new THREE.Vector2( 0, 1 ) ]
+			,[ uvs[0], uvs[1], uvs[3] ]
+			,[ uvs[0], uvs[3], uvs[2] ]
 			// back back side
-			,[ new THREE.Vector2( 1, 1),new THREE.Vector2( 1, 0 ),new THREE.Vector2( 0, 0 ) ]
-			,[ new THREE.Vector2( 0, 1),new THREE.Vector2( 1, 1 ),new THREE.Vector2( 0, 0 ) ]
+			,[ uvs[2], uvs[0], uvs[1] ]
+			,[ uvs[1], uvs[3], uvs[2] ]
 		] ;
 		
 		/**
-		* http://stackoverflow.com/questions/23052306/what-is-the-meaning-of-skin-indices-and-skin-weights
-		* http://threejs.org/docs/#Reference/Objects/SkinnedMesh
 		* Canvas renderer does not support skinning
-		
-		scope.skinIndices = [
-			// all vertices from Front Fornt Side  and Front Back Side belong to bone 1 
-			new THREE.Vector4(   0,   5,   9, 0 )
-		];
-		
-		scope.skinWeights = [
-			new THREE.Vector4( 0.2, 0.5, 0.3, 0 )
-		];
 		*/
 		scope.computeFaceNormals();
 		scope.computeVertexNormals();
-		scope.mergeVertices();
+		//scope.mergeVertices();
 		
 		console.log(scope.type,scope);
 		//console.log("JSON GEOMETRY:",scope.toJSON());
@@ -140,6 +162,7 @@ WHALE.HorizontallyFoldedCard.prototype.reset = function () {
 		var originalVertex = this.BUILD_STATE.vertices[i].clone()
 		this.vertices[i] = originalVertex;
 	}
+	this.verticesNeedUpdate = true;
 }
 
 WHALE.HorizontallyFoldedCard.prototype.circleEquation = function(val,negative) {
@@ -157,61 +180,56 @@ WHALE.HorizontallyFoldedCard.prototype.speed = function(maxStep,y,maxY) {
 		return (halfY / y) * maxStep;
 	}
 }
-WHALE.HorizontallyFoldedCard.prototype.play = function () {
-	/**
-	* y goes from 0 to ((this.height + this.sideLength) - 10)
-	* z goes from 45 to this.sideLength and back to 45
-	* NOTE: isNaN() check is needed to unless speed is odd
-	*/
+
+/**
+* y goes from 0 to ((this.height + this.sideLength) - 10)
+* z goes from 45 to this.sideLength and back to 45
+* NOTE: isNaN() check is needed to unless speed is odd
+*/
+WHALE.HorizontallyFoldedCard.prototype.animateFrontSide = function (index) {
 	var maxY = (this.height + this.sideLength) - 10;
 	var maxStep = 17;
 	 //for 1 = 213 frames
-	if (this.vertices[1].y < maxY || isNaN(this.vertices[1].y)) {
-		var speed = this.speed(maxStep,this.vertices[1].y,maxY);
-		if (this.vertices[0].y < this.height) {
-			this.vertices[0].z = this.vertices[0].z + speed;
-			this.vertices[0].y = this.circleEquation(this.vertices[0].z,true);
+	if (this.vertices[index].y < maxY || isNaN(this.vertices[index].y)) {
+		var speed = this.speed(maxStep,this.vertices[index].y,maxY);
+		if (this.vertices[index].y < this.height) {
+			this.vertices[index].z = this.vertices[index].z + speed;
+			this.vertices[index].y = this.circleEquation(this.vertices[index].z,true);
 		} else {
-			this.vertices[0].z =  this.vertices[0].z - speed;
-			this.vertices[0].y = this.circleEquation(this.vertices[0].z,false);
+			this.vertices[index].z =  this.vertices[index].z - speed;
+			this.vertices[index].y = this.circleEquation(this.vertices[index].z,false);
 		}
+	}
+}
 
-		if (this.vertices[1].y < this.height) {
-			this.vertices[1].z = this.vertices[1].z + speed;		
-			this.vertices[1].y = this.circleEquation(this.vertices[1].z,true);
-		} else {
-			this.vertices[1].z =  this.vertices[1].z - speed;
-			this.vertices[1].y = this.circleEquation(this.vertices[1].z,false);
-		}		
-		this.countFrames++;
-	}
-	
-	
-	/**
-	* z goes from -45 to 45
-	* y goes from 0 to -8 and again to 0 
-	* NOTE: when z rem 2 != 0 then goes haywire
-	*/
+/**
+* z goes from -45 to 45
+* y goes from 0 to -8 and again to 0 
+* NOTE: when z rem 2 != 0 then goes haywire
+*/
+WHALE.HorizontallyFoldedCard.prototype.animateBackSide = function (index) {
 	var maxStep = 7;
-	var z = this.vertices[5].z + (this.stretch/2);
-	if ( (this.vertices[5].y <= 0) ) {
+	var z = this.vertices[index].z + (this.stretch/2);
+	if ( (this.vertices[index].y <= 0) ) {
 		var speed = this.speed(maxStep,z,this.stretch);
-		this.vertices[5].z = this.vertices[5].z + speed;
-		if (this.vertices[5].y > (this.height - this.sideLength)) {	
-			this.vertices[5].y = this.circleEquation(this.vertices[5].z,true);
+		this.vertices[index].z = this.vertices[index].z + speed;
+		if (this.vertices[index].y > (this.height - this.sideLength)) {	
+			this.vertices[index].y = this.circleEquation(this.vertices[index].z,true);
 		} else {
-			this.vertices[5].y = this.circleEquation(this.vertices[5].z,false);
+			this.vertices[index].y = this.circleEquation(this.vertices[index].z,false);
 		}
 	}
-	if ( (this.vertices[4].y <= 0) ) {
-		var speed = this.speed(maxStep,z,this.stretch);
-		this.vertices[4].z = this.vertices[4].z + speed;
-		if (this.vertices[4].y > (this.height - this.sideLength)) {	
-			this.vertices[4].y = this.circleEquation(this.vertices[4].z,true);
-		} else {
-			this.vertices[4].y = this.circleEquation(this.vertices[4].z,false);
-		}
-	}
+}
+
+WHALE.HorizontallyFoldedCard.prototype.play = function () {
+	this.animateFrontSide(0);
+	this.animateFrontSide(1);
+	this.animateFrontSide(4);
+	this.animateFrontSide(5);
+	this.animateBackSide(8);
+	this.animateBackSide(9);
+	this.animateBackSide(12);
+	this.animateBackSide(13);
 	//console.log("z",this.vertices[5].z,"y",this.vertices[5].y,"z",this.vertices[6].z,"y",this.vertices[6].y);
 	//console.log("y:",this.vertices[0].y,"z:",this.vertices[0].z,this.countFrames);
 }
