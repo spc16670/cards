@@ -8,6 +8,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
         'scale': '='
         ,'materialType': '='
 		,'spinning': '='
+		,'helpers' : '='
       },
       link: function postLink(scope, element, attrs) {
 
@@ -36,18 +37,10 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 			
 			// Camera
 			directive.camera = new THREE.PerspectiveCamera( 20, directive.contW / directive.contH, 1, 10000 );
-			directive.camera.position.set( 0, 200, 1400 );
+			directive.camera.position.set( 0, 500, 1400 );
 			
 			// Scene
 			directive.scene = new THREE.Scene();
-
-			//axes
-			var axes = new THREE.AxisHelper(1200);
-			directive.scene.add(axes);
-			
-			//grid xz
-			var gridXZ = new THREE.GridHelper(1000, 10);
-			directive.scene.add(gridXZ);
 			
 			var objGeometry = new THREE.BoxGeometry( 200, 200, 200 );
 
@@ -78,7 +71,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 	
 			directive.obj = new THREE.Mesh( objGeometry, directive.materials[scope.materialType] );
 			directive.scene.add( directive.obj );
-			
+			console.log(directive.scene);
 			directive.renderer = new THREE.CanvasRenderer();
 			directive.renderer.setClearColor( 0xffffff );
 			directive.renderer.setPixelRatio( window.devicePixelRatio );
@@ -197,6 +190,27 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 		
 		scope.$watch('materialType', function () {
 			directive.obj.material = directive.materials[scope.materialType] ;
+        });
+		
+		scope.$watch('helpers', function () {
+			console.log("helpers",scope.helpers);
+			if (scope.helpers) {
+				var axes = new THREE.AxisHelper(1200);
+				directive.scene.add(axes);
+				//grid xz
+				var gridXZ = new THREE.GridHelper(1000, 10);
+				directive.scene.add(gridXZ);
+			} else {
+				var i;
+				for (i=0;i<directive.scene.children.length;i++) {
+					if (directive.scene.children[i] instanceof THREE.AxisHelper) {
+						directive.scene.remove(directive.scene.children[i]);
+					}
+					if (directive.scene.children[i] instanceof THREE.GridHelper) {
+						directive.scene.remove(directive.scene.children[i]);
+					}
+				}
+			}
         });
 		
 		scope.$watch(function () {return DisplayService.mesh}, function () {

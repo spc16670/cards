@@ -8,6 +8,7 @@ module.controller('DisplayController', ['$scope','DisplayService', function ($sc
     $scope.scale = DisplayService.scale;
     $scope.materialType = DisplayService.materialType;
 	$scope.spinning = DisplayService.spinning;
+	$scope.helpers = DisplayService.helpers;
 	$scope.fabricShowing = DisplayService.fabricShowing;
 	$scope.mesh = DisplayService.mesh;
 	$scope.editingCanvas = DisplayService.editingCanvas;
@@ -35,6 +36,11 @@ module.controller('DisplayController', ['$scope','DisplayService', function ($sc
 	$scope.$watch( function() { return DisplayService.spinning }, function() { 
 		console.log("$scope.spinning");
 		$scope.spinning = DisplayService.spinning;
+	},true);
+	
+	$scope.$watch( function() { return DisplayService.helpers }, function() { 
+		console.log("$scope.helpers");
+		$scope.helpers = DisplayService.helpers;
 	},true);
 	
 	$scope.$watch( function() { return DisplayService.fabricShowing }, function() { 

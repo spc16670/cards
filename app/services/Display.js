@@ -11,6 +11,7 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 		,scale : 1
 		,materialType : 'basic'
 		,spinning : true
+		,helpers : false
 		,fabricShowing : false
 		,materialIndex : 0
 		,bgColour : null
@@ -60,6 +61,11 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 	Service.setSpinning = function(spin) {
 		Service.spinning = spin;
 	}
+	
+	Service.setHelpers = function(set) {
+		Service.helpers = set;
+	}
+	
 	Service.setMaterialType = function(material) {
 		Service.materialType = material;
 	}

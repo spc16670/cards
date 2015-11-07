@@ -25,6 +25,7 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		,spinning : DisplayService.spinning
 		,bgColour : "#f0f0f0"
 		,font : null
+		,helpers : DisplayService.helpers
 	}
 	
 	$scope.selectedImgFile = { };
@@ -36,6 +37,7 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		DisplayService.setScale( $scope.canvas.scale );
 		DisplayService.setMaterialType( $scope.canvas.material );
 		DisplayService.setSpinning( $scope.canvas.spinning );
+		DisplayService.setHelpers( $scope.canvas.helpers );
 	},true)
 	
 	$scope.$watch(function(){return $scope.canvas.bgColour}, function() {
