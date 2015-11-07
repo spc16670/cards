@@ -146,15 +146,28 @@ WHALE.HorizontallyFoldedCard.prototype.circleEquation = function(val,negative) {
 	// y = +/- (r^2 - (x-h)^2)^1/2 + k -- eg: y = -(128^2 - 46^2)^1/2 + 120
 	return ( Math.sqrt( Math.pow( this.sideLength, 2 ) - Math.pow(val, 2) ) * ((negative) ? -1 : 1)) + this.height
 } 
-
+WHALE.HorizontallyFoldedCard.prototype.speed = function(maxStep,y,maxY) {
+	if (isNaN(y)) return maxStep;
+	if (y == 0) return maxStep;
+	var halfY = maxY / 2;
+	var yToMaxY = y / maxY;
+	if (y < halfY) {
+		return (y / halfY) * maxStep;
+	} else {
+		return (halfY / y) * maxStep;
+	}
+}
 WHALE.HorizontallyFoldedCard.prototype.play = function () {
 	/**
 	* y goes from 0 to ((this.height + this.sideLength) - 10)
 	* z goes from 45 to this.sideLength and back to 45
 	* NOTE: isNaN() check is needed to unless speed is odd
 	*/
-	var speed = 5; //for 1 = 213 frames
-	if (this.vertices[1].y < ((this.height + this.sideLength) - 10)|| isNaN(this.vertices[1].y)) {
+	var maxY = (this.height + this.sideLength) - 10;
+	var maxStep = 17;
+	 //for 1 = 213 frames
+	if (this.vertices[1].y < maxY || isNaN(this.vertices[1].y)) {
+		var speed = this.speed(maxStep,this.vertices[1].y,maxY);
 		if (this.vertices[0].y < this.height) {
 			this.vertices[0].z = this.vertices[0].z + speed;
 			this.vertices[0].y = this.circleEquation(this.vertices[0].z,true);
@@ -179,8 +192,10 @@ WHALE.HorizontallyFoldedCard.prototype.play = function () {
 	* y goes from 0 to -8 and again to 0 
 	* NOTE: when z rem 2 != 0 then goes haywire
 	*/
-	var speed = 4;
+	var maxStep = 7;
+	var z = this.vertices[5].z + (this.stretch/2);
 	if ( (this.vertices[5].y <= 0) ) {
+		var speed = this.speed(maxStep,z,this.stretch);
 		this.vertices[5].z = this.vertices[5].z + speed;
 		if (this.vertices[5].y > (this.height - this.sideLength)) {	
 			this.vertices[5].y = this.circleEquation(this.vertices[5].z,true);
@@ -189,6 +204,7 @@ WHALE.HorizontallyFoldedCard.prototype.play = function () {
 		}
 	}
 	if ( (this.vertices[4].y <= 0) ) {
+		var speed = this.speed(maxStep,z,this.stretch);
 		this.vertices[4].z = this.vertices[4].z + speed;
 		if (this.vertices[4].y > (this.height - this.sideLength)) {	
 			this.vertices[4].y = this.circleEquation(this.vertices[4].z,true);
