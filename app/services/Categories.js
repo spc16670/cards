@@ -56,9 +56,9 @@ module.service('CategoriesService', [function () {
 				{ 
 					id: 1
 					, type : "leaflets"
-					, title: "One Sided Leaflet"
+					, title: "Vertically C Folded DL Leaflet"
 					, icon: "images/leaflet.jpg"
-					, size: { x : 100, y: 160, z: 0 }
+					, size: { x : 210, y: 99, z: 0 }
 					, thumbnailSize : 3
 					, desc : "One sided leaflet"
 				}

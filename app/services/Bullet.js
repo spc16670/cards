@@ -9,16 +9,12 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
     	{ 
 			type : 'businessCards'
 			, id: 1
-			//http://mrdoob.github.io/three.js/editor/
-			, geometry : new THREE.BoxGeometry( 200, 100, 20, 40 )
+			, size : { x : 250, y : 120 } 
+			, geometry : 'Card'
 			, fabrics : [
-				//{ faceIndex : 0, size: { x : 20, y : 100 }, fabricJson : { objects : [], background : "white"} } // not clickable
-				//,{ faceIndex : 1, size: { x : 20, y : 100 }, fabricJson : { objects : [], background : "white"} } // not clickable
-				{ faceIndex : 2, size: { x : 200, y : 20 }, fabricJson : { objects : [], background : "pink"} }
-				,{ faceIndex : 3, size: { x : 200, y : 20 }, fabricJson : { objects : [], background : "yellow"} }
-				,{ faceIndex : 4, size: { x : 200, y : 100 }, fabricJson : JSON.parse("{\"objects\":[{\"type\":\"i-text\",\"originX\":\"left\",\"originY\":\"top\",\"left\":10,\"top\":60,\"width\":295.64,\"height\":52.43,\"fill\":\"rgb(0,0,0)\",\"stroke\":null,\"strokeWidth\":1,\"strokeDashArray\":null,\"strokeLineCap\":\"butt\",\"strokeLineJoin\":\"miter\",\"strokeMiterLimit\":10,\"scaleX\":1,\"scaleY\":1,\"angle\":0,\"flipX\":false,\"flipY\":false,\"opacity\":1,\"shadow\":null,\"visible\":true,\"clipTo\":null,\"backgroundColor\":\"\",\"fillRule\":\"nonzero\",\"globalCompositeOperation\":\"source-over\",\"text\":\"Front Face (4)\",\"fontSize\":40,\"fontWeight\":\"normal\",\"fontFamily\":\"arial black\",\"fontStyle\":\"\",\"lineHeight\":1.16,\"textDecoration\":\"\",\"textAlign\":\"left\",\"textBackgroundColor\":\"\",\"styles\":{}}],\"background\":\"red\"}") }
-				,{ faceIndex : 5, size: { x : 200, y : 100 }, fabricJson : { objects : [], background : "blue"} }
-			] 
+				{ materialIndex : 0, fabricJson : { objects : [], background : "#BBDDFF"} }
+				,{ materialIndex : 1, fabricJson : { objects : [], background : "#BBDDFF"} }
+			]
 		}
 		,{ 
 			type : 'invitations'
@@ -33,12 +29,18 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 			]
 		}
 		,{ 
-			type : 'businessCards'
+			type : 'leaflets'
 			, id: 1
-		}
-		,{ 
-			type : 'businessCards'
-			, id: 1
+			, size : { x : 99, y : 210, z : 0 } 
+			, geometry : 'VerticallyCFoldedDLLeaflet'
+			, fabrics : [
+				{ materialIndex : 0, fabricJson : { objects : [], background : "#BBDDFF"} }
+				,{ materialIndex : 1, fabricJson : { objects : [], background : "#BBDDFF"} }
+				,{ materialIndex : 2, fabricJson : { objects : [], background : "#BBDDFF"} }
+				,{ materialIndex : 3, fabricJson : { objects : [], background : "#BBDDFF" } }
+				,{ materialIndex : 4, fabricJson : { objects : [], background : "#6EB7FF"} }
+				,{ materialIndex : 5, fabricJson : { objects : [], background : "#6EB7FF" } }
+			]
 		}
 	];
 	

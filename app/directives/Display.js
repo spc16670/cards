@@ -10,6 +10,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 		,'spinning': '='
 		,'helpers' : '='
 		,'wireframe' : '='
+		,'normals' : '='
       },
       link: function postLink(scope, element, attrs) {
 
@@ -35,7 +36,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 		directive.contH = DisplayService.displayHeight == 0 ? element[0].clientHeight : DisplayService.displayHeight;
 			
          function init() {
-			
+			console.log("Display init()");
 			// Camera
 			directive.camera = new THREE.PerspectiveCamera( 20, directive.contW / directive.contH, 1, 10000 );
 			directive.camera.position.set( 0, 500, 1400 );
@@ -63,9 +64,8 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 	
 			directive.obj = new THREE.Mesh( objGeometry, directive.materials.printed );
 			directive.scene.add( directive.obj );
-			console.log(directive.scene);
 			directive.renderer = new THREE.CanvasRenderer();
-			directive.renderer.setClearColor( 0xffffff );
+			directive.renderer.setClearColor( 0xffffff ); // renderer background 
 			directive.renderer.setPixelRatio( window.devicePixelRatio );
 			directive.renderer.setSize( directive.contW, directive.contH );
 			
@@ -214,16 +214,35 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 			}
         });
 		
+		scope.$watch('normals', function () {
+			if (scope.normals) {
+				var faceNormals = new THREE.FaceNormalsHelper( directive.obj, 20, 0x00ff00, 1 );
+				directive.scene.add( faceNormals );
+				var vertexNormals = new THREE.VertexNormalsHelper( directive.obj, 20, 0x00ff00, 1 );
+				directive.scene.add( vertexNormals );
+			} else {
+				var i;
+				for (i=0;i<directive.scene.children.length;i++) {
+					if (directive.scene.children[i] instanceof THREE.FaceNormalsHelper) {
+						directive.scene.remove(directive.scene.children[i]);
+					}
+					if (directive.scene.children[i] instanceof THREE.VertexNormalsHelper) {
+						directive.scene.remove(directive.scene.children[i]);
+					}
+				}
+			}
+        });
+		
 		scope.$watch(function () {return DisplayService.mesh}, function () {
 			if (!DisplayService.isEmpty(DisplayService.mesh)) {
 				directive.scene.remove(directive.obj);
-				directive.obj = DisplayService.mesh;;
+				directive.obj = DisplayService.mesh;
+				console.log("service materials: ",DisplayService.material);
+				console.log("changed mesh",DisplayService.mesh);
 				directive.materials.printed = directive.obj.material;
 				console.log("positon",directive.camera.position);
-				//var edges = new THREE.FaceNormalsHelper( directive.obj, 20, 0x00ff00, 1 );
-				//directive.scene.add( edges );
-				directive.scene.add(directive.obj);
-				
+				directive.scene.add(directive.obj);	
+				directive.obj.geometry.print();
 			}
         });
 
@@ -265,7 +284,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 
 		function render () {
 			if (!directive.hoovering && scope.spinning) {
-				directive.obj.rotation.y += 0.01
+				directive.obj.rotation.y += 0.005
 			}
 			
 			if (directive.obj.geometry.play != undefined) {

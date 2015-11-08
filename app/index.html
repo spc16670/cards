@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 		<meta name="description" content="">
-		<meta name="author" content="">
+		<meta name="author" content="IONAS SOFTWARE LTD">
 		<title>Kartki</title>
 
 		<!-- Bootstrap core CSS -->
@@ -27,7 +27,10 @@
 		<script src="../static/lib/three-r72/OrbitControls.js"></script>
 
 		<script src="../static/lib/whale-0.0.1/whale.js"></script>
-
+		<script src="../static/lib/whale-0.0.1/Card.js"></script>
+		<script src="../static/lib/whale-0.0.1/HorizontallyFoldedCard.js"></script>
+		<script src="../static/lib/whale-0.0.1/VerticallyCFoldedDLLeaflet.js"></script>
+		
 		<script src="controllers/Display.js"></script>
 		<script src="controllers/Groups.js"></script>
 		<script src="controllers/Tools.js"></script>
@@ -52,7 +55,7 @@
 			<nav class="navbar navbar-default navbar-static-top" >
 			  <div class="container">
 				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" ng-click="isCollapsed = !isCollapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<button type="button" class="navbar-toggle collapsed" ng-click="$parent.isCollapsed = !$parent.isCollapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 						<span class="sr-only">Toggle navigation</span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
@@ -60,7 +63,7 @@
 					</button>
 					<a class="navbar-brand" href="#" ng-click="visible('home')">PrintRenderer</a>
 				</div>
-				<div id="navbar" class="navbar-collapse collapse" uib-collapse="isCollapsed">
+				<div id="navbar" class="navbar-collapse collapse" uib-collapse="$parent.isCollapsed">
 				  <ul class="nav navbar-nav">
 					<li ng-class="{active: categories.businessCards.expanded}"><a href="#" ng-click="expand('businessCards')">Business Cards</a></li>
 					<li ng-class="{active: categories.invitations.expanded}"><a href="#" ng-click="expand('invitations')">Invitations</a></li>
@@ -204,6 +207,7 @@
 						spinning="spinning"
 						helpers="helpers"
 						wireframe="wireframe"
+						normals="normals"
 					></div>
 					<div id="fabricCanvas" ng-if="fabricShowing"
 						ng-fabric
@@ -305,7 +309,11 @@
 											</label>
 											<label for="wireframe">		
 												<input type="checkbox" id="wireframe" ng-model="canvas.wireframe"/>		
-												<span>Frames</span>		
+												<span>Frame</span>		
+											</label>
+											<label for="normals">		
+												<input type="checkbox" id="normals" ng-model="canvas.normals"/>		
+												<span>Normals</span>		
 											</label>
 										</span>
 									</td>

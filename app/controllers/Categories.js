@@ -3,9 +3,8 @@ var module = angular.module('cards.controllers.Categories',[]);
 module.controller('CategoriesController', ['$scope','CategoriesService','BulletService'
   ,'DisplayService', function ($scope,CategoriesService,BulletService,DisplayService) {
 	
-	$scope.isCollapsed = true;
 	$scope.categories = CategoriesService;
-	
+
 	$scope.expand = function(view) {
 		for (var key in CategoriesService) {
 			if (CategoriesService.hasOwnProperty(key)) {
@@ -39,7 +38,10 @@ module.controller('CategoriesController', ['$scope','CategoriesService','BulletS
 	$scope.clicked = function (selected) {
 		$scope.toggle(selected.type);
 		$scope.$parent.visible('editor');
-		if ((selected.type !== DisplayService.model.type) && (selected.id != DisplayService.model.id)) {
+		/**
+		* @todo: add check to for object id
+		*/
+		if ((selected.type !== DisplayService.model.type) ) {
 			var model = BulletService.fetchModel(selected);
 			DisplayService.setModel(model);  
 			DisplayService.materializeMesh();

@@ -5,8 +5,8 @@ module.directive('ngFabric', ['DisplayService',function (DisplayService) {
     return {
       restrict: 'A',
       scope: { 
-		'width': '=',
-        'height': '='
+		'width': '='
+        ,'height': '='
       },
       link: function postLink(scope, element, attrs) {
 		

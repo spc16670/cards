@@ -23,6 +23,7 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		,scale : DisplayService.scale
 		,material : DisplayService.materialType
 		,spinning : DisplayService.spinning
+		,normals : DisplayService.normals
 		,wireframe : DisplayService.wireframe
 		,bgColour : "#f0f0f0"
 		,font : null
@@ -34,10 +35,10 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 	$scope.$watch( function() { return $scope.canvas  }, function() { 
 		DisplayService.setDisplayWidth( $scope.canvas.width );
 		DisplayService.setDisplayHeight( $scope.canvas.height );
-		//DisplayService.setFillContainer( $scope.canvas.fill );
 		DisplayService.setScale( $scope.canvas.scale );
 		DisplayService.setMaterialType( $scope.canvas.material );
 		DisplayService.setSpinning( $scope.canvas.spinning );
+		DisplayService.setNormals( $scope.canvas.normals );
 		DisplayService.setWireframe( $scope.canvas.wireframe );
 		DisplayService.setHelpers( $scope.canvas.helpers );
 	},true)

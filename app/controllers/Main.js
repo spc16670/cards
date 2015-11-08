@@ -2,6 +2,7 @@ var module = angular.module('cards.controllers.Main',[]);
 
 module.controller('MainController', ['$scope', function ($scope) {
 	
+	$scope.isCollapsed = true;
 	$scope.toggler = {
 		'home' : true
 		,'editor' : false
@@ -22,5 +23,7 @@ module.controller('MainController', ['$scope', function ($scope) {
 				}
 			}
 		}
+		$scope.isCollapsed = false;
+		console.log("coll",$scope.isCollapsed);
 	};
 }]);
