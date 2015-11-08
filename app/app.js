@@ -9,6 +9,7 @@ var app = angular.module('CardsApp', [
   ,'cards.controllers.Tools'
   ,'cards.controllers.Groups'
   ,'cards.controllers.Categories'
+  ,'cards.controllers.Main'
   ,'cards.directives.Display'
   ,'cards.directives.Fabric'
   ,'cards.directives.Util'

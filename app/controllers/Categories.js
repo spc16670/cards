@@ -37,12 +37,13 @@ module.controller('CategoriesController', ['$scope','CategoriesService','BulletS
 
 	
 	$scope.clicked = function (selected) {
+		$scope.toggle(selected.type);
+		$scope.$parent.visible('editor');
 		if ((selected.type !== DisplayService.model.type) && (selected.id != DisplayService.model.id)) {
 			var model = BulletService.fetchModel(selected);
 			DisplayService.setModel(model);  
 			DisplayService.materializeMesh();
 		}
-		$scope.toggle(selected.type);
 	}
 	
 }]);

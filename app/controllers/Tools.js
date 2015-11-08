@@ -23,6 +23,7 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		,scale : DisplayService.scale
 		,material : DisplayService.materialType
 		,spinning : DisplayService.spinning
+		,wireframe : DisplayService.wireframe
 		,bgColour : "#f0f0f0"
 		,font : null
 		,helpers : DisplayService.helpers
@@ -37,6 +38,7 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		DisplayService.setScale( $scope.canvas.scale );
 		DisplayService.setMaterialType( $scope.canvas.material );
 		DisplayService.setSpinning( $scope.canvas.spinning );
+		DisplayService.setWireframe( $scope.canvas.wireframe );
 		DisplayService.setHelpers( $scope.canvas.helpers );
 	},true)
 	

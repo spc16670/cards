@@ -1,332 +1,364 @@
 
 <!DOCTYPE html>
 <html lang="en" ng-app="CardsApp">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Kartki</title>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<title>Kartki</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="../static/css/bootstrap-3.3.5/bootstrap.min.css" rel="stylesheet">
-    <link href="../static/css/soil-0.0.1/soil.css" rel="stylesheet">
-	
-    <script src="../static/lib/fabric-js-1.5.0/fabric.min.js"></script>
-    <script src="../static/lib/three-r72/three.min.js"></script>
-    <script src="../static/lib/angular-1.4.7/angular.min.js"></script>
-	<script src="../static/lib/angular-touch-1.4.7/angular-touch.min.js"></script>
-	
-    <script src="../static/lib/angular-ui-bootstrap-0.14.3/ui-bootstrap-tpls.min.js"></script>
-	
-    <script src="../static/lib/three-r72/Projector.js"></script>
-    <script src="../static/lib/three-r72/CanvasRenderer.js"></script>
-    <script src="../static/lib/three-r72/GeometryUtils.js"></script>
-    <script src="../static/lib/three-r72/OrbitControls.js"></script>
-	
-	<script src="../static/lib/whale-0.0.1/whale.js"></script>
-	
-    <script src="controllers/Display.js"></script>
-    <script src="controllers/Groups.js"></script>
-    <script src="controllers/Tools.js"></script>
-	<script src="controllers/Categories.js"></script>
-    <script src="services/Bullet.js"></script>
-    <script src="services/Display.js"></script>
-	<script src="services/Categories.js"></script>
-    <script src="directives/Fabric.js"></script>
-    <script src="directives/Display.js"></script>
-    <script src="directives/Util.js"></script>
-	<script src="directives/Slideable.js"></script>
-	<script src="directives/Thumbnail.js"></script>
+		<!-- Bootstrap core CSS -->
+		<link href="../static/css/bootstrap-3.3.5/bootstrap.min.css" rel="stylesheet">
+		<link href="../static/css/soil-0.0.1/soil.css" rel="stylesheet">
 
-    <script src="app.js"></script>
+		<script src="../static/lib/fabric-js-1.5.0/fabric.min.js"></script>
+		<script src="../static/lib/three-r72/three.min.js"></script>
+		<script src="../static/lib/angular-1.4.7/angular.min.js"></script>
+		<script src="../static/lib/angular-touch-1.4.7/angular-touch.min.js"></script>
 
-  </head>
+		<script src="../static/lib/angular-ui-bootstrap-0.14.3/ui-bootstrap-tpls.min.js"></script>
 
-  <body >
+		<script src="../static/lib/three-r72/Projector.js"></script>
+		<script src="../static/lib/three-r72/CanvasRenderer.js"></script>
+		<script src="../static/lib/three-r72/GeometryUtils.js"></script>
+		<script src="../static/lib/three-r72/OrbitControls.js"></script>
 
-    <!-- Categories -->
-	<div ng-controller="CategoriesController">
-		<nav class="navbar navbar-default navbar-static-top" >
-		  <div class="container">
-			<div class="navbar-header">
-			  <button type="button" class="navbar-toggle collapsed" ng-click="isCollapsed = !isCollapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			  </button>
-			  <a class="navbar-brand" href="#">Logo</a>
-			</div>
-			<div id="navbar" class="navbar-collapse collapse" uib-collapse="isCollapsed">
-			  <ul class="nav navbar-nav">
-				<li ng-class="{active: categories.businessCards.expanded}"><a href="#" ng-click="expand('businessCards')">Business Cards</a></li>
-				<li ng-class="{active: categories.invitations.expanded}"><a href="#" ng-click="expand('invitations')">Invitations</a></li>
-				<li ng-class="{active: categories.leaflets.expanded}"><a href="#" ng-click="expand('leaflets')">Leaflets</a></li>
-				
-				<li class="dropdown" uib-dropdown>
-				  <a href="#" uib-dropdown-toggle role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-				  <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
-					<li><a href="#">Action</a></li>
-					<li><a href="#">Another action</a></li>
-					<li><a href="#">Something else here</a></li>
-					<li role="separator" class="divider"></li>
-					<li class="dropdown-header">Nav header</li>
-					<li><a href="#">Separated link</a></li>
-					<li><a href="#">One more separated link</a></li>
+		<script src="../static/lib/whale-0.0.1/whale.js"></script>
+
+		<script src="controllers/Display.js"></script>
+		<script src="controllers/Groups.js"></script>
+		<script src="controllers/Tools.js"></script>
+		<script src="controllers/Categories.js"></script>
+		<script src="controllers/Main.js"></script>
+		<script src="services/Bullet.js"></script>
+		<script src="services/Display.js"></script>
+		<script src="services/Categories.js"></script>
+		<script src="directives/Fabric.js"></script>
+		<script src="directives/Display.js"></script>
+		<script src="directives/Util.js"></script>
+		<script src="directives/Slideable.js"></script>
+		<script src="directives/Thumbnail.js"></script>
+
+		<script src="app.js"></script>
+	</head>
+
+	<body ng-controller="MainController">
+
+		<!-- Categories -->
+		<div ng-controller="CategoriesController">
+			<nav class="navbar navbar-default navbar-static-top" >
+			  <div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" ng-click="isCollapsed = !isCollapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#" ng-click="visible('home')">PrintRenderer</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse" uib-collapse="isCollapsed">
+				  <ul class="nav navbar-nav">
+					<li ng-class="{active: categories.businessCards.expanded}"><a href="#" ng-click="expand('businessCards')">Business Cards</a></li>
+					<li ng-class="{active: categories.invitations.expanded}"><a href="#" ng-click="expand('invitations')">Invitations</a></li>
+					<li ng-class="{active: categories.leaflets.expanded}"><a href="#" ng-click="expand('leaflets')">Leaflets</a></li>
+
+					<li class="dropdown" uib-dropdown>
+						<a href="#" uib-dropdown-toggle role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+						<ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
+							<li><a href="#">Action</a></li>
+							<li><a href="#">Another action</a></li>
+							<li><a href="#">Something else here</a></li>
+							<li role="separator" class="divider"></li>
+							<li class="dropdown-header">Nav header</li>
+							<li><a href="#">Separated link</a></li>
+							<li><a href="#">One more separated link</a></li>
+						</ul>
+					</li>
 				  </ul>
-				</li>
-			  </ul>
-			  <ul class="nav navbar-nav navbar-right">
-				<li><a href="#">Default</a></li>
-				<li class="active"><a href="#">Static top <span class="sr-only">(current)</span></a></li>
-				<li><a href="#">Fixed top</a></li>
-			  </ul>
-			</div><!--/.nav-collapse -->
-		  </div>
-		</nav>
-		<!-- expanded category -->
-		<div id="expandedCategory" class="container">
-		
-			<script type="text/ng-template" id="businessCards.thumbnail.tpl">
-				<div class="col-sm-{{item.thumbnailSize}}" >
-					<a href="#" ng-click="itemClick(item)" class="thumbnail">
-						<div class="row">
-							<div class="col-md-6">
-								<img ng-src="{{item.icon}}" alt="{{item.title}}" class="img-responsive">
-							</div>
-							<div class="col-md-6">
-								<h3>{{item.title}} </h3>
-								<p>{{item.desc}}</p>
-							</div>
-						</div>
-					</a>
-				</div>
-			</script>
-		
-			<script type="text/ng-template" id="standard.thumbnail.tpl">
-				<div class="col-sm-{{item.thumbnailSize}}" >
-					<a href="#" ng-click="itemClick(item)" class="thumbnail">
-						<div class="row">
-							<div class="col-md-6">
-								<img ng-src="{{item.icon}}" alt="{{item.title}}" class="img-responsive">
-							</div>
-							<div class="col-md-6">
-								<h3>{{item.title}} </h3>
-								<p>{{item.desc}}</p>
-							</div>
-						</div>
-					</a>
-				</div>
-			</script>
-		
-			<div id="leaflets" class="row slideable">
+				  <ul class="nav navbar-nav navbar-right">
+					<li><a href="#" ng-click="visible('contact')">Contact</a></li>
+					<li><a href="#" ng-click="visible('basket')">Basket</a></li>
+					<li><a href="#" ng-click="visible('profile')">Profile</a></li>
+				  </ul>
+				</div><!--/.nav-collapse -->
+			  </div>
+			</nav>
+			<!-- expanded category -->
+			<div id="expandedCategory" class="container">
 			
-				<div ng-repeat="thumbnail in categories.leaflets.thumbnails">
-					<span ng-if="$index % 6 == 0">
-						<div class="row">
-							<div ng-if="categories.leaflets.thumbnails[$index+0]"><thumbnail item="categories.leaflets.thumbnails[$index+0]" item-click="clicked(categories.leaflets.thumbnails[$index+0])"></thumbnail></div>
-							<div ng-if="categories.leaflets.thumbnails[$index+1]"><thumbnail item="categories.leaflets.thumbnails[$index+1]" item-click="clicked(categories.leaflets.thumbnails[$index+1])"></thumbnail></div>
-							<div ng-if="categories.leaflets.thumbnails[$index+2]"><thumbnail item="categories.leaflets.thumbnails[$index+2]" item-click="clicked(categories.leaflets.thumbnails[$index+2])"></thumbnail></div>
-							<div ng-if="categories.leaflets.thumbnails[$index+3]"><thumbnail item="categories.leaflets.thumbnails[$index+3]" item-click="clicked(categories.leaflets.thumbnails[$index+3])"></thumbnail></div>
-						</div>
-					</span>
-				</div>
-			</div>
+				<script type="text/ng-template" id="businessCards.thumbnail.tpl">
+					<div class="col-sm-{{item.thumbnailSize}}" >
+						<a href="#" ng-click="itemClick(item)" class="thumbnail">
+							<div class="row">
+								<div class="col-md-6">
+									<img ng-src="{{item.icon}}" alt="{{item.title}}" class="img-responsive">
+								</div>
+								<div class="col-md-6">
+									<h3>{{item.title}} </h3>
+									<p>{{item.desc}}</p>
+								</div>
+							</div>
+						</a>
+					</div>
+				</script>
 			
-			<div id="businessCards" class="row slideable">
-				<div ng-repeat="thumbnail in categories.businessCards.thumbnails">
-					<span ng-if="$index % 6 == 0">
-						<div class="row">
-							<div ng-if="categories.businessCards.thumbnails[$index+0]"><thumbnail item="categories.businessCards.thumbnails[$index+0]" item-click="clicked(categories.businessCards.thumbnails[$index+0])"></thumbnail></div>
-							<div ng-if="categories.businessCards.thumbnails[$index+1]"><thumbnail item="categories.businessCards.thumbnails[$index+1]" item-click="clicked(categories.businessCards.thumbnails[$index+1])"></thumbnail></div>
-							<div ng-if="categories.businessCards.thumbnails[$index+2]"><thumbnail item="categories.businessCards.thumbnails[$index+2]" item-click="clicked(categories.businessCards.thumbnails[$index+2])"></thumbnail></div>
-						</div>
-					</span>
+				<script type="text/ng-template" id="standard.thumbnail.tpl">
+					<div class="col-sm-{{item.thumbnailSize}}" >
+						<a href="#" ng-click="itemClick(item)" class="thumbnail">
+							<div class="row">
+								<div class="col-md-6">
+									<img ng-src="{{item.icon}}" alt="{{item.title}}" class="img-responsive">
+								</div>
+								<div class="col-md-6">
+									<h3>{{item.title}} </h3>
+									<p>{{item.desc}}</p>
+								</div>
+							</div>
+						</a>
+					</div>
+				</script>
+			
+				<div id="leaflets" class="row slideable">
+					<div ng-repeat="thumbnail in categories.leaflets.thumbnails">
+						<span ng-if="$index % 6 == 0">
+							<div class="row">
+								<div ng-if="categories.leaflets.thumbnails[$index+0]"><thumbnail item="categories.leaflets.thumbnails[$index+0]" item-click="clicked(categories.leaflets.thumbnails[$index+0])"></thumbnail></div>
+								<div ng-if="categories.leaflets.thumbnails[$index+1]"><thumbnail item="categories.leaflets.thumbnails[$index+1]" item-click="clicked(categories.leaflets.thumbnails[$index+1])"></thumbnail></div>
+								<div ng-if="categories.leaflets.thumbnails[$index+2]"><thumbnail item="categories.leaflets.thumbnails[$index+2]" item-click="clicked(categories.leaflets.thumbnails[$index+2])"></thumbnail></div>
+								<div ng-if="categories.leaflets.thumbnails[$index+3]"><thumbnail item="categories.leaflets.thumbnails[$index+3]" item-click="clicked(categories.leaflets.thumbnails[$index+3])"></thumbnail></div>
+							</div>
+						</span>
+					</div>
 				</div>
-			</div>
-			<div id="invitations" class="row slideable">
-				<div ng-repeat="thumbnail in categories.invitations.thumbnails">
-					<span ng-if="$index % 6 == 0">
-						<div class="row">
-							<div ng-if="categories.invitations.thumbnails[$index+0]"><thumbnail item="categories.invitations.thumbnails[$index+0]" item-click="clicked(categories.invitations.thumbnails[$index+0])"></thumbnail></div>
-						</div>
-					</span>
+				
+				<div id="businessCards" class="row slideable">
+					<div ng-repeat="thumbnail in categories.businessCards.thumbnails">
+						<span ng-if="$index % 6 == 0">
+							<div class="row">
+								<div ng-if="categories.businessCards.thumbnails[$index+0]"><thumbnail item="categories.businessCards.thumbnails[$index+0]" item-click="clicked(categories.businessCards.thumbnails[$index+0])"></thumbnail></div>
+								<div ng-if="categories.businessCards.thumbnails[$index+1]"><thumbnail item="categories.businessCards.thumbnails[$index+1]" item-click="clicked(categories.businessCards.thumbnails[$index+1])"></thumbnail></div>
+								<div ng-if="categories.businessCards.thumbnails[$index+2]"><thumbnail item="categories.businessCards.thumbnails[$index+2]" item-click="clicked(categories.businessCards.thumbnails[$index+2])"></thumbnail></div>
+							</div>
+						</span>
+					</div>
+				</div>
+				<div id="invitations" class="row slideable">
+					<div ng-repeat="thumbnail in categories.invitations.thumbnails">
+						<span ng-if="$index % 6 == 0">
+							<div class="row">
+								<div ng-if="categories.invitations.thumbnails[$index+0]"><thumbnail item="categories.invitations.thumbnails[$index+0]" item-click="clicked(categories.invitations.thumbnails[$index+0])"></thumbnail></div>
+							</div>
+						</span>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	
-
-    <!-- Editor -->
-    <div class="container">
-		<div class="row">
-			<div class="col-md-3" ng-controller="GroupController">
-  
-				<uib-accordion close-others="true">
-				  <div ng-click='loadGroup(group)' uib-accordion-group heading="{{ group.title }}" ng-repeat="group in groups">
-				    <table class="table table-condensed">
-						<tbody>
-							<tr ng-repeat="model in group.models">
-								<td ng-click="selectModel(model)">
-									<div class="row text-center"><h4>{{ model.title }}</h4></div>
-									<div class="row">
-										<div class="col-sm-6 text-center">
-											{{ model.size.x }} x {{ model.size.y }}
-										</div>
-										<div class="col-sm-6">
-											<img ng-src="images/{{ model.icon }}" class="img-thumbnail" alt="Model Image" />
-										</div>
-									</div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				  </div>
-				</uib-accordion>
-			</div>
-			<div class="col-md-6" ng-controller="DisplayController">  
-				<div id="threeCanvas" ng-if="!fabricShowing"
-					ng-webgl
-					scale="scale"
-					material-type="materialType"
-					spinning="spinning"
-					helpers="helpers"
-				></div>
-				<div id="fabricCanvas" ng-if="fabricShowing"
-					ng-fabric
-					width="fabricWidth"
-					height="fabricHeight"
-				>
+		
+		<!-- Home -->
+		<div class="container" ng-show="toggler.home">
+			<div class="row">
+				<div class="page-header">
+				<h1>Sticky footer with fixed navbar</h1>
 				</div>
-				<div id="scrollColumn" class="visible-xs"></div>
+				<p class="lead">Pin a fixed-height footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS. A fixed navbar has been added with <code>padding-top: 60px;</code> on the <code>body > .container</code>.</p>
+				<p>Back to <a href="../sticky-footer">the default sticky footer</a> minus the navbar.</p>
 			</div>
-			<div class="col-md-3" ng-controller="ToolsController">
-				<div class="panel panel-default">
-				  <!-- Default panel contents -->
-				  <div class="panel-heading">Edit</div>
+		</div>
 
-				  <!-- Table -->
-					<table class="table table-condensed">
-						<tbody>
-							<tr>
-								<td>
-									<div id="canvas-background">
-										<label for="canvas-background-picker">Background:</label>
-										<input type="color" ng-model="canvas.bgColour">
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<input type="file" onchange="angular.element(this).scope().fileSelected(this)" accept="image/*" class="form-control" id="fabricImgFile" ng-model="selectedImgFile"/>
-									<!--
-									<button type="button" class="btn btn-default" >
-										<span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Load Image
-									</button>-->
-									<!--<file-field class="btn btn-default" ng-model="selectedImgFile"></file-field>-->
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="row">
-										<div class="col-md-6">
-											<span uib-dropdown on-toggle="toggled(open)">
-												<a href id="simple-dropdown" uib-dropdown-toggle>
-													<p ng-style="{{ canvas.font.style || ''}}"> Font {{ canvas.font.name || 'Deafult' }}</p>
-												</a>
-												<ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
-													<li ng-repeat="font in fonts">
-														<a href ng-style="{{font.style}}" ng-click="selectedFont(font)">{{ font.name }}</a>
-													</li>
-												</ul>
-											</span>
+		<!-- Editor -->
+		<div class="container" ng-show="toggler.editor">
+			<div class="row">
+				<div class="col-md-3" ng-controller="GroupController">
+	  
+					<uib-accordion close-others="true">
+					  <div ng-click='loadGroup(group)' uib-accordion-group heading="{{ group.title }}" ng-repeat="group in groups">
+						<table class="table table-condensed">
+							<tbody>
+								<tr ng-repeat="model in group.models">
+									<td ng-click="selectModel(model)">
+										<div class="row text-center"><h4>{{ model.title }}</h4></div>
+										<div class="row">
+											<div class="col-sm-6 text-center">
+												{{ model.size.x }} x {{ model.size.y }}
+											</div>
+											<div class="col-sm-6">
+												<img ng-src="images/{{ model.icon }}" class="img-thumbnail" alt="Model Image" />
+											</div>
 										</div>
-										<div class="col-md-6">
-											<button type="button" class="btn btn-default" ng-click="write()">
-												<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Write
-											</button>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<button type="button" class="btn btn-default" ng-click="remove()">
-										<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Remove
-									</button>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<button type="button" class="btn btn-default" ng-click="close()">
-										<span class="glyphicon glyphicon-star" aria-hidden="true"></span> Close
-									</button>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<button type="button" class="btn btn-default" ng-click="fitImage()">
-										<span class="glyphicon glyphicon-star" aria-hidden="true"></span> Fit Image
-									</button>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<button type="button" class="btn btn-default" ng-click="apply()">
-										<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Apply
-									</button>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<button type="button" class="btn btn-default" ng-click="test()">
-										<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Test
-									</button>
-								</td>
-							</tr>
-							<tr>
-								<td>		
-									<label for="scale">Scale Object</label>		
-									<input type="range" name="scale" min="0.1" max="1.2" step="0.1" ng-model="canvas.scale" class="add-bottom">		
-									<span>
-										<label for="spinning">		
-											<input type="checkbox" id="spinning" ng-model="canvas.spinning"/>		
-											<span>Spinning</span>		
-										</label>
-										<label for="helpers">		
-											<input type="checkbox" id="helpers" ng-model="canvas.helpers"/>		
-											<span>Helper Axis</span>		
-										</label>
-									</span>
-								</td>
-							</tr>
-							<tr>
-								<td>	
-									<label for="materialsList">Material Type</label>		
-									<select id="materialsList" ng-model="canvas.material">		
-										<option value="basic">Basic</option>		
-										<option value="wireframe">Wire Frame</option>		
-										<option value="custom">Custom</option>		
-									</select>
-								</td>
-							</tr
-						</tbody>
-					</table>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					  </div>
+					</uib-accordion>
 				</div>
+				<div class="col-md-6" ng-controller="DisplayController">  
+					<div id="threeCanvas" ng-if="!fabricShowing"
+						ng-webgl
+						scale="scale"
+						material-type="materialType"
+						spinning="spinning"
+						helpers="helpers"
+						wireframe="wireframe"
+					></div>
+					<div id="fabricCanvas" ng-if="fabricShowing"
+						ng-fabric
+						width="fabricWidth"
+						height="fabricHeight"
+					>
+					</div>
+					<div id="scrollColumn" class="visible-xs"></div>
+				</div>
+				<div class="col-md-3" ng-controller="ToolsController">
+					<div class="panel panel-default">
+					  <!-- Default panel contents -->
+					  <div class="panel-heading">Editor</div>
 
+					  <!-- Table -->
+						<table class="table table-condensed">
+							<tbody>
+								<tr>
+									<td>
+										<div id="canvas-background">
+											<label for="canvas-background-picker">Background:</label>
+											<input type="color" ng-model="canvas.bgColour">
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="file" onchange="angular.element(this).scope().fileSelected(this)" accept="image/*" class="form-control" id="fabricImgFile" ng-model="selectedImgFile"/>
+										<!--
+										<button type="button" class="btn btn-default" >
+											<span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Load Image
+										</button>-->
+										<!--<file-field class="btn btn-default" ng-model="selectedImgFile"></file-field>-->
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="row">
+											<div class="col-md-6">
+												<span uib-dropdown on-toggle="toggled(open)">
+													<a href id="simple-dropdown" uib-dropdown-toggle>
+														<p ng-style="{{ canvas.font.style || ''}}"> Font {{ canvas.font.name || 'Deafult' }}</p>
+													</a>
+													<ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
+														<li ng-repeat="font in fonts">
+															<a href ng-style="{{font.style}}" ng-click="selectedFont(font)">{{ font.name }}</a>
+														</li>
+													</ul>
+												</span>
+											</div>
+											<div class="col-md-6">
+												<button type="button" class="btn btn-default" ng-click="write()">
+													<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Write
+												</button>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<button type="button" class="btn btn-default" ng-click="remove()">
+											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Remove
+										</button>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<button type="button" class="btn btn-default" ng-click="close()">
+											<span class="glyphicon glyphicon-star" aria-hidden="true"></span> Close
+										</button>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<button type="button" class="btn btn-default" ng-click="fitImage()">
+											<span class="glyphicon glyphicon-star" aria-hidden="true"></span> Fit Image
+										</button>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<button type="button" class="btn btn-default" ng-click="apply()">
+											<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Apply
+										</button>
+									</td>
+								</tr>
+								<tr>
+									<td>		
+										<label for="scale">Scale</label>		
+										<input type="range" name="scale" min="0.1" max="2.0" step="0.1" ng-model="canvas.scale" class="add-bottom">		
+										<span>
+											<label for="spinning">		
+												<input type="checkbox" id="spinning" ng-model="canvas.spinning"/>		
+												<span>Spin</span>		
+											</label>
+											<label for="helpers">		
+												<input type="checkbox" id="helpers" ng-model="canvas.helpers"/>		
+												<span>Axes</span>		
+											</label>
+											<label for="wireframe">		
+												<input type="checkbox" id="wireframe" ng-model="canvas.wireframe"/>		
+												<span>Frames</span>		
+											</label>
+										</span>
+									</td>
+								</tr>
+								<!--
+								<tr>
+									<td>	
+										<label for="materialsList">Material Type</label>		
+										<select id="materialsList" ng-model="canvas.material">		
+											<option value="printed">Printed</option>		
+											<option value="wireframe">Wire Frame</option>			
+										</select>
+									</td>
+								</tr>
+								-->
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+				
 			</div>
-			
 		</div>
-    </div>
-	<div id="canvasContainer"></div>
-    <footer class="footer">
-		<div class="container">
-			<p class="text-muted">Place sticky footer content here.</p>
+		
+		
+		<!-- Contact -->
+		<div class="container" ng-show="toggler.contact">
+			<div class="row">
+				CONTACT
+			</div>
 		</div>
-    </footer>
+		
+		<!-- BASKET -->
+		<div class="container" ng-show="toggler.basket">
+			<div class="row">
+				BASKET
+			</div>
+		</div>
+		
+		<!-- PROFILE -->
+		<div class="container" ng-show="toggler.profile">
+			<div class="row">
+				PROFILE
+			</div>
+		</div>
+		
+		
+		<div id="canvasContainer"></div>
+		<footer class="footer">
+			<div class="container">
+				<p class="text-muted">Place sticky footer content here.</p>
+			</div>
+		</footer>
 
-  </body>
+	</body>
 </html>

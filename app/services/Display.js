@@ -61,7 +61,9 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 	Service.setSpinning = function(spin) {
 		Service.spinning = spin;
 	}
-	
+	Service.setWireframe = function(set) {
+		Service.wireframe = set;
+	}
 	Service.setHelpers = function(set) {
 		Service.helpers = set;
 	}

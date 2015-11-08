@@ -9,6 +9,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
         ,'materialType': '='
 		,'spinning': '='
 		,'helpers' : '='
+		,'wireframe' : '='
       },
       link: function postLink(scope, element, attrs) {
 
@@ -50,7 +51,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 				objGeometry.faces[ i + 1 ].color.setHex( hex );
 			}
 
-			directive.materials.basic = new THREE.MeshBasicMaterial( 
+			directive.materials.printed = new THREE.MeshBasicMaterial( 
 				{ vertexColors: THREE.FaceColors, overdraw: 0.5 } );
 
 			directive.materials.wireframe = new THREE.MeshBasicMaterial({ 
@@ -59,17 +60,8 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 				wireframe: true, 
 				transparent: true 
 			});
-
-			directive.materials.custom = new THREE.MeshFaceMaterial([
-				new THREE.MeshBasicMaterial( )
-				,new THREE.MeshBasicMaterial( )
-				,new THREE.MeshBasicMaterial( )
-				,new THREE.MeshBasicMaterial( )
-				,new THREE.MeshBasicMaterial( )
-				,new THREE.MeshBasicMaterial( )
-			]);
 	
-			directive.obj = new THREE.Mesh( objGeometry, directive.materials[scope.materialType] );
+			directive.obj = new THREE.Mesh( objGeometry, directive.materials.printed );
 			directive.scene.add( directive.obj );
 			console.log(directive.scene);
 			directive.renderer = new THREE.CanvasRenderer();
@@ -98,7 +90,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 			}
 		}
 		
-		scope.mouseOver = function () {
+		scope.mouseOver = function (event) {
 			directive.hoovering = true;
 		}
 		
@@ -106,29 +98,28 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 			directive.hoovering = false;
 			scope.resetAnimation();
 		}
+		
+		scope.mouseDown = function (event) {
+			directive.clickPromise = $timeout( scope.beenDragged , 300);
+		}
+
+		scope.beenDragged = function () {
+			directive.clickIsValid = false;
+		}
 
 		scope.mouseUp = function (event) {
 			$timeout.cancel(directive.clickPromise);
 			if (directive.clickIsValid) {
 				if (directive.sceneClicked) {
-					var canvasPosition = element[0].getBoundingClientRect();
-					directive.mouse.x = ( (event.clientX - canvasPosition.left) / directive.contW ) * 2 - 1;
-					directive.mouse.y = - ( (event.clientY - canvasPosition.top) / directive.contH ) * 2 + 1;
-					directive.raycaster.setFromCamera( directive.mouse, directive.camera );
-					var intersected = directive.raycaster.intersectObjects( directive.scene.children );
-					if (intersected.length != 0) {
+					var pointed = scope.intersected(event);
+					if (pointed != null) {
 						directive.sceneClicked = false;
 						scope.resetAnimation();
-						var facePointed = intersected[0].face.materialIndex;
+						var facePointed = pointed.face.materialIndex;
 						console.log("material POINTED:",facePointed);
 						DisplayService.setFacePointed(facePointed);
 						DisplayService.setFabricShowing(true);
 						scope.$apply();
-						//var start = new THREE.Vector3(0,0,0);
-						//var end = new THREE.Vector3(camera.position.x,camera.position.y,camera.position.z + 200);
-						//drawLine(start,end);
-						//camera.position.set(0,0,1200);
-						//camera.lookAt(scene.position);
 					} else {
 						scope.resetAnimation();
 					}	
@@ -147,14 +138,18 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 			}
         };
 		
-		scope.mouseDown = function (event) {
-			directive.clickPromise = $timeout( scope.beenDragged , 300);
+		scope.intersected = function (event) {
+			var canvasPosition = element[0].getBoundingClientRect();
+			directive.mouse.x = ( (event.clientX - canvasPosition.left) / directive.contW ) * 2 - 1;
+			directive.mouse.y = - ( (event.clientY - canvasPosition.top) / directive.contH ) * 2 + 1;
+			directive.raycaster.setFromCamera( directive.mouse, directive.camera );
+			var intersected = directive.raycaster.intersectObjects( directive.scene.children );
+			if (intersected.length != 0 && intersected[0].face != null) {
+				return intersected[0];
+			} else {
+				return null;
+			}
 		}
-
-		scope.beenDragged = function () {
-			directive.clickIsValid = false;
-		}
-		
         // -----------------------------------
         // Event listeners
         // -----------------------------------
@@ -193,11 +188,9 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
         });
 		
 		scope.$watch('helpers', function () {
-			console.log("helpers",scope.helpers);
 			if (scope.helpers) {
 				var axes = new THREE.AxisHelper(1200);
 				directive.scene.add(axes);
-				//grid xz
 				var gridXZ = new THREE.GridHelper(1000, 10);
 				directive.scene.add(gridXZ);
 			} else {
@@ -213,14 +206,22 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 			}
         });
 		
+		scope.$watch('wireframe', function () {
+			if (scope.wireframe) {
+				directive.obj.material = directive.materials.wireframe;
+			} else {
+				directive.obj.material = directive.materials.printed;
+			}
+        });
+		
 		scope.$watch(function () {return DisplayService.mesh}, function () {
 			if (!DisplayService.isEmpty(DisplayService.mesh)) {
-				console.log("....changing mesh in service....");
 				directive.scene.remove(directive.obj);
 				directive.obj = DisplayService.mesh;;
+				directive.materials.printed = directive.obj.material;
 				console.log("positon",directive.camera.position);
-				var edges = new THREE.FaceNormalsHelper( directive.obj, 20, 0x00ff00, 1 );
-				directive.scene.add( edges );
+				//var edges = new THREE.FaceNormalsHelper( directive.obj, 20, 0x00ff00, 1 );
+				//directive.scene.add( edges );
 				directive.scene.add(directive.obj);
 				
 			}
