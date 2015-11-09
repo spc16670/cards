@@ -200,22 +200,27 @@
 					</uib-accordion>
 				</div>
 				<div class="col-md-6" ng-controller="DisplayController">  
-					<div id="threeCanvas" ng-if="!fabricShowing"
-						ng-webgl
-						scale="scale"
-						material-type="materialType"
-						spinning="spinning"
-						helpers="helpers"
-						wireframe="wireframe"
-						normals="normals"
-					></div>
-					<div id="fabricCanvas" ng-if="fabricShowing"
-						ng-fabric
-						width="fabricWidth"
-						height="fabricHeight"
-					>
+					<div class="panel panel-default">
+
+						<div class="panel-body">
+							<div id="threeCanvas" ng-if="!fabricShowing"
+								ng-webgl
+								scale="scale"
+								material-type="materialType"
+								spinning="spinning"
+								helpers="helpers"
+								wireframe="wireframe"
+								normals="normals"
+							></div>
+							<div id="fabricCanvas" ng-if="fabricShowing"
+								ng-fabric
+								width="fabricWidth"
+								height="fabricHeight"
+							>
+							</div>
+							<div id="scrollColumn" class="visible-xs"></div>
+						</div>
 					</div>
-					<div id="scrollColumn" class="visible-xs"></div>
 				</div>
 				<div class="col-md-3" ng-controller="ToolsController">
 					<div class="panel panel-default">

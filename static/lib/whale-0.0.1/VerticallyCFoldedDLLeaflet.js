@@ -17,24 +17,30 @@ WHALE.VerticallyCFoldedDLLeaflet = function (width,height) {
 	this.sides = 6;
 	this.width = width || 99;
 	this.height = height || 210;
-	
-	this.cornerPush = function (push,leftPush) {
-		var widthPita = Math.sqrt( Math.pow(width,2) - Math.pow(push,2) );
-		if (leftPush) {
-			var x = ( widthPita < width_half ) ? widthPita : ((Math.floor(widthPita) - width_half) *  -1);
-		} else {
-			var x = ( widthPita < width_half ) ? (widthPita* -1) : (Math.floor(widthPita) - width_half);
-		}
-		return { x : x, z: push };
-	}
-	
-	
+
 	var scope = this; // this in build() is different so we need a global var
 	
 	var width_half = this.width / 2;
 	var height_full = this.height;
 	
-	this.BUILD_STATE = { vertices : [] };
+	this.rightZ = 85.9;
+	this.leftZ = 70;
+	
+	this.cornerPush = function (push,leftPush) {
+		var xPush = ((push > width) ? (width - (push - width)) : push);
+		var b = Math.sqrt( Math.pow(width,2) - Math.pow(xPush,2) );
+		if (leftPush) {
+			if (b == 0 || b == NaN) { b = 1; this.leftZ++; };
+			var x = ( push > width ) ? (b + width_half) : ( b < width_half ) ? b : (( b - width_half ) *  -1);
+		} else {
+			if (b == 0 || b == NaN) { b = 1; this.rightZ++; };
+			var x = ( push > width ) ? ((b + width_half) * -1) : ( b < width_half ) ? (b * -1) : (b - width_half);
+		}
+		console.log({ x : x, z: xPush, b : b, left : this.leftZ, right : this.rightZ})
+		return { x : x, z: xPush };
+	}
+	
+	this.BUILD_STATE = { vertices : [], rightZ : this.rightZ, leftZ : this.leftZ };
 	
 	build();
 	
@@ -42,7 +48,7 @@ WHALE.VerticallyCFoldedDLLeaflet = function (width,height) {
 		
 		var leftZ = 70 ;
 		var leftPush = scope.cornerPush(leftZ,true);
-		var rightZ = 86;
+		var rightZ = 85.9;
 		var rightPush = scope.cornerPush(rightZ,false);
 		
 		scope.vertices = [
@@ -188,6 +194,8 @@ WHALE.VerticallyCFoldedDLLeaflet.prototype.reset = function () {
 		this.vertices[i] = originalVertex;
 	}
 	this.verticesNeedUpdate = true;
+	this.rightZ = this.BUILD_STATE.rightZ;
+	this.leftZ = this.BUILD_STATE.leftZ;
 }
 
 /**
@@ -228,18 +236,32 @@ WHALE.VerticallyCFoldedDLLeaflet.prototype.animateLeftSide = function (index) {
 * Play animation
 */
 WHALE.VerticallyCFoldedDLLeaflet.prototype.play = function () {
-	var leftZ = 70 ;
-	var leftPush = this.cornerPush(leftZ,true);
-	var rightZ = 86;
-	var rightPush = this.cornerPush(rightZ,false);
 	
-	this.vertices[8].x = leftPush.x;
-	this.vertices[8].z = leftPush.z;
-	this.vertices[11].x = leftPush.x;
-	this.vertices[11].z = leftPush.z;
-	
-	this.vertices[12].x = rightPush.x;
-	this.vertices[12].z = rightPush.z;
-	this.vertices[15].x = rightPush.x;
-	this.vertices[15].z = rightPush.z;
+	if (this.rightZ < 170) {
+		var leftPush = this.cornerPush(this.leftZ,true);
+		var rightPush = this.cornerPush(this.rightZ,false);
+		
+		this.vertices[8].x = leftPush.x;
+		this.vertices[8].z = leftPush.z;
+		this.vertices[11].x = leftPush.x;
+		this.vertices[11].z = leftPush.z;
+		
+		this.vertices[12].x = leftPush.x;
+		this.vertices[12].z = leftPush.z;
+		this.vertices[15].x = leftPush.x;
+		this.vertices[15].z = leftPush.z;
+
+		this.vertices[16].x = rightPush.x;
+		this.vertices[16].z = rightPush.z;
+		this.vertices[19].x = rightPush.x;
+		this.vertices[19].z = rightPush.z;
+		
+		this.vertices[20].x = rightPush.x;
+		this.vertices[20].z = rightPush.z;
+		this.vertices[23].x = rightPush.x;
+		this.vertices[23].z = rightPush.z;
+
+		this.rightZ++;
+		this.leftZ++;
+	}
 }
