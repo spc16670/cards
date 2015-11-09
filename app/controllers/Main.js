@@ -23,7 +23,5 @@ module.controller('MainController', ['$scope', function ($scope) {
 				}
 			}
 		}
-		$scope.isCollapsed = false;
-		console.log("coll",$scope.isCollapsed);
 	};
 }]);

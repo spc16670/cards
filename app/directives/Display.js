@@ -237,10 +237,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 			if (!DisplayService.isEmpty(DisplayService.mesh)) {
 				directive.scene.remove(directive.obj);
 				directive.obj = DisplayService.mesh;
-				console.log("service materials: ",DisplayService.material);
-				console.log("changed mesh",DisplayService.mesh);
 				directive.materials.printed = directive.obj.material;
-				console.log("positon",directive.camera.position);
 				directive.scene.add(directive.obj);	
 				directive.obj.geometry.print();
 			}

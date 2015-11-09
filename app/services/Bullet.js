@@ -49,15 +49,17 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 		for (i=0;i<Service.models.length;i++) {
 			var model = Service.models[i];
 			if ((model.id == minModel.id) && (model.type === minModel.type) ) {
-				model.geometry = new WHALE[model.geometry](model.size.x,model.size.y,model.size.z);
+				var clonedModel = {};
+				angular.copy(model, clonedModel);
+				clonedModel.geometry = new WHALE[clonedModel.geometry](clonedModel.size.x,clonedModel.size.y,clonedModel.size.z);
 				// instantiate canvases
 				var f;
-				for (f=0;f<model.fabrics.length;f++) {
-					var faceFabric = model.fabrics[f];
+				for (f=0;f<clonedModel.fabrics.length;f++) {
+					var faceFabric = clonedModel.fabrics[f];
 					var canvas = document.createElement('canvas');
 					var name = "model_side_" + faceFabric.materialIndex;
 					canvas.id = name;
-					var size = model.geometry.getMaterialSize();
+					var size = clonedModel.geometry.getMaterialSize();
 					canvas.width = size.x;
 					canvas.height = size.y;
 					//console.log("canvas",canvas);
@@ -65,7 +67,7 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 					faceFabric.canvas.setWidth(size.x);
 					faceFabric.canvas.setHeight(size.y);
 				}
-				return model;
+				return clonedModel;
 			}
 		}
 		return null;
