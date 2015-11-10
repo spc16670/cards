@@ -31,7 +31,7 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 		,{ 
 			type : 'leaflets'
 			, id: 1
-			, size : { x : 99, y : 210, z : 0 } 
+			, size : { x : 100, y : 210, z : 0 } 
 			, geometry : 'VerticallyCFoldedDLLeaflet'
 			, fabrics : [
 				{ materialIndex : 0, fabricJson : { objects : [], background : "#BBDDFF"} }

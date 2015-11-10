@@ -15,28 +15,26 @@ WHALE.VerticallyCFoldedDLLeaflet = function (width,height) {
 	
 	this.type = 'VerticallyCFoldedDLLeaflet';
 	this.sides = 6;
-	this.width = width || 99;
+	this.width = width || 100;
 	this.height = height || 210;
 
 	var scope = this; // this in build() is different so we need a global var
 	
-	var width_half = this.width / 2;
-	var height_full = this.height;
+	var width_half = width / 2;
+	var height_full = height;
 	
-	this.rightZ = 85.9;
-	this.leftZ = 70;
+	this.rightZ = width * 0.99;
+	this.leftZ = width * 0.75;
 	
 	this.cornerPush = function (push,leftPush) {
 		var xPush = ((push > width) ? (width - (push - width)) : push);
 		var b = Math.sqrt( Math.pow(width,2) - Math.pow(xPush,2) );
 		if (leftPush) {
-			if (b == 0 || b == NaN) { b = 1; this.leftZ++; };
-			var x = ( push > width ) ? (b + width_half) : ( b < width_half ) ? b : (( b - width_half ) *  -1);
+			var x = ( push > width ) ? (b + width_half) : ( b < width_half ) ? (width_half - b) : (( b - width_half ) *  -1);
 		} else {
-			if (b == 0 || b == NaN) { b = 1; this.rightZ++; };
-			var x = ( push > width ) ? ((b + width_half) * -1) : ( b < width_half ) ? (b * -1) : (b - width_half);
+			var x = ( push > width ) ? ((b + width_half) * -1) : ( b < width_half ) ? ((width_half - b) * -1) : (b - width_half);
 		}
-		console.log({ x : x, z: xPush, b : b, left : this.leftZ, right : this.rightZ})
+		//console.log((leftPush) ? "right" : "left",{ x : x, z: xPush, b : b, width_half : width_half })
 		return { x : x, z: xPush };
 	}
 	
@@ -46,11 +44,11 @@ WHALE.VerticallyCFoldedDLLeaflet = function (width,height) {
 	
 	function build() {
 		
-		var leftZ = 70 ;
+		var leftZ = width * 0.75;
 		var leftPush = scope.cornerPush(leftZ,true);
-		var rightZ = 85.9;
+		var rightZ = width * 0.99;
 		var rightPush = scope.cornerPush(rightZ,false);
-		
+
 		scope.vertices = [
 			/**
 			* SIDE 5/6 VERTICES
@@ -250,7 +248,7 @@ WHALE.VerticallyCFoldedDLLeaflet.prototype.play = function () {
 		this.vertices[12].z = leftPush.z;
 		this.vertices[15].x = leftPush.x;
 		this.vertices[15].z = leftPush.z;
-
+		
 		this.vertices[16].x = rightPush.x;
 		this.vertices[16].z = rightPush.z;
 		this.vertices[19].x = rightPush.x;
@@ -260,8 +258,8 @@ WHALE.VerticallyCFoldedDLLeaflet.prototype.play = function () {
 		this.vertices[20].z = rightPush.z;
 		this.vertices[23].x = rightPush.x;
 		this.vertices[23].z = rightPush.z;
-
-		this.rightZ++;
-		this.leftZ++;
+		
+		this.rightZ = this.rightZ + 2;
+		this.leftZ = this.leftZ + 2;
 	}
 }

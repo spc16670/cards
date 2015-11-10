@@ -102,7 +102,8 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		DisplayService.materializeMesh();
 	}
 	$scope.test = function () {
-		window.open(DisplayService.editingCanvas.toDataURL('png'));
+		$rootScope.apply();
+		//window.open(DisplayService.editingCanvas.toDataURL('png'));
 	}
 	
 	$scope.selectedFont = function (font) {
