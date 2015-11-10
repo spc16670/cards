@@ -60,19 +60,20 @@ module.service('CategoriesService', [function () {
 					, icon: "images/leaflet.jpg"
 					, size: { x : 210, y: 99, z: 0 }
 					, thumbnailSize : 3
-					, desc : "One sided leaflet"
+					, desc : "Vertically C Folded DL Leaflet"
 				}
 				,{ 
 					id: 2 
-					, type : "leaflet"
-					, title: "Double Sided Leaflet"
+					, type : "leaflets"
+					, title: "Vertically Z Folded DL Leaflet"
+					, size: { x : 210, y: 99, z: 0 }
 					, icon: "images/leaflet.jpg"
 					, thumbnailSize : 3
-					, desc : "Double sided leaflet"
+					, desc : "Vertically Z Folded DL Leaflet"
 				}
 				,{ 
 					id: 3
-					, type : "leaflet"
+					, type : "leaflets"
 					, title: "Horizontally Folded Leaflet"
 					, icon: "images/leaflet.jpg"
 					, size: { x : 100, y: 160, z: 0 }
@@ -81,7 +82,7 @@ module.service('CategoriesService', [function () {
 				}
 				,{ 
 					id: 4 
-					, type : "leaflet"
+					, type : "leaflets"
 					, title: "Vertically Folded Leaflet"
 					, icon: "images/leaflet.jpg"
 					, size: { x : 100, y: 160, z: 0 }

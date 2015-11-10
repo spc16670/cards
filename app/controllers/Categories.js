@@ -41,7 +41,7 @@ module.controller('CategoriesController', ['$scope','CategoriesService','BulletS
 		/**
 		* @todo: add check to for object id
 		*/
-		if ((selected.type !== DisplayService.model.type) ) {
+		if ((selected.type !== DisplayService.model.type) || (selected.id != DisplayService.model.id) ) {
 			var model = BulletService.fetchModel(selected);
 			DisplayService.setModel(model);  
 			DisplayService.materializeMesh();

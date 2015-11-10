@@ -42,6 +42,20 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 				,{ materialIndex : 5, fabricJson : { objects : [], background : "#6EB7FF" } }
 			]
 		}
+		,{ 
+			type : 'leaflets'
+			, id: 2
+			, size : { x : 100, y : 210, z : 0 } 
+			, geometry : 'VerticallyZFoldedDLLeaflet'
+			, fabrics : [
+				{ materialIndex : 0, fabricJson : { objects : [], background : "#BBDDFF"} }
+				,{ materialIndex : 1, fabricJson : { objects : [], background : "#BBDDFF"} }
+				,{ materialIndex : 2, fabricJson : { objects : [], background : "#6EB7FF"} }
+				,{ materialIndex : 3, fabricJson : { objects : [], background : "#6EB7FF" } }
+				,{ materialIndex : 4, fabricJson : { objects : [], background : "#BBDDFF"} }
+				,{ materialIndex : 5, fabricJson : { objects : [], background : "#BBDDFF" } }
+			]
+		}
 	];
 	
 	Service.fetchModel = function(minModel) {

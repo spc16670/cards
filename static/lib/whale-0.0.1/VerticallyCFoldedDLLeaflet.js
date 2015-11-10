@@ -3,7 +3,7 @@
 // ============================================================================
 
 /**
-* Counting sides from 0 to 5. VerticalCFoldDLLeaflet has 6 visible sides. The 
+* Counting sides from 0 to 5. VerticallyCFoldedDLLeaflet has 6 visible sides. The 
 * leaflet opens up to the left and unveils side 1 (first side back side) and 
 * side 2 which unfolds to the right revealing the side 3 (third side back side) 
 * and  side 4. Side 5 is on the reverse of side 4 .

@@ -38,8 +38,8 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
          function init() {
 			console.log("Display init()");
 			// Camera
-			directive.camera = new THREE.PerspectiveCamera( 20, directive.contW / directive.contH, 1, 10000 );
-			directive.camera.position.set( 0, 500, 1400 );
+			directive.camera = new THREE.PerspectiveCamera( 20, directive.contW / directive.contH, 1, 8000 );
+			directive.camera.position.set( 0, 500, 1000 );
 			
 			// Scene
 			directive.scene = new THREE.Scene();
@@ -78,9 +78,6 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 
 			directive.controls = new THREE.OrbitControls( directive.camera, directive.renderer.domElement );
 			directive.controls.addEventListener('change', render );
-			//directive.controls.target.set(directive.camera.position.x,directive.camera.position.y,0);
-			console.log("camera position: ",directive.camera.position);
-			
         };
 		
 		scope.resetAnimation = function () {
