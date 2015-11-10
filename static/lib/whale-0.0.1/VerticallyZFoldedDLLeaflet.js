@@ -33,10 +33,10 @@ WHALE.VerticallyZFoldedDLLeaflet = function (width,height) {
 		var xPush = ((push > width) ? (width - (push - width)) : push);
 		var b = Math.sqrt( Math.pow(width,2) - Math.pow(xPush,2) );
 		if (leftPush) {
-			var x = ( push > width ) ? (b + width_half) : ( b < width_half ) ? (b * -1) : ( b - width_half );
+			var x = ( push > width ) ? ((b + width_half) * -1) : ( b < width_half ) ? (b * -1) : ( b - width_half );
 		} else {
 			xPush = (xPush * -1);
-			var x = ( push > width ) ? ((b + width_half) * -1) : ( b < width_half ) ? (width_half - b) : b;
+			var x = ( push > width ) ? (b + width_half) : ( b < width_half ) ? (width_half - b) : b;
 		}
 		//console.log((leftPush) ? "right" : "left",{ x : x, z: xPush, b : b, width_half : width_half })
 		return { x : x, z: xPush };
@@ -51,7 +51,7 @@ WHALE.VerticallyZFoldedDLLeaflet = function (width,height) {
 		var leftZ = width * 0.86;
 		var leftPush = scope.cornerPush(leftZ,true);
 		var rightZ = width * 0.86;
-		var rightPush = scope.cornerPush(rightZ,true);
+		var rightPush = scope.cornerPush(rightZ,false);
 		
 		scope.vertices = [
 
@@ -81,6 +81,19 @@ WHALE.VerticallyZFoldedDLLeaflet = function (width,height) {
 			,new THREE.Vector3(width_half, height_full, 0) 
 			,new THREE.Vector3(-width_half, height_full, 0)
 			
+			/**
+			* SIDE 4/5 VERTICES
+			*/
+			,new THREE.Vector3(width_half, 0, 0)
+			,new THREE.Vector3(rightPush.x, 0, rightPush.z)
+			,new THREE.Vector3(rightPush.x, height_full, rightPush.z)	
+			,new THREE.Vector3(width_half, height_full, 0)
+			
+			,new THREE.Vector3(width_half, 0, 0)
+			,new THREE.Vector3(rightPush.x, 0, rightPush.z)
+			,new THREE.Vector3(rightPush.x, height_full, rightPush.z)	
+			,new THREE.Vector3(width_half, height_full, 0)
+			
 		];
 		
 		var i;
@@ -101,14 +114,20 @@ WHALE.VerticallyZFoldedDLLeaflet = function (width,height) {
 			// side 1
 			,new THREE.Face3( 6, 5, 4, new THREE.Vector3(), new THREE.Color( 0x11bb00 ), 1 )
 			,new THREE.Face3( 4, 7, 6, new THREE.Vector3(), new THREE.Color( 0x11bb00 ), 1 )
-			
-			
+
 			// side 2
 			,new THREE.Face3( 8, 9, 10, new THREE.Vector3(), new THREE.Color( 0xddcc00 ), 2 )
 			,new THREE.Face3( 10, 11, 8, new THREE.Vector3(), new THREE.Color( 0xddcc00 ), 2 )
 			// side 3
 			,new THREE.Face3( 14, 13, 12, new THREE.Vector3(), new THREE.Color( 0xddcc00 ), 3 )
 			,new THREE.Face3( 12, 15, 14, new THREE.Vector3(), new THREE.Color( 0xddcc00 ), 3 )
+			
+			// side 4
+			,new THREE.Face3( 16, 17, 18, new THREE.Vector3(), new THREE.Color( 0xddcc00 ), 4 )
+			,new THREE.Face3( 18, 19, 16, new THREE.Vector3(), new THREE.Color( 0xddcc00 ), 4 )
+			// side 5
+			,new THREE.Face3( 22, 21, 20, new THREE.Vector3(), new THREE.Color( 0xddcc00 ), 5 )
+			,new THREE.Face3( 20, 23, 22, new THREE.Vector3(), new THREE.Color( 0xddcc00 ), 5 )
 		]
 
 		/**
@@ -120,23 +139,35 @@ WHALE.VerticallyZFoldedDLLeaflet = function (width,height) {
 		uvs.push( new THREE.Vector2( 1.0, 0.0 ) );
 		uvs.push( new THREE.Vector2( 0.0, 1.0 ) );
 		uvs.push( new THREE.Vector2( 1.0, 1.0 ) );
-		/*
+		
 		scope.faceVertexUvs[ 0 ] = [
-			,[ uvs[2], uvs[0], uvs[1] ]
-			,[ uvs[1], uvs[3], uvs[2] ] 
+			// side 0
+			[ uvs[0], uvs[1], uvs[3] ] // 0, 1, 2,
+			,[ uvs[3], uvs[2], uvs[0] ] // 2, 3, 0,
+			
 			// side 1
-			,[ uvs[0], uvs[1], uvs[3] ] 
-			,[ uvs[3], uvs[2], uvs[0] ]
+			,[ uvs[2], uvs[0], uvs[1] ] // 6, 5, 4,
+			,[ uvs[1], uvs[3], uvs[2] ] // 4, 7, 6, 
 			
 			// side 2
-			[ uvs[0], uvs[1], uvs[3] ]
-			,[ uvs[3], uvs[2], uvs[0] ]
+			[ uvs[0], uvs[1], uvs[3] ] // 8, 9, 10,
+			,[ uvs[3], uvs[2], uvs[0] ]  // 10, 11, 8,
 			
 			// side 3
-			,[ uvs[2], uvs[0], uvs[1] ]
-			,[ uvs[1], uvs[3], uvs[2] ]
+			,[ uvs[3], uvs[1], uvs[0] ]  // 14, 13, 12,
+			,[ uvs[0], uvs[2], uvs[3] ]  // 12, 15, 14,
+			
+			// side 4
+			,[ uvs[0], uvs[1], uvs[3] ]  // 16, 17, 18,
+			,[ uvs[3], uvs[2], uvs[0] ]  //  18, 19, 16,
+			
+			// side 5
+			,[ uvs[3], uvs[1], uvs[0] ]  // 22, 21, 20,
+			,[ uvs[0], uvs[2], uvs[3] ]  // 20, 23, 22,
+			
+			
 		] ;
-		*/
+		
 		scope.computeFaceNormals();
 		scope.computeVertexNormals();
 		//scope.mergeVertices();
