@@ -171,6 +171,15 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
         scope.resizeObject = function () {
 			directive.obj.scale.set(scope.scale, scope.scale, scope.scale);
         };
+		
+		/**
+		* @TODO: Position by x and z and from any object position
+		*/
+		scope.positionCamera = function() {
+			var y = directive.obj.geometry.height / 2;
+			directive.controls.target.copy( new THREE.Vector3(0,y,0) );
+			directive.controls.update();
+		}
 
         // -----------------------------------
         // Watches
@@ -237,6 +246,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 			if (!DisplayService.isEmpty(DisplayService.mesh)) {
 				directive.scene.remove(directive.obj);
 				directive.obj = DisplayService.mesh;
+				scope.positionCamera();
 				directive.materials.printed = directive.obj.material;
 				directive.scene.add(directive.obj);	
 				directive.obj.geometry.print();
@@ -280,6 +290,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
         };
 
 		function render () {
+			
 			if (!directive.hoovering && scope.spinning) {
 				directive.obj.rotation.y += 0.005
 			}
