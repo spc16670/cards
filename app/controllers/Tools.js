@@ -102,7 +102,7 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		DisplayService.materializeMesh();
 	}
 	$scope.test = function () {
-		$rootScope.apply();
+		$rootScope.$apply();
 		//window.open(DisplayService.editingCanvas.toDataURL('png'));
 	}
 	

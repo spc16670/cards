@@ -25,9 +25,9 @@ WHALE.VerticallyZFoldedDLLeaflet = function (width,height) {
 	
 	var width_half = width / 2;
 	var height_full = height;
-	
-	this.leftZ = width * 0.75;
-	this.rightZ = width * 1.5;
+	var sidePush = 0.6;
+	this.leftZ = width * sidePush;
+	this.rightZ = width * sidePush;
 	
 	this.cornerPush = function (push,leftPush) {
 		var xPush = ((push > width) ? (width - (push - width)) : push);
@@ -36,7 +36,7 @@ WHALE.VerticallyZFoldedDLLeaflet = function (width,height) {
 			var x = ( push > width ) ? ((b + width_half) * -1) : ( b < width_half ) ? (b * -1) : ( b - width_half );
 		} else {
 			xPush = (xPush * -1);
-			var x = ( push > width ) ? (b + width_half) : ( b < width_half ) ? (width_half - b) : b;
+			var x = ( push > width ) ? (b + width_half) : ( b < width_half ) ? (width_half - b) : ((b - width_half) * -1);
 		}
 		//console.log((leftPush) ? "right" : "left",{ x : x, z: xPush, b : b, width_half : width_half })
 		return { x : x, z: xPush };
@@ -48,9 +48,9 @@ WHALE.VerticallyZFoldedDLLeaflet = function (width,height) {
 	
 	function build() {
 		
-		var leftZ = width * 0.86;
+		var leftZ = width * sidePush;
 		var leftPush = scope.cornerPush(leftZ,true);
-		var rightZ = width * 0.86;
+		var rightZ = width * sidePush;
 		var rightPush = scope.cornerPush(rightZ,false);
 		
 		scope.vertices = [
