@@ -128,11 +128,12 @@ WHALE.VerticallyCFoldedDLLeaflet = function (width,height) {
 		* 01 11
 		* 00 10
 		*/
-		var uvs = [];
-		uvs.push( new THREE.Vector2( 0.0, 0.0 ) );
-		uvs.push( new THREE.Vector2( 1.0, 0.0 ) );
-		uvs.push( new THREE.Vector2( 0.0, 1.0 ) );
-		uvs.push( new THREE.Vector2( 1.0, 1.0 ) );
+		var uvs = [
+			new THREE.Vector2( 0.0, 0.0 ) 
+			,new THREE.Vector2( 1.0, 0.0 ) 
+			,new THREE.Vector2( 0.0, 1.0 )
+			,new THREE.Vector2( 1.0, 1.0 )
+		];
 		
 		scope.faceVertexUvs[ 0 ] = [
 			// side 4

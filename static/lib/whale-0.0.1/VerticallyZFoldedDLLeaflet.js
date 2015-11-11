@@ -134,11 +134,12 @@ WHALE.VerticallyZFoldedDLLeaflet = function (width,height) {
 		* 01 11
 		* 00 10
 		*/
-		var uvs = [];
-		uvs.push( new THREE.Vector2( 0.0, 0.0 ) );
-		uvs.push( new THREE.Vector2( 1.0, 0.0 ) );
-		uvs.push( new THREE.Vector2( 0.0, 1.0 ) );
-		uvs.push( new THREE.Vector2( 1.0, 1.0 ) );
+		var uvs = [
+			new THREE.Vector2( 0.0, 0.0 )
+			,new THREE.Vector2( 1.0, 0.0 )
+			,new THREE.Vector2( 0.0, 1.0 )
+			,new THREE.Vector2( 1.0, 1.0 )
+		];
 		
 		scope.faceVertexUvs[ 0 ] = [
 			// side 0
@@ -150,20 +151,20 @@ WHALE.VerticallyZFoldedDLLeaflet = function (width,height) {
 			,[ uvs[1], uvs[3], uvs[2] ] // 4, 7, 6, 
 			
 			// side 2
-			[ uvs[0], uvs[1], uvs[3] ] // 8, 9, 10,
+			,[ uvs[0], uvs[1], uvs[3] ] // 8, 9, 10,
 			,[ uvs[3], uvs[2], uvs[0] ]  // 10, 11, 8,
 			
 			// side 3
-			,[ uvs[3], uvs[1], uvs[0] ]  // 14, 13, 12,
-			,[ uvs[0], uvs[2], uvs[3] ]  // 12, 15, 14,
+			,[ uvs[2], uvs[0], uvs[1] ]  // 14, 13, 12,
+			,[ uvs[1], uvs[3], uvs[2] ]  // 12, 15, 14,
 			
 			// side 4
 			,[ uvs[0], uvs[1], uvs[3] ]  // 16, 17, 18,
 			,[ uvs[3], uvs[2], uvs[0] ]  //  18, 19, 16,
 			
 			// side 5
-			,[ uvs[3], uvs[1], uvs[0] ]  // 22, 21, 20,
-			,[ uvs[0], uvs[2], uvs[3] ]  // 20, 23, 22,
+			,[ uvs[2], uvs[0], uvs[1] ]  // 22, 21, 20,
+			,[ uvs[1], uvs[3], uvs[2] ]  // 20, 23, 22,
 			
 			
 		] ;
@@ -214,5 +215,31 @@ WHALE.VerticallyZFoldedDLLeaflet.prototype.reset = function () {
 * Play animation
 */
 WHALE.VerticallyZFoldedDLLeaflet.prototype.play = function () {
-	
+	if (this.rightZ < ((2 * this.width) - 10)) {
+		var leftPush = this.cornerPush(this.leftZ,true);
+		var rightPush = this.cornerPush(this.rightZ,false);
+		
+		this.vertices[1].x = leftPush.x;
+		this.vertices[1].z = leftPush.z;
+		this.vertices[2].x = leftPush.x;
+		this.vertices[2].z = leftPush.z;
+		
+		this.vertices[5].x = leftPush.x;
+		this.vertices[5].z = leftPush.z;
+		this.vertices[6].x = leftPush.x;
+		this.vertices[6].z = leftPush.z;
+		
+		this.vertices[17].x = rightPush.x;
+		this.vertices[17].z = rightPush.z;
+		this.vertices[18].x = rightPush.x;
+		this.vertices[18].z = rightPush.z;
+		
+		this.vertices[21].x = rightPush.x;
+		this.vertices[21].z = rightPush.z;
+		this.vertices[22].x = rightPush.x;
+		this.vertices[22].z = rightPush.z;
+		
+		this.rightZ = this.rightZ + 2;
+		this.leftZ = this.leftZ + 2;
+	}
 }
