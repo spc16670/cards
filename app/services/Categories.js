@@ -42,10 +42,19 @@ module.service('CategoriesService', [function () {
 					id: 1 
 					, type : "invitations"
 					, title: "Standard Wedding Invitation"
-					, icon: "images/invitation.jpg"
+					, icon: "images/invitationH.jpg"
 					, size: { x : 100, y: 160, z: 0 }
-					, thumbnailSize : 12
-					, desc : "Standard wedding invitation"
+					, thumbnailSize : 6
+					, desc : "Horizontally folded card"
+				}
+				,{ 
+					id: 2
+					, type : "invitations"
+					, title: "Standard Wedding Invitation"
+					, icon: "images/invitationV.jpg"
+					, size: { x : 100, y: 160, z: 0 }
+					, thumbnailSize : 6
+					, desc : "Vertically folded card"
 				}
 			]
 		}

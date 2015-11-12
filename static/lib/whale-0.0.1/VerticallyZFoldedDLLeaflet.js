@@ -33,7 +33,7 @@ WHALE.VerticallyZFoldedDLLeaflet = function (width,height) {
 		var xPush = ((push > width) ? (width - (push - width)) : push);
 		var b = Math.sqrt( Math.pow(width,2) - Math.pow(xPush,2) );
 		if (leftPush) {
-			var x = ( push > width ) ? ((b + width_half) * -1) : ( b < width_half ) ? (b * -1) : ( b - width_half );
+			var x = ( push > width ) ? ((b + width_half) * -1) : ( b < width_half ) ? ((width_half - b) * -1) : ( b - width_half );
 		} else {
 			xPush = (xPush * -1);
 			var x = ( push > width ) ? (b + width_half) : ( b < width_half ) ? (width_half - b) : ((b - width_half) * -1);

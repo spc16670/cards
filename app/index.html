@@ -29,6 +29,7 @@
 		<script src="../static/lib/whale-0.0.1/whale.js"></script>
 		<script src="../static/lib/whale-0.0.1/Card.js"></script>
 		<script src="../static/lib/whale-0.0.1/HorizontallyFoldedCard.js"></script>
+		<script src="../static/lib/whale-0.0.1/VerticallyFoldedCard.js"></script>
 		<script src="../static/lib/whale-0.0.1/VerticallyCFoldedDLLeaflet.js"></script>
 		<script src="../static/lib/whale-0.0.1/VerticallyZFoldedDLLeaflet.js"></script>
 		
@@ -155,6 +156,7 @@
 						<span ng-if="$index % 6 == 0">
 							<div class="row">
 								<div ng-if="categories.invitations.thumbnails[$index+0]"><thumbnail item="categories.invitations.thumbnails[$index+0]" item-click="clicked(categories.invitations.thumbnails[$index+0])"></thumbnail></div>
+								<div ng-if="categories.invitations.thumbnails[$index+1]"><thumbnail item="categories.invitations.thumbnails[$index+1]" item-click="clicked(categories.invitations.thumbnails[$index+1])"></thumbnail></div>
 							</div>
 						</span>
 					</div>
@@ -176,53 +178,8 @@
 		<!-- Editor -->
 		<div class="container" ng-show="toggler.editor">
 			<div class="row">
-				<div class="col-md-3" ng-controller="GroupController">
-	  
-					<uib-accordion close-others="true">
-					  <div ng-click='loadGroup(group)' uib-accordion-group heading="{{ group.title }}" ng-repeat="group in groups">
-						<table class="table table-condensed">
-							<tbody>
-								<tr ng-repeat="model in group.models">
-									<td ng-click="selectModel(model)">
-										<div class="row text-center"><h4>{{ model.title }}</h4></div>
-										<div class="row">
-											<div class="col-sm-6 text-center">
-												{{ model.size.x }} x {{ model.size.y }}
-											</div>
-											<div class="col-sm-6">
-												<img ng-src="images/{{ model.icon }}" class="img-thumbnail" alt="Model Image" />
-											</div>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					  </div>
-					</uib-accordion>
-				</div>
-				<div class="col-md-6" ng-controller="DisplayController">  
-					<div class="panel panel-default">
-
-						<div class="panel-body">
-							<div id="threeCanvas" ng-if="!fabricShowing"
-								ng-webgl
-								scale="scale"
-								material-type="materialType"
-								spinning="spinning"
-								helpers="helpers"
-								wireframe="wireframe"
-								normals="normals"
-							></div>
-							<div id="fabricCanvas" ng-if="fabricShowing"
-								ng-fabric
-								width="fabricWidth"
-								height="fabricHeight"
-							>
-							</div>
-							<div id="scrollColumn" class="visible-xs"></div>
-						</div>
-					</div>
-				</div>
+			
+			
 				<div class="col-md-3" ng-controller="ToolsController">
 					<div class="panel panel-default">
 					  <!-- Default panel contents -->
@@ -345,8 +302,57 @@
 							</tbody>
 						</table>
 					</div>
-
 				</div>
+
+				<div class="col-md-6" ng-controller="DisplayController">  
+					<div class="panel panel-default">
+
+						<div class="panel-body">
+							<div id="threeCanvas" ng-if="!fabricShowing"
+								ng-webgl
+								scale="scale"
+								material-type="materialType"
+								spinning="spinning"
+								helpers="helpers"
+								wireframe="wireframe"
+								normals="normals"
+							></div>
+							<div id="fabricCanvas" ng-if="fabricShowing"
+								ng-fabric
+								width="fabricWidth"
+								height="fabricHeight"
+							>
+							</div>
+							<div id="scrollColumn" class="visible-xs"></div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-md-3" ng-controller="GroupController">
+	  
+					<uib-accordion close-others="true">
+					  <div ng-click='loadGroup(group)' uib-accordion-group heading="{{ group.title }}" ng-repeat="group in groups">
+						<table class="table table-condensed">
+							<tbody>
+								<tr ng-repeat="model in group.models">
+									<td ng-click="selectModel(model)">
+										<div class="row text-center"><h4>{{ model.title }}</h4></div>
+										<div class="row">
+											<div class="col-sm-6 text-center">
+												{{ model.size.x }} x {{ model.size.y }}
+											</div>
+											<div class="col-sm-6">
+												<img ng-src="images/{{ model.icon }}" class="img-thumbnail" alt="Model Image" />
+											</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					  </div>
+					</uib-accordion>
+				</div>
+
 				
 			</div>
 		</div>

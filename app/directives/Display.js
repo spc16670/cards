@@ -1,7 +1,7 @@
 'use strict';
 var module = angular.module('cards.directives.Display',[]);
 
-module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayService,$timeout) {
+module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (DisplayService,$timeout,$rootScope) {
     return {
       restrict: 'A',
       scope: { 
@@ -246,7 +246,12 @@ module.directive('ngWebgl', ['DisplayService','$timeout',function (DisplayServic
 				scope.positionCamera();
 				directive.materials.printed = directive.obj.material;
 				directive.scene.add(directive.obj);	
-				directive.obj.geometry.print();
+				if(!scope.$$phase && !$rootScope.$$phase) {
+					console.log("running apply",scope.$$phase,$rootScope.$$phase);
+					scope.$apply();
+				} else {
+					console.log("apply in progress",scope.$$phase,$rootScope.$$phase);
+				}
 			}
         });
 

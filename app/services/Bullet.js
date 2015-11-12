@@ -29,6 +29,18 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 			]
 		}
 		,{ 
+			type : 'invitations'
+			, id: 2
+			, size : { x : 250, y : 120, z : 90 } 
+			, geometry : 'VerticallyFoldedCard'
+			, fabrics : [
+				{ materialIndex : 0, fabricJson : { objects : [], background : "#BBDDFF"} }
+				,{ materialIndex : 1, fabricJson : { objects : [], background : "#BBDDFF"} }
+				,{ materialIndex : 2, fabricJson : { objects : [], background : "#6EB7FF"} }
+				,{ materialIndex : 3, fabricJson : { objects : [], background : "#6EB7FF" } }
+			]
+		}
+		,{ 
 			type : 'leaflets'
 			, id: 1
 			, size : { x : 100, y : 210, z : 0 } 
