@@ -22,6 +22,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 			,obj : null
 			,contW : 0
 			,contH : 0
+			,sprites : null
 			,materials : {}
 			,controls : null
 			,hoovering : false
@@ -82,6 +83,9 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 		
 		scope.resetAnimation = function () {
 			directive.sceneClicked = false;
+			if (directive.obj.sprites != null) {
+				scope.removeSideLabels();
+			}
 			if (directive.obj.geometry.reset != undefined) { 
 				directive.obj.geometry.reset();
 			}
@@ -122,6 +126,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 					}	
 				} else {
 					directive.sceneClicked = true;
+					scope.sideLabelSprites();
 					directive.obj.rotation.x = 0;
 					directive.obj.rotation.z = 0;
 					directive.obj.rotation.y = 0;
@@ -176,6 +181,45 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 			var y = directive.obj.geometry.height / 2;
 			directive.controls.target.copy( new THREE.Vector3(0,y,0) );
 			directive.controls.update();
+		}
+		
+		
+		scope.removeSideLabels = function () {
+			var i;
+			for (i=0;i<directive.obj.sprites.length;i++) {
+				directive.scene.remove(directive.obj.sprites[i]);
+			}
+			directive.obj.sprites = null;
+		}
+		
+		scope.updateSpritePositions = function () {
+			var i;
+			for (i=0;i<directive.obj.sprites.length;i++) {
+				var position = directive.obj.geometry.getSideLabelVertex(i);
+				directive.obj.sprites[i].position.set(position.x,position.y,position.z);
+			} 
+		}
+		
+		scope.sideLabelSprites = function() {
+			var sprites = [];
+			var i;
+			for (i=0;i<directive.obj.geometry.sides;i++) {
+				var position = directive.obj.geometry.getSideLabelVertex(i);
+				var spritey = WHALE.makeTextSprite( " Side, " + (i + 1), 
+					{ fontsize: 24, borderColor: {r:255, g:0, b:0, a:1.0}, backgroundColor: {r:255, g:100, b:100, a:0.8} } );
+				spritey.position.set(position.x,position.y,position.z);
+				directive.scene.add(spritey);
+				sprites.push(spritey);
+			}
+			directive.obj.sprites = sprites;
+		};
+		
+		scope.updateLabelsPosition = function () {
+			var i;
+			for (i=0;i<scope.sideLabelSprites.length;i++) {
+				var position = directive.obj.geometry.getSideLabelVertex(i);
+				directive.obj.sprites[i].position.set(position.x,position.y,position.z);
+			}
 		}
 
         // -----------------------------------
@@ -246,12 +290,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 				scope.positionCamera();
 				directive.materials.printed = directive.obj.material;
 				directive.scene.add(directive.obj);	
-				if(!scope.$$phase && !$rootScope.$$phase) {
-					console.log("running apply",scope.$$phase,$rootScope.$$phase);
-					scope.$apply();
-				} else {
-					console.log("apply in progress",scope.$$phase,$rootScope.$$phase);
-				}
+				directive.obj.geometry.print();
 			}
         });
 
@@ -275,6 +314,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 			directive.controls = null;
 			directive.raycaster = null;
 			directive.materials = null;
+			directive.sprites = null;
 			directive.mouse = null;
 			directive.obj = null;
 			directive.clickPromise = null;
@@ -299,7 +339,8 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 			
 			if (directive.obj.geometry.play != undefined) {
 				if (directive.sceneClicked) { 
-					directive.obj.geometry.play(); 
+					directive.obj.geometry.play();
+					scope.updateSpritePositions();
 				}
 			}
 

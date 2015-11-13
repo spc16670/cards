@@ -69,17 +69,28 @@ WHALE.Card = function (width,height) {
 			[ uvs[0], uvs[1], uvs[3] ]
 			,[ uvs[0], uvs[3], uvs[2] ]
 			// front back side
-			,[ uvs[1], uvs[3], uvs[2] ]
-			,[ uvs[0], uvs[1], uvs[2] ]
+			,[ uvs[2], uvs[0], uvs[1] ]
+			,[ uvs[3], uvs[2], uvs[1] ]
 		] ;
-
+		
 		scope.computeFaceNormals();
 		scope.computeVertexNormals();
+		
+		
 	}
+	
 };
 
 WHALE.Card.prototype = Object.create( WHALE.BaseGeometry.prototype );
 WHALE.Card.prototype.constructor = WHALE.Card;
+
+WHALE.Card.prototype.getSideLabelVertex = function(side) {
+	switch (side) {
+		case 0: return this.vertices[2];
+		case 1: return this.vertices[7];
+		default: return null
+	}
+}
 
 /**
 * @Override super.print()

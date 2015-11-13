@@ -168,6 +168,7 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 		this.rendered++;
 		if (this.rendered == this.model.fabrics.length) {
 			this.rendered = 0;
+			Service.mesh = new THREE.Mesh( Service.model.geometry, Service.material );
 			$timeout(function(){ Service.setFabricShowing(false); },1)
 		} 
 	}
@@ -181,7 +182,6 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 		Service.material = new THREE.MeshFaceMaterial(materials);
 		// instantiate fabrics
 		var fabricIndex;
-		Service.mesh = new THREE.Mesh( Service.model.geometry, Service.material );
 		for (fabricIndex=0;fabricIndex<this.model.fabrics.length;fabricIndex++) {
 			var f = Service.model.fabrics[fabricIndex];
 			//console.log("fabric canvas",f.canvas);
