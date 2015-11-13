@@ -166,6 +166,18 @@ WHALE.VerticallyCFoldedDLLeaflet = function (width,height) {
 WHALE.VerticallyCFoldedDLLeaflet.prototype = Object.create( WHALE.BaseGeometry.prototype );
 WHALE.VerticallyCFoldedDLLeaflet.prototype.constructor = WHALE.VerticallyCFoldedDLLeaflet;
 
+WHALE.VerticallyCFoldedDLLeaflet.prototype.getSideLabelVertex = function(side) {
+	switch (side) {
+		case 0: return this.vertices[19];
+		case 1: return this.vertices[22];
+		case 2: return this.vertices[10];
+		case 3: return this.vertices[15];
+		case 4: return this.vertices[2];
+		case 5: return this.vertices[7];
+		default: return null
+	}
+}
+
 /**
 * @Override super.print()
 * Print to console

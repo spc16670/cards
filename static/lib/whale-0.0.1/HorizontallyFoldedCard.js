@@ -151,6 +151,16 @@ WHALE.HorizontallyFoldedCard.prototype.reset = function () {
 	this.verticesNeedUpdate = true;
 }
 
+WHALE.HorizontallyFoldedCard.prototype.getSideLabelVertex = function(side) {
+	switch (side) {
+		case 0: return this.vertices[2];
+		case 1: return this.vertices[5];
+		case 2: return this.vertices[10];
+		case 3: return this.vertices[15];
+		default: return null
+	}
+}
+
 /**
 * Calculate vertex position using the circle equation
 */
