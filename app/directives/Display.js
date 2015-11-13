@@ -287,9 +287,10 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 			if (!DisplayService.isEmpty(DisplayService.mesh)) {
 				directive.scene.remove(directive.obj);
 				directive.obj = DisplayService.mesh;
-				scope.positionCamera();
 				directive.materials.printed = directive.obj.material;
 				directive.scene.add(directive.obj);	
+				scope.positionCamera();
+				directive.camera.updateProjectionMatrix();
 				directive.obj.geometry.print();
 			}
         });

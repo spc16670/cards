@@ -85,7 +85,7 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 	}
 	
 	/**
-	* setModel() is called from GroupController.
+	* setModel() is called from CategoriesController.
 	*/
 	Service.setModel = function(model) {
 		this.model = model;

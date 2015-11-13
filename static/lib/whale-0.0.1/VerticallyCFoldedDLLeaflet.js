@@ -51,43 +51,43 @@ WHALE.VerticallyCFoldedDLLeaflet = function (width,height) {
 
 		scope.vertices = [
 			/**
-			* SIDE 5/6 VERTICES
+			* SIDE 4/5 VERTICES
 			*/
-			new THREE.Vector3(-width_half, 0, 0) // 0 -- side 5 left lower corner 
-			,new THREE.Vector3(width_half, 0, 0) // 1 -- side 5 right lower corner
-			,new THREE.Vector3(width_half, height_full, 0)  // 2 -- side 5 right upper corner
-			,new THREE.Vector3(-width_half, height_full, 0) // 3 -- side 5 left upper corner
+			new THREE.Vector3(-width_half, 0, 0) 
+			,new THREE.Vector3(width_half, 0, 0)
+			,new THREE.Vector3(width_half, height_full, 0)
+			,new THREE.Vector3(-width_half, height_full, 0) 
 			
-			,new THREE.Vector3(-width_half, 0, 0) // 4 -- side 6 left lower corner
-			,new THREE.Vector3(width_half, 0, 0) // 5 -- side 6 right lower corner
-			,new THREE.Vector3(width_half, height_full, 0)  // 6 -- side 6 right upper corner
-			,new THREE.Vector3(-width_half, height_full, 0) // 7 -- side 6 left upper corner
+			,new THREE.Vector3(-width_half, 0, 0)
+			,new THREE.Vector3(width_half, 0, 0)
+			,new THREE.Vector3(width_half, height_full, 0)
+			,new THREE.Vector3(-width_half, height_full, 0)
 
 			/**
-			* SIDE 3/4 VERTICES
+			* SIDE 2/3 VERTICES
 			*/
-			,new THREE.Vector3(leftPush.x, 0, leftPush.z) // 8 -- side 4 left lower corner
-			,new THREE.Vector3(width_half, 0, 0) // 9 -- side 4 right lower corner
-			,new THREE.Vector3(width_half, height_full, 0) // 10 -- side 4 right upper corner
-			,new THREE.Vector3(leftPush.x, height_full, leftPush.z) // 11 -- side 4 left upper corner	
+			,new THREE.Vector3(leftPush.x, 0, leftPush.z)
+			,new THREE.Vector3(width_half, 0, 0)
+			,new THREE.Vector3(width_half, height_full, 0)
+			,new THREE.Vector3(leftPush.x, height_full, leftPush.z)
 			
-			,new THREE.Vector3(leftPush.x, 0, leftPush.z) // 12 -- side 3 left lower corner
-			,new THREE.Vector3(width_half, 0, 0) // 13 -- side 3 right lower corner
-			,new THREE.Vector3(width_half, height_full, 0)  // 14 -- side 3 right upper corner
-			,new THREE.Vector3(leftPush.x, height_full, leftPush.z) // 15 -- side 3 left upper corner	
+			,new THREE.Vector3(leftPush.x, 0, leftPush.z)
+			,new THREE.Vector3(width_half, 0, 0)
+			,new THREE.Vector3(width_half, height_full, 0)
+			,new THREE.Vector3(leftPush.x, height_full, leftPush.z)
 			
 			/**
-			* SIDE 1/2 VERTICES
+			* SIDE 0/1 VERTICES
 			*/
-			,new THREE.Vector3(rightPush.x, 0, rightPush.z) // 16 -- side 1 left lower corner
-			,new THREE.Vector3(-width_half, 0, 0) // 17 -- side 1 right lower corner
-			,new THREE.Vector3(-width_half, height_full, 0)  // 18 -- side 1 right upper corner
-			,new THREE.Vector3(rightPush.x, height_full, rightPush.z) // 19 -- side 1 left upper corner	
+			,new THREE.Vector3(rightPush.x, 0, rightPush.z)
+			,new THREE.Vector3(-width_half, 0, 0)
+			,new THREE.Vector3(-width_half, height_full, 0)
+			,new THREE.Vector3(rightPush.x, height_full, rightPush.z)
 			
-			,new THREE.Vector3(rightPush.x, 0, rightPush.z) // 20 -- side 2 left lower corner
-			,new THREE.Vector3(-width_half, 0, 0) // 21 -- side 2 right lower corner
-			,new THREE.Vector3(-width_half, height_full, 0) // 22 -- side 2 right upper corner
-			,new THREE.Vector3(rightPush.x, height_full, rightPush.z) // 23 -- side 2 left upper corner	
+			,new THREE.Vector3(rightPush.x, 0, rightPush.z)
+			,new THREE.Vector3(-width_half, 0, 0)
+			,new THREE.Vector3(-width_half, height_full, 0)
+			,new THREE.Vector3(rightPush.x, height_full, rightPush.z)
 		];
 		
 		var i;
