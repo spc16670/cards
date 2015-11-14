@@ -11,7 +11,7 @@ if ( typeof define === 'function' && define.amd ) {
 	module.exports = WHALE;
 }
 
-WHALE.makeTextSprite = function makeTextSprite( message, parameters ) {
+WHALE.makeTextSprite = function makeTextSprite( message, side, parameters ) {
 	if ( parameters === undefined ) parameters = {};
 	
 	var fontface = parameters.hasOwnProperty("fontface") ? 
@@ -21,7 +21,7 @@ WHALE.makeTextSprite = function makeTextSprite( message, parameters ) {
 		parameters["fontsize"] : 18;
 	
 	var borderThickness = parameters.hasOwnProperty("borderThickness") ? 
-		parameters["borderThickness"] : 4;
+		parameters["borderThickness"] : 1;
 	
 	var borderColor = parameters.hasOwnProperty("borderColor") ?
 		parameters["borderColor"] : { r:0, g:0, b:0, a:1.0 };
@@ -30,7 +30,7 @@ WHALE.makeTextSprite = function makeTextSprite( message, parameters ) {
 		parameters["backgroundColor"] : { r:255, g:255, b:255, a:1.0 };
 		
 	var scale = parameters.hasOwnProperty("scale") ?
-		parameters["scale"] : { x : 100, y : 50, z : 1.0 };
+		parameters["scale"] : { x : 100, y : 100, z : 1.0 };
 
 		
 	var canvas = document.createElement('canvas');
@@ -41,51 +41,31 @@ WHALE.makeTextSprite = function makeTextSprite( message, parameters ) {
 	var metrics = context.measureText( message );
 	var textWidth = metrics.width;
 	
-	// background color
-	context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + ","
-								  + backgroundColor.b + "," + backgroundColor.a + ")";
-	// border color
-	context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + ","
-								  + borderColor.b + "," + borderColor.a + ")";
-
-	context.lineWidth = borderThickness;
-	roundRect(context, borderThickness/2, borderThickness/2, textWidth + borderThickness, fontsize * 1.4 + borderThickness, 6);
-	// 1.4 is extra height factor for text below baseline: g,j,p,q.
+	var fillStyle = "rgba(" + backgroundColor.r + "," + backgroundColor.g + "," + backgroundColor.b + "," + backgroundColor.a + ")";
+	var strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + "," + borderColor.b + "," + borderColor.a + ")";
 	
+	var r = textWidth / 4;
+	
+	canvas.width = textWidth + (borderThickness * 2);
+	canvas.height = canvas.width;
+	circle(context, canvas.width / 2, canvas.height / 2, r, borderThickness, fillStyle, strokeStyle);
 	// text color
 	context.fillStyle = "rgba(0, 0, 0, 1.0)";
-
-	context.fillText( message, borderThickness, fontsize + borderThickness);
+	context.textAlign = 'center';
+	context.fillText( message, canvas.width / 2, ( canvas.height / 2 ) );
 	
 	var texture = new THREE.Texture(canvas) 
 	texture.needsUpdate = true;
 
-	var spriteMaterial = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false } );
+	var spriteMaterial = new THREE.SpriteMaterial( { map: texture } );
 	var sprite = new THREE.Sprite( spriteMaterial );
-	sprite.scale.set(scale.x, scale.y, scale.z);
+	sprite.scale.set( scale.x, scale.y, scale.z );
+	sprite['materialIndex'] = side;
+	sprite['whaleType'] = 'SpriteLabel';
 	return sprite;	
 }
 
-// function for drawing rounded rectangles
-function roundRect(ctx, x, y, w, h, r) 
-{
-    ctx.beginPath();
-    ctx.moveTo(x+r, y);
-    ctx.lineTo(x+w-r, y);
-    ctx.quadraticCurveTo(x+w, y, x+w, y+r);
-    ctx.lineTo(x+w, y+h-r);
-    ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
-    ctx.lineTo(x+r, y+h);
-    ctx.quadraticCurveTo(x, y+h, x, y+h-r);
-    ctx.lineTo(x, y+r);
-    ctx.quadraticCurveTo(x, y, x+r, y);
-    ctx.closePath();
-    ctx.fill();
-	ctx.stroke();   
-}
-
-function circle(ctx, x, y, w, h, r) {
-	var radius = 70;
+function circle(ctx, x, y, r, lineWidth, fillStyle, strokeStyle) {
 	ctx.beginPath();
 	/**
 	* x	The x-coordinate of the center of the circle
@@ -95,11 +75,11 @@ function circle(ctx, x, y, w, h, r) {
 	* eAngle	The ending angle, in radians
 	* counterclockwise	Optional. False is default, and indicates clockwise, while true indicates counter-clockwise.
 	*/
-	ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
-	ctx.fillStyle = 'green';
+	ctx.arc(x, y, r, 0, 2 * Math.PI, false);
+	ctx.fillStyle = fillStyle;
 	ctx.fill();
-	ctx.lineWidth = 5;
-	ctx.strokeStyle = '#003300';
+	ctx.lineWidth = lineWidth;
+	ctx.strokeStyle = strokeStyle;
 	ctx.stroke();
 }
 

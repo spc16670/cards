@@ -83,7 +83,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 		
 		scope.resetAnimation = function () {
 			directive.sceneClicked = false;
-			if (directive.obj.sprites != null) {
+			if (directive.sprites != null) {
 				scope.removeSideLabels();
 			}
 			if (directive.obj.geometry.reset != undefined) { 
@@ -116,9 +116,8 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 					if (pointed != null) {
 						directive.sceneClicked = false;
 						scope.resetAnimation();
-						var facePointed = pointed.face.materialIndex;
-						console.log("material POINTED:",facePointed);
-						DisplayService.setFacePointed(facePointed);
+						console.log("material POINTED:",pointed);
+						DisplayService.setFacePointed(pointed);
 						DisplayService.setFabricShowing(true);
 						scope.$apply();
 					} else {
@@ -146,8 +145,17 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 			directive.mouse.y = - ( (event.clientY - canvasPosition.top) / directive.contH ) * 2 + 1;
 			directive.raycaster.setFromCamera( directive.mouse, directive.camera );
 			var intersected = directive.raycaster.intersectObjects( directive.scene.children );
-			if (intersected.length != 0 && intersected[0].face != null) {
-				return intersected[0];
+			console.log("intersected: ",intersected);
+			// detect side from sprite
+			if (intersected.length != 0) {
+				var i;
+				for (i=0;i<intersected.length;i++) {
+					var obj = intersected[i];
+					if (obj.face != null) {
+						return obj.face.materialIndex;
+					} 
+				}
+				return null;
 			} else {
 				return null;
 			}
@@ -186,41 +194,32 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 		
 		scope.removeSideLabels = function () {
 			var i;
-			for (i=0;i<directive.obj.sprites.length;i++) {
-				directive.scene.remove(directive.obj.sprites[i]);
+			for (i=0;i<directive.sprites.length;i++) {
+				directive.scene.remove(directive.sprites[i]);
 			}
-			directive.obj.sprites = null;
+			directive.sprites = null;
 		}
 		
 		scope.updateSpritePositions = function () {
 			var i;
-			for (i=0;i<directive.obj.sprites.length;i++) {
+			for (i=0;i<directive.sprites.length;i++) {
 				var position = directive.obj.geometry.getSideLabelVertex(i);
-				directive.obj.sprites[i].position.set(position.x,position.y,position.z);
+				directive.sprites[i].position.set(position.x,position.y,position.z);
 			} 
 		}
 		
 		scope.sideLabelSprites = function() {
-			var sprites = [];
+			directive.sprites = [];
 			var i;
 			for (i=0;i<directive.obj.geometry.sides;i++) {
 				var position = directive.obj.geometry.getSideLabelVertex(i);
-				var spritey = WHALE.makeTextSprite( " Side, " + (i + 1), 
-					{ fontsize: 24, borderColor: {r:255, g:0, b:0, a:1.0}, backgroundColor: {r:255, g:100, b:100, a:0.8} } );
+				var spritey = WHALE.makeTextSprite( " Side " + (i + 1), i,
+					{ fontsize: 24, borderColor: {r: 255, g: 0, b: 0, a: 1.0}, backgroundColor: {r:255, g:100, b:100, a:0.8} } );
 				spritey.position.set(position.x,position.y,position.z);
+				directive.sprites.push(spritey);
 				directive.scene.add(spritey);
-				sprites.push(spritey);
 			}
-			directive.obj.sprites = sprites;
 		};
-		
-		scope.updateLabelsPosition = function () {
-			var i;
-			for (i=0;i<scope.sideLabelSprites.length;i++) {
-				var position = directive.obj.geometry.getSideLabelVertex(i);
-				directive.obj.sprites[i].position.set(position.x,position.y,position.z);
-			}
-		}
 
         // -----------------------------------
         // Watches
@@ -290,7 +289,6 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 				directive.materials.printed = directive.obj.material;
 				directive.scene.add(directive.obj);	
 				scope.positionCamera();
-				directive.camera.updateProjectionMatrix();
 				directive.obj.geometry.print();
 			}
         });

@@ -60,7 +60,7 @@ WHALE.VerticallyZFoldedDLLeaflet = function (width,height) {
 			*/
 			new THREE.Vector3(-width_half, 0, 0)
 			,new THREE.Vector3(leftPush.x, 0, leftPush.z)
-			,new THREE.Vector3(leftPush.x, height_full, leftPush.z)	
+			,new THREE.Vector3(leftPush.x, height_full, leftPush.z)	// 11 
 			,new THREE.Vector3(-width_half, height_full, 0)
 			
 			,new THREE.Vector3(-width_half, 0, 0)
@@ -180,13 +180,14 @@ WHALE.VerticallyZFoldedDLLeaflet.prototype = Object.create( WHALE.BaseGeometry.p
 WHALE.VerticallyZFoldedDLLeaflet.prototype.constructor = WHALE.VerticallyZFoldedDLLeaflet;
 
 WHALE.VerticallyZFoldedDLLeaflet.prototype.getSideLabelVertex = function(side) {
+	var halfHeight = (this.height /2);
 	switch (side) {
-		case 0: return this.vertices[2];
-		case 1: return this.vertices[7];
-		case 2: return this.vertices[10];
-		case 3: return this.vertices[15];
-		case 4: return this.vertices[18];
-		case 5: return this.vertices[23];
+		case 0: return new THREE.Vector3(-this.width, halfHeight, -100);
+		case 1: return new THREE.Vector3(-this.width, halfHeight, 100);
+		case 2: return new THREE.Vector3(0, halfHeight, 100);
+		case 3: return new THREE.Vector3(0, halfHeight, -100);
+		case 4: return new THREE.Vector3(this.width, halfHeight, -100);
+		case 5: return new THREE.Vector3(this.width, halfHeight, 100);
 		default: return null
 	}
 }
@@ -197,7 +198,7 @@ WHALE.VerticallyZFoldedDLLeaflet.prototype.getSideLabelVertex = function(side) {
 * Print to console
 */
 WHALE.VerticallyZFoldedDLLeaflet.prototype.print = function () {
-	console.log(this.type,this);
+	console.log( this.type, this );
 };
 
 /**
@@ -254,5 +255,5 @@ WHALE.VerticallyZFoldedDLLeaflet.prototype.play = function () {
 		
 		this.rightZ = this.rightZ + 2;
 		this.leftZ = this.leftZ + 2;
-	}
+	} 
 }
