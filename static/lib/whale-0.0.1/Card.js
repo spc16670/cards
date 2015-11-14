@@ -13,7 +13,8 @@ WHALE.Card = function (width,height) {
 	this.sides = 2;
 	this.width = width || 200;
 	this.height = height || 100;
-
+	this.labelDisatnce = 100;
+	
 	var scope = this; // this in build() is different so we need a global var
 	
 	var width_half = this.width / 2;
@@ -84,10 +85,13 @@ WHALE.Card = function (width,height) {
 WHALE.Card.prototype = Object.create( WHALE.BaseGeometry.prototype );
 WHALE.Card.prototype.constructor = WHALE.Card;
 
+/**
+*/
 WHALE.Card.prototype.getSideLabelVertex = function(side) {
+	var halfHeight = (this.height /2);
 	switch (side) {
-		case 0: return this.vertices[2];
-		case 1: return this.vertices[7];
+		case 0: return new THREE.Vector3(0, halfHeight, this.labelDisatnce);
+		case 1: return new THREE.Vector3(0, halfHeight, (this.labelDisatnce * -1));
 		default: return null
 	}
 }

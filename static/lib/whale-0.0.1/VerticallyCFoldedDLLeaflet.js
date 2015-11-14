@@ -7,6 +7,12 @@
 * leaflet opens up to the left and unveils side 1 (first side back side) and 
 * side 2 which unfolds to the right revealing the side 3 (third side back side) 
 * and  side 4. Side 5 is on the reverse of side 4 .
+*     5
+*   _____
+*  |  4  |
+* 0|1   3|2
+*  |     |
+* 
 */
 
 WHALE.VerticallyCFoldedDLLeaflet = function (width,height) {
@@ -17,7 +23,7 @@ WHALE.VerticallyCFoldedDLLeaflet = function (width,height) {
 	this.sides = 6;
 	this.width = width || 100;
 	this.height = height || 210;
-
+	this.labelDisatnce = 100;
 	var scope = this; // this in build() is different so we need a global var
 	
 	var width_half = width / 2;
@@ -166,14 +172,23 @@ WHALE.VerticallyCFoldedDLLeaflet = function (width,height) {
 WHALE.VerticallyCFoldedDLLeaflet.prototype = Object.create( WHALE.BaseGeometry.prototype );
 WHALE.VerticallyCFoldedDLLeaflet.prototype.constructor = WHALE.VerticallyCFoldedDLLeaflet;
 
+/**
+*     5
+*   _____
+*  |  4  |
+* 0|1   3|2
+*  |     |
+* 
+*/
 WHALE.VerticallyCFoldedDLLeaflet.prototype.getSideLabelVertex = function(side) {
+	var halfHeight = (this.height /2);
 	switch (side) {
-		case 0: return this.vertices[19];
-		case 1: return this.vertices[22];
-		case 2: return this.vertices[10];
-		case 3: return this.vertices[15];
-		case 4: return this.vertices[2];
-		case 5: return this.vertices[7];
+		case 0: return new THREE.Vector3(-this.width, halfHeight, (this.labelDisatnce * -1));
+		case 1: return new THREE.Vector3(-this.width, halfHeight, this.labelDisatnce);
+		case 2: return new THREE.Vector3(this.width, halfHeight, (this.labelDisatnce * -1));
+		case 3: return new THREE.Vector3(this.width, halfHeight, this.labelDisatnce);
+		case 4: return new THREE.Vector3(0, halfHeight, this.labelDisatnce); 
+		case 5: return new THREE.Vector3(0, halfHeight, (this.labelDisatnce * -1));
 		default: return null
 	}
 }
@@ -208,14 +223,6 @@ WHALE.VerticallyCFoldedDLLeaflet.prototype.reset = function () {
 	this.rightZ = this.BUILD_STATE.rightZ;
 	this.leftZ = this.BUILD_STATE.leftZ;
 }
-
-/**
-* Calculate vertex position using the circle equation
-*/
-WHALE.VerticallyCFoldedDLLeaflet.prototype.circleEquation = function(val,negative) {
-	// y = +/- (r^2 - (x-h)^2)^1/2 + k -- eg: y = -(128^2 - 46^2)^1/2 + 120
-	return ( Math.sqrt( Math.pow( this.sideLength, 2 ) - Math.pow(val, 2) ) * ((negative) ? -1 : 1)) + this.height;
-} 
 
 /**
 * Calculate speed as used by the animation functions

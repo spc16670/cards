@@ -146,7 +146,6 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 			directive.raycaster.setFromCamera( directive.mouse, directive.camera );
 			var intersected = directive.raycaster.intersectObjects( directive.scene.children );
 			console.log("intersected: ",intersected);
-			// detect side from sprite
 			if (intersected.length != 0) {
 				var i;
 				for (i=0;i<intersected.length;i++) {

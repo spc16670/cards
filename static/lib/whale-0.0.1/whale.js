@@ -46,13 +46,13 @@ WHALE.makeTextSprite = function makeTextSprite( message, side, parameters ) {
 	
 	var r = textWidth / 4;
 	
-	canvas.width = textWidth + (borderThickness * 2);
+	canvas.width = textWidth + ( borderThickness * 2 );
 	canvas.height = canvas.width;
 	circle(context, canvas.width / 2, canvas.height / 2, r, borderThickness, fillStyle, strokeStyle);
 	// text color
 	context.fillStyle = "rgba(0, 0, 0, 1.0)";
 	context.textAlign = 'center';
-	context.fillText( message, canvas.width / 2, ( canvas.height / 2 ) );
+	context.fillText( message, canvas.width / 2, (canvas.height / 2) + (borderThickness * 2) ) ;
 	
 	var texture = new THREE.Texture(canvas) 
 	texture.needsUpdate = true;

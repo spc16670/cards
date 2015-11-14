@@ -7,9 +7,6 @@
 * The leaflet opens up to the left and unveils side 1 (first side back side). 
 * The back of side 1 i.e. side 2 is only visible once leaflet is turned and 
 * opened again.
-        /| 4/
-     0 /2|3/5
-      /1 |/
 */
 
 WHALE.VerticallyZFoldedDLLeaflet = function (width,height) {
@@ -20,7 +17,7 @@ WHALE.VerticallyZFoldedDLLeaflet = function (width,height) {
 	this.sides = 6;
 	this.width = width || 100;
 	this.height = height || 210;
-
+	this.labelDisatnce = 100;
 	var scope = this; // this in build() is different so we need a global var
 	
 	var width_half = width / 2;
@@ -179,15 +176,20 @@ WHALE.VerticallyZFoldedDLLeaflet = function (width,height) {
 WHALE.VerticallyZFoldedDLLeaflet.prototype = Object.create( WHALE.BaseGeometry.prototype );
 WHALE.VerticallyZFoldedDLLeaflet.prototype.constructor = WHALE.VerticallyZFoldedDLLeaflet;
 
+/**
+*        /| 6/
+*     0 /3|2/4
+*      /1 |/
+*/
 WHALE.VerticallyZFoldedDLLeaflet.prototype.getSideLabelVertex = function(side) {
 	var halfHeight = (this.height /2);
 	switch (side) {
-		case 0: return new THREE.Vector3(-this.width, halfHeight, -100);
-		case 1: return new THREE.Vector3(-this.width, halfHeight, 100);
-		case 2: return new THREE.Vector3(0, halfHeight, 100);
-		case 3: return new THREE.Vector3(0, halfHeight, -100);
-		case 4: return new THREE.Vector3(this.width, halfHeight, -100);
-		case 5: return new THREE.Vector3(this.width, halfHeight, 100);
+		case 0: return new THREE.Vector3(-this.width, halfHeight, (this.labelDisatnce * -1));
+		case 1: return new THREE.Vector3(-this.width, halfHeight, this.labelDisatnce);
+		case 2: return new THREE.Vector3(0, halfHeight, this.labelDisatnce);
+		case 3: return new THREE.Vector3(0, halfHeight, (this.labelDisatnce * -1));
+		case 4: return new THREE.Vector3(this.width, halfHeight, this.labelDisatnce);
+		case 5: return new THREE.Vector3(this.width, halfHeight, (this.labelDisatnce * -1));
 		default: return null
 	}
 }

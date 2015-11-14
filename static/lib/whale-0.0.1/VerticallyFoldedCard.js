@@ -15,6 +15,7 @@ WHALE.VerticallyFoldedCard = function (width,height,stretch) {
 	this.width = width || 200;
 	this.height = height || 100;
 	this.stretch = stretch || 100;
+	this.labelDisatnce = 100;
 	
 	var scope = this; // this in build() is different so we need a global var
 	
@@ -101,6 +102,21 @@ WHALE.VerticallyFoldedCard = function (width,height,stretch) {
 
 WHALE.VerticallyFoldedCard.prototype = Object.create( WHALE.BaseGeometry.prototype );
 WHALE.VerticallyFoldedCard.prototype.constructor = WHALE.VerticallyFoldedCard;
+
+
+/**
+*
+*/
+WHALE.VerticallyFoldedCard.prototype.getSideLabelVertex = function(side) {
+	var halfHeight = (this.height /2);
+	switch (side) {
+		case 0: return new THREE.Vector3(0, (this.height + halfHeight), (this.labelDisatnce * -1));
+		case 1: return new THREE.Vector3(0, (this.height + halfHeight), this.labelDisatnce);
+		case 2: return new THREE.Vector3(0, halfHeight, this.labelDisatnce);
+		case 3: return new THREE.Vector3(0, halfHeight, (this.labelDisatnce * -1));
+		default: return null
+	}
+}
 
 /**
 * @Override super.print()
