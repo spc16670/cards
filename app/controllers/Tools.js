@@ -19,15 +19,8 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 	$scope.canvas = {
 		width : DisplayService.displayWidth
 		,height : DisplayService.displayHeight
-		,fill : DisplayService.dofillcontainer
-		,scale : DisplayService.scale
-		,material : DisplayService.materialType
-		,spinning : DisplayService.spinning
-		,normals : DisplayService.normals
-		,wireframe : DisplayService.wireframe
 		,bgColour : "#f0f0f0"
 		,font : null
-		,helpers : DisplayService.helpers
 	}
 	
 	$scope.selectedImgFile = { };
@@ -35,12 +28,6 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 	$scope.$watch( function() { return $scope.canvas  }, function() { 
 		DisplayService.setDisplayWidth( $scope.canvas.width );
 		DisplayService.setDisplayHeight( $scope.canvas.height );
-		DisplayService.setScale( $scope.canvas.scale );
-		DisplayService.setMaterialType( $scope.canvas.material );
-		DisplayService.setSpinning( $scope.canvas.spinning );
-		DisplayService.setNormals( $scope.canvas.normals );
-		DisplayService.setWireframe( $scope.canvas.wireframe );
-		DisplayService.setHelpers( $scope.canvas.helpers );
 	},true)
 	
 	$scope.$watch(function(){return $scope.canvas.bgColour}, function() {
@@ -102,7 +89,7 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		DisplayService.materializeMesh();
 	}
 	$scope.test = function () {
-		$rootScope.$apply();
+		$scope.workspace.fabric = true;
 		//window.open(DisplayService.editingCanvas.toDataURL('png'));
 	}
 	

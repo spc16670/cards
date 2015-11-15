@@ -1,8 +1,11 @@
 var module = angular.module('cards.controllers.Main',[]);
 
 module.controller('MainController', ['$scope', function ($scope) {
+
+	$scope.mobile = { collapsed : true };
 	
-	$scope.isCollapsed = true;
+	$scope.workspace = { fabric : false };
+
 	$scope.toggler = {
 		'home' : true
 		,'editor' : false
@@ -19,9 +22,15 @@ module.controller('MainController', ['$scope', function ($scope) {
 						$scope.toggler[key] = false;
 					}
 				} else {
+					$scope.mobile.collapsed = !$scope.mobile.collapsed;
 					$scope.toggler[key] = true;
 				}
 			}
 		}
 	};
+	
+	$scope.$watch('workspace.fabric', function () {
+		console.log("fabric showing:::::::",$scope.workspace.fabric);
+	},true);
+	
 }]);

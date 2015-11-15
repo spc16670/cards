@@ -3,17 +3,11 @@ var module = angular.module('cards.controllers.Display',[]);
 
 module.controller('DisplayController', ['$scope','DisplayService', function ($scope,DisplayService) {
 
-    $scope.fabricWidth = DisplayService.fabricWidth;
-    $scope.fabricHeight = DisplayService.fabricHeight;
-    $scope.scale = DisplayService.scale;
-    $scope.materialType = DisplayService.materialType;
-	$scope.spinning = DisplayService.spinning;
-	$scope.wireframe = DisplayService.wireframe;
-	$scope.helpers = DisplayService.helpers;
-	$scope.normals = DisplayService.normals;
-	$scope.fabricShowing = DisplayService.fabricShowing;
 	$scope.mesh = DisplayService.mesh;
 	$scope.editingCanvas = DisplayService.editingCanvas;
+	
+    $scope.fabricWidth = DisplayService.fabricWidth;
+    $scope.fabricHeight = DisplayService.fabricHeight;
 	
 	$scope.$watch( function() { return DisplayService.fabricWidth }, function() { 
 		console.log("$scope.fabricWidth");
@@ -25,38 +19,43 @@ module.controller('DisplayController', ['$scope','DisplayService', function ($sc
 		$scope.fabricHeight = DisplayService.fabricHeight;
 	},true);
 	
-	$scope.$watch( function() { return DisplayService.scale }, function() { 
-		console.log("$scope.scale");
-		$scope.scale = DisplayService.scale;
-	},true);
-	
-	$scope.$watch( function() { return DisplayService.materialType }, function() { 
-	console.log("$scope.materialType");
-		$scope.materialType = DisplayService.materialType;
-	},true);
-	
-	$scope.$watch( function() { return DisplayService.spinning }, function() { 
-		console.log("$scope.spinning");
-		$scope.spinning = DisplayService.spinning;
-	},true);
-	
-	$scope.$watch( function() { return DisplayService.wireframe }, function() { 
-		console.log("$scope.wireframe");
-		$scope.wireframe = DisplayService.wireframe;
-	},true);
-	
-	$scope.$watch( function() { return DisplayService.helpers }, function() { 
-		console.log("$scope.helpers");
-		$scope.helpers = DisplayService.helpers;
-	},true);
-	
-	$scope.$watch( function() { return DisplayService.normals }, function() { 
-		console.log("$scope.normals");
-		$scope.normals = DisplayService.normals;
-	},true);
-	
 	$scope.$watch( function() { return DisplayService.fabricShowing }, function() { 
-		$scope.fabricShowing = DisplayService.fabricShowing;
+		$scope.workspace.fabric = DisplayService.fabricShowing;
+	},true);
+	
+	// Display area controls in panel heading and footer
+
+	$scope.controls = { 
+		scale : DisplayService.scale
+		,spinning : DisplayService.spinning
+		,wireframe : DisplayService.wireframe
+		,helpers : DisplayService.helpers
+		,normals : DisplayService.normals
+	};
+	
+	// Display area controls in panel heading and footer
+	$scope.$watch( 'controls.scale', function() { 
+		console.log("$controls.scale");
+		DisplayService.setScale($scope.controls.scale);
+	},true);
+	
+	$scope.$watch( 'controls.spinning', function() { 
+		console.log("$controls.spinning");
+		DisplayService.setSpinning($scope.controls.spinning);
+	},true);
+	
+	$scope.$watch( 'controls.wireframe' , function() { 
+		DisplayService.setWireframe($scope.controls.wireframe);
+	});
+	
+	$scope.$watch( 'controls.helpers', function() { 
+		console.log("$controls.helpers");
+		DisplayService.setHelpers($scope.controls.helpers);
+	},true);
+	
+	$scope.$watch( 'controls.normals', function() { 
+		console.log("$controls.normals");
+		DisplayService.setNormals($scope.controls.normals);
 	},true);
 
 }]);

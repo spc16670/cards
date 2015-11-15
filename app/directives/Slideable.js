@@ -1,16 +1,12 @@
 angular.module('cards.directives.Slideable', [])
-.directive('slideable', [function () {
+.directive('slideable', ['CategoriesService',function (CategoriesService) {
+
     return {
         restrict:'C',
-		//transclude : true,
         compile: function (element, attr) {
-            // wrap tag
-			console.log("compiling slideable...");
             var contents = element.html();
             element.html('<div class="slideable_content" style="margin:0 !important; padding:0 !important" >' 
-			//+ '<ng-transclude>'
 			+ contents 
-			//+ '</ng-transclude>'
 			+ '</div>');
 
             return function postLink(scope, element, attrs) {

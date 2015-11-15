@@ -1,7 +1,7 @@
 var module = angular.module('cards.controllers.Categories',[]);
 
-module.controller('CategoriesController', ['$scope','CategoriesService','BulletService'
-  ,'DisplayService', function ($scope,CategoriesService,BulletService,DisplayService) {
+module.controller('CategoriesController', ['$scope','$timeout','$location','$anchorScroll','$element','CategoriesService','BulletService'
+  ,'DisplayService', function ($scope,$timeout,$location,$anchorScroll,$element,CategoriesService,BulletService,DisplayService) {
 	
 	$scope.categories = CategoriesService;
 
@@ -31,12 +31,14 @@ module.controller('CategoriesController', ['$scope','CategoriesService','BulletS
 		} else {
 			target.style.height = '0px';
 		}
+		$scope.mobile.collapsed = !$scope.mobile.collapsed;
 		CategoriesService[id].expanded = !CategoriesService[id].expanded;
 	}
 
 	
 	$scope.clicked = function (selected) {
 		$scope.toggle(selected.type);
+		//console.log("$element",$element[0].clientHeight);
 		$scope.$parent.visible('editor');
 		/**
 		* @todo: add check to for object id
@@ -45,7 +47,12 @@ module.controller('CategoriesController', ['$scope','CategoriesService','BulletS
 			var model = BulletService.fetchModel(selected);
 			DisplayService.setModel(model);  
 			DisplayService.materializeMesh();
+			$timeout(function() {
+				//$anchorScroll.yOffset = -100;
+				//$location.hash('menu');
+				//$anchorScroll();
+			});
 		}
 	}
-	
+
 }]);

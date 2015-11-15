@@ -31,7 +31,7 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 		,{ 
 			type : 'invitations'
 			, id: 2
-			, size : { x : 250, y : 120, z : 90 } 
+			, size : { x : 100, y : 250, z : 80 } 
 			, geometry : 'VerticallyFoldedCard'
 			, fabrics : [
 				{ materialIndex : 0, fabricJson : { objects : [], background : "#BBDDFF"} }
@@ -43,7 +43,7 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 		,{ 
 			type : 'leaflets'
 			, id: 1
-			, size : { x : 100, y : 210, z : 0 } 
+			, size : { x : 99, y : 210, z : 0 } 
 			, geometry : 'VerticallyCFoldedDLLeaflet'
 			, fabrics : [
 				{ materialIndex : 0, fabricJson : { objects : [], background : "#BBDDFF"} }
@@ -57,7 +57,7 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 		,{ 
 			type : 'leaflets'
 			, id: 2
-			, size : { x : 100, y : 210, z : 0 } 
+			, size : { x : 99, y : 210, z : 0 } 
 			, geometry : 'VerticallyZFoldedDLLeaflet'
 			, fabrics : [
 				{ materialIndex : 0, fabricJson : { objects : [], background : "#BBDDFF"} }
@@ -77,6 +77,7 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 			if ((model.id == minModel.id) && (model.type === minModel.type) ) {
 				var clonedModel = {};
 				angular.copy(model, clonedModel);
+				console.log(clonedModel,WHALE);
 				clonedModel.geometry = new WHALE[clonedModel.geometry](clonedModel.size.x,clonedModel.size.y,clonedModel.size.z);
 				// instantiate canvases
 				var f;

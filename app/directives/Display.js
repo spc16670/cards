@@ -4,14 +4,6 @@ var module = angular.module('cards.directives.Display',[]);
 module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (DisplayService,$timeout,$rootScope) {
     return {
       restrict: 'A',
-      scope: { 
-        'scale': '='
-        ,'materialType': '='
-		,'spinning': '='
-		,'helpers' : '='
-		,'wireframe' : '='
-		,'normals' : '='
-      },
       link: function postLink(scope, element, attrs) {
 
 		var directive = {
@@ -65,6 +57,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 	
 			directive.obj = new THREE.Mesh( objGeometry, directive.materials.printed );
 			directive.scene.add( directive.obj );
+			
 			directive.renderer = new THREE.CanvasRenderer();
 			directive.renderer.setClearColor( 0xffffff ); // renderer background 
 			directive.renderer.setPixelRatio( window.devicePixelRatio );
@@ -163,6 +156,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
         // Event listeners
         // -----------------------------------
         scope.onWindowResize = function () {
+			console.log("scope.onWindowResize");
 			scope.resizeCanvas();
         };
 		
@@ -170,15 +164,12 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
         // Updates
         // -----------------------------------
         scope.resizeCanvas = function () {
+			console.log("resizing scope.resizeCanvas()");
 			directive.contW = DisplayService.displayWidth == 0 ? element[0].clientWidth : DisplayService.displayWidth;
 			directive.contH = DisplayService.displayHeight == 0 ? element[0].clientHeight : DisplayService.displayHeight;
 			directive.camera.aspect = directive.contW / directive.contH;
 			directive.camera.updateProjectionMatrix();
 			directive.renderer.setSize( directive.contW, directive.contH );
-        };
-
-        scope.resizeObject = function () {
-			directive.obj.scale.set(scope.scale, scope.scale, scope.scale);
         };
 		
 		/**
@@ -223,20 +214,18 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
         // -----------------------------------
         // Watches
         // -----------------------------------
-        //scope.$watch('dofillcontainer + width + height', function () {
-		//	scope.resizeCanvas();
-        //});
 
-        scope.$watch('scale', function () {
-          scope.resizeObject();
-        });
+
+		scope.$watch(function () {return DisplayService.spinning}, function () {
+			scope.spinning = DisplayService.spinning;
+        },true);
 		
-		scope.$watch('materialType', function () {
-			directive.obj.material = directive.materials[scope.materialType] ;
-        });
+        scope.$watch(function () {return DisplayService.scale}, function () {
+			directive.obj.scale.set(DisplayService.scale, DisplayService.scale, DisplayService.scale);
+        },true);
 		
-		scope.$watch('helpers', function () {
-			if (scope.helpers) {
+		scope.$watch(function () {return DisplayService.helpers}, function () {
+			if (DisplayService.helpers) {
 				var axes = new THREE.AxisHelper(1200);
 				directive.scene.add(axes);
 				var gridXZ = new THREE.GridHelper(1000, 10);
@@ -252,18 +241,18 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 					}
 				}
 			}
-        });
+        },true);
 		
-		scope.$watch('wireframe', function () {
-			if (scope.wireframe) {
+		scope.$watch(function () {return DisplayService.wireframe}, function () {
+			if (DisplayService.wireframe) {
 				directive.obj.material = directive.materials.wireframe;
 			} else {
 				directive.obj.material = directive.materials.printed;
 			}
-        });
+        },true);
 		
-		scope.$watch('normals', function () {
-			if (scope.normals) {
+		scope.$watch(function () {return DisplayService.normals}, function () {
+			if (DisplayService.normals) {
 				var faceNormals = new THREE.FaceNormalsHelper( directive.obj, 20, 0x00ff00, 1 );
 				directive.scene.add( faceNormals );
 				var vertexNormals = new THREE.VertexNormalsHelper( directive.obj, 20, 0x00ff00, 1 );
@@ -279,16 +268,17 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 					}
 				}
 			}
-        });
+        },true);
 		
 		scope.$watch(function () {return DisplayService.mesh}, function () {
 			if (!DisplayService.isEmpty(DisplayService.mesh)) {
 				directive.scene.remove(directive.obj);
 				directive.obj = DisplayService.mesh;
 				directive.materials.printed = directive.obj.material;
+				console.log("Adding to Scene: directive.scene.add(directive.obj)");
 				directive.scene.add(directive.obj);	
-				scope.positionCamera();
 				directive.obj.geometry.print();
+				$timeout(function() { scope.resizeCanvas (); scope.positionCamera() },1);
 			}
         });
 

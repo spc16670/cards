@@ -8,11 +8,13 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 		,fabricHeight : 50
 		,displayWidth : 0
 		,displayHeight : 400
+		
 		,scale : 1
-		,materialType : 'basic'
 		,spinning : true
 		,helpers : false
 		,normals : false
+		,wireframe : false
+		
 		,fabricShowing : false
 		,materialIndex : 0
 		,bgColour : null
@@ -49,24 +51,14 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 		Service.resizeDisplay = value;
 	}
 
-	Service.setScale = function(sc) {
-		Service.scale = sc;
-	}
-	Service.setSpinning = function(spin) {
-		Service.spinning = spin;
-	}
-	Service.setWireframe = function(set) {
-		Service.wireframe = set;
-	}
-	Service.setHelpers = function(set) {
-		Service.helpers = set;
-	}
-	Service.setNormals = function(set) {
-		Service.normals = set;
-	}
-	Service.setMaterialType = function(material) {
-		Service.materialType = material;
-	}
+	//----------------------- Display Area Controls ---------------------------
+	Service.setScale = function(sc) { Service.scale = sc; }
+	Service.setSpinning = function(spin) { Service.spinning = spin; }
+	Service.setWireframe = function(set) { Service.wireframe = set; }
+	Service.setHelpers = function(set) { Service.helpers = set; }
+	Service.setNormals = function(set) { Service.normals = set; }
+	//-------------------------------------------------------------------------
+	
 	Service.setFabricShowing = function(showing) {
 		Service.fabricShowing = showing;
 	}	
@@ -168,23 +160,23 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 		this.rendered++;
 		if (this.rendered == this.model.fabrics.length) {
 			this.rendered = 0;
+			console.log("Assigning mesh in Service");
 			Service.mesh = new THREE.Mesh( Service.model.geometry, Service.material );
 			$timeout(function(){ Service.setFabricShowing(false); },1)
 		} 
 	}
 	
 	Service.materializeMesh = function() {
+		console.log("Service.materializeMesh");
 		var materials = [];
 		var i;
 		for (i=0;i<Service.model.geometry.sides;i++) {
 			materials.push(new THREE.MeshBasicMaterial( { color: 0xd3d3d3, overdraw : true } ));
 		}
 		Service.material = new THREE.MeshFaceMaterial(materials);
-		// instantiate fabrics
 		var fabricIndex;
 		for (fabricIndex=0;fabricIndex<this.model.fabrics.length;fabricIndex++) {
 			var f = Service.model.fabrics[fabricIndex];
-			//console.log("fabric canvas",f.canvas);
 			f.canvas.loadFromJSON(f.fabricJson,Service.render(fabricIndex));		
 		}
 	}
