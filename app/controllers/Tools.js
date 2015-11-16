@@ -89,7 +89,15 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		DisplayService.materializeMesh();
 	}
 	$scope.test = function () {
-		$scope.workspace.fabric = true;
+		//$scope.workspace.fabric = true;
+		var imgElement = document.getElementById('huge_image');
+		var imgInstance = new fabric.Image(imgElement, {
+		  left: 100,
+		  top: 100,
+		  angle: 30,
+		  opacity: 0.85
+		});
+		DisplayService.editingCanvas.add(imgInstance);
 		//window.open(DisplayService.editingCanvas.toDataURL('png'));
 	}
 	
