@@ -97,6 +97,7 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		  angle: 30,
 		  opacity: 0.85
 		});
+		imgInstance.crossOrigin = "";
 		DisplayService.editingCanvas.add(imgInstance);
 		//window.open(DisplayService.editingCanvas.toDataURL('png'));
 	}

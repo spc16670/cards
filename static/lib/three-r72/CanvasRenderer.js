@@ -863,9 +863,12 @@ THREE.CanvasRenderer = function ( parameters ) {
 			repeat = 'repeat-y';
 
 		}
-
+		
+		var pattern = _context.createPattern( canvas, repeat );
+		if ( texture.onUpdate ) texture.onUpdate( texture );
+		
 		return {
-			canvas: _context.createPattern( canvas, repeat ),
+			canvas: pattern,
 			version: texture.version
 		}
 

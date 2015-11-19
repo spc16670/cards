@@ -156,7 +156,6 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
         // Event listeners
         // -----------------------------------
         scope.onWindowResize = function () {
-			console.log("scope.onWindowResize");
 			scope.resizeCanvas();
         };
 		
@@ -164,7 +163,6 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
         // Updates
         // -----------------------------------
         scope.resizeCanvas = function () {
-			console.log("resizing scope.resizeCanvas()");
 			directive.contW = DisplayService.displayWidth == 0 ? element[0].clientWidth : DisplayService.displayWidth;
 			directive.contH = DisplayService.displayHeight == 0 ? element[0].clientHeight : DisplayService.displayHeight;
 			directive.camera.aspect = directive.contW / directive.contH;

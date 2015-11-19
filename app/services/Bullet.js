@@ -77,7 +77,6 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 			if ((model.id == minModel.id) && (model.type === minModel.type) ) {
 				var clonedModel = {};
 				angular.copy(model, clonedModel);
-				console.log(clonedModel,WHALE);
 				clonedModel.geometry = new WHALE[clonedModel.geometry](clonedModel.size.x,clonedModel.size.y,clonedModel.size.z);
 				// instantiate canvases
 				var f;

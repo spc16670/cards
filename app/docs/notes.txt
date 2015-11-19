@@ -1,0 +1,21 @@
+Tested Canvas Rendering with Images:
+
+1) Read file with reader.readAsDataURL(photofile) to get data as a base64 encoded string. // results in out of memory errors on Android
+2) Use fabric.Image.fromURL(selectedImgFile.base64, function(img) {}) to load the file onto canvas with a callback.
+3) Turn canvas to object: Service.editingCanvas.toObject() and save as a model property fabricJson.
+4) canvas.loadFromJSON(fabricJson,function());
+   var image = canvas.getContext('2d').canvas;
+   var texture = new THREE.Texture(image);
+
+
+
+
+
+
+
+Consider : 
+	<img height="50" width="50" id="huge_image" src="images/huge.jpg"/>
+	var imgElement = document.getElementById('huge_image-image');
+	var imgInstance = new fabric.Image(imgElement, {});
+	canvas.add(imgInstance);
+	
