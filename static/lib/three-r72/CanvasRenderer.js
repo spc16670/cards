@@ -865,6 +865,11 @@ THREE.CanvasRenderer = function ( parameters ) {
 		}
 		
 		var pattern = _context.createPattern( canvas, repeat );
+		if ( texture.onUpdate ) {
+			texture.needsUpdate = false;
+			texture.onUpdate( texture );
+		}
+
 		if ( texture.onUpdate ) texture.onUpdate( texture );
 		
 		return {

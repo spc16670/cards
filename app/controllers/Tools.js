@@ -107,8 +107,4 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		console.log("selected font:",$scope.canvas.font);
 	}
 	
-	$scope.$on('model:materialised', function () {
-		console.log('model:materialised');
-        DisplayService.setFabricShowing(false);
-	})
 }]);

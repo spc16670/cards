@@ -148,9 +148,12 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 			var f = Service.model.fabrics[index];
 			var image = f.canvas.getContext('2d').canvas;
 			var texture = new THREE.Texture(image);
-			// CanvasRenderer: texture.onUpdate() support. See #7628 - 91110eb
+			/**
+			* CanvasRenderer: texture.onUpdate() support. See #7628 - 91110eb
+			* 
+			*/			
 			texture.onUpdate = function (t) {
-				t.needsUpdate = true;
+				$timeout(function(){ t.needsUpdate = true; });
 			};
 			Service.mesh.material.materials[f.materialIndex].map = texture;
 			texture.needsUpdate = true;
@@ -168,7 +171,7 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 			var f = this.model.fabrics[fabricIndex];
 			f.canvas.loadFromJSON(f.fabricJson,updateMaterial(fabricIndex));		
 		}
-		$timeout(function(){ console.log(Service.mesh);Service.setFabricShowing(false); },10)
+		$timeout(function(){ console.log(Service.mesh);Service.setFabricShowing(false); })
 	}
 	
 	return Service;
