@@ -2,12 +2,13 @@
 
 var app = angular.module('CardsApp', [
   ,'ui.bootstrap'
+  ,'ngFileUpload'
   ,'cards.services.Display'
   ,'cards.services.Bullet'
   ,'cards.services.Categories'
   ,'cards.controllers.Display'
   ,'cards.controllers.Tools'
-  ,'cards.controllers.Groups'
+  ,'cards.controllers.Elements'
   ,'cards.controllers.Categories'
   ,'cards.controllers.Main'
   ,'cards.directives.Display'

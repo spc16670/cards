@@ -18,7 +18,8 @@
 		<script src="../static/lib/three-r72/three.min.js"></script>
 		<script src="../static/lib/angular-1.4.7/angular.min.js"></script>
 		<script src="../static/lib/angular-touch-1.4.7/angular-touch.min.js"></script>
-
+		<script src="../static/lib/ng-file-upload-10.0.2/ng-file-upload.min.js"></script>
+		
 		<script src="../static/lib/angular-ui-bootstrap-0.14.3/ui-bootstrap-tpls.min.js"></script>
 
 		<script src="../static/lib/three-r72/Projector.js"></script>
@@ -34,7 +35,7 @@
 		<script src="../static/lib/whale-0.0.1/VerticallyZFoldedDLLeaflet.js"></script>
 		
 		<script src="controllers/Display.js"></script>
-		<script src="controllers/Groups.js"></script>
+		<script src="controllers/Elements.js"></script>
 		<script src="controllers/Tools.js"></script>
 		<script src="controllers/Categories.js"></script>
 		<script src="controllers/Main.js"></script>
@@ -179,17 +180,10 @@
 		<div id="editor" class="container" ng-show="toggler.editor">
 			<div class="row">
 
-				<div class="col-md-3" ng-controller="ToolsController">
-				
-					<div class="panel panel-default" ng-if="!workspace.fabric">
-						<div class="panel-heading">Your Model</div>
-						<div class="panel-body">
-							This is your model
-						</div>
-					</div>
-				
+				<div class="col-md-3" ng-controller="ToolsController" ng-if="workspace.fabric">
+					
 					<!-- FABRIC TOOLS -->
-					<div class="panel panel-default" ng-if="workspace.fabric">
+					<div class="panel panel-default">
 						<div class="panel-heading">Editor</div>
 						<!-- Table -->
 						<table class="table table-condensed">
@@ -274,12 +268,6 @@
 							</tbody>
 						</table>
 						
-						<!-- TEST -->
-						<div class="row">
-							<img height="50" width="50"  id="huge_image" src="images/huge.jpg"/>
-						</div>
-						
-						
 					</div>
 
 				</div>
@@ -346,24 +334,26 @@
 					
 				</div>
 				
+				<div id="templates" class="col-md-6" ng-if="!workspace.fabric">
+					<div class="panel panel-default">
+						<div class="panel-heading">Temaplates</div>
+						<div class="panel-body">
+							This is your model
+						</div>
+					</div>
+				</div>
 				
-				
-				
-				<div class="col-md-3" ng-controller="GroupController">
+				<div class="col-md-3" ng-controller="ElementController" ng-if="workspace.fabric">
 	  
 					<uib-accordion close-others="true">
-					  <div ng-click='loadGroup(group)' uib-accordion-group heading="{{ group.title }}" ng-repeat="group in groups">
+					  <div ng-click='loadElement(element)' uib-accordion-group heading="{{ element.title }}" ng-repeat="element in elements">
 						<table class="table table-condensed">
 							<tbody>
-								<tr ng-repeat="model in group.models">
-									<td ng-click="selectModel(model)">
-										<div class="row text-center"><h4>{{ model.title }}</h4></div>
+								<tr ng-repeat="member in element.members">
+									<td ng-click="selectElement(member)">
 										<div class="row">
-											<div class="col-sm-6 text-center">
-												{{ model.size.x }} x {{ model.size.y }}
-											</div>
-											<div class="col-sm-6">
-												<img ng-src="images/{{ model.icon }}" class="img-thumbnail" alt="Model Image" />
+											<div class="col-sm-12">
+												<img ng-src="images/elements/{{ element.name }}/{{ member.img }}" class="img-thumbnail" alt="Member Image" />
 											</div>
 										</div>
 									</td>
