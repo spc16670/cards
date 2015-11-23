@@ -38,6 +38,7 @@
 		<script src="controllers/Elements.js"></script>
 		<script src="controllers/Tools.js"></script>
 		<script src="controllers/Categories.js"></script>
+		<script src="controllers/Templates.js"></script>
 		<script src="controllers/Main.js"></script>
 		<script src="services/Bullet.js"></script>
 		<script src="services/Display.js"></script>
@@ -272,7 +273,7 @@
 
 				</div>
 
-				<div id="editorDisplay" class="anchor col-md-6" ng-controller="DisplayController">  
+				<div id="editorDisplay" class="anchor col-md-8" ng-controller="DisplayController">  
 				
 					<!-- WEBGL CANVAS -->
 					<div class="panel panel-default" ng-if="!workspace.fabric">
@@ -334,15 +335,43 @@
 					
 				</div>
 				
-				<div id="templates" class="col-md-6" ng-if="!workspace.fabric">
-					<div class="panel panel-default">
-						<div class="panel-heading">Temaplates</div>
-						<div class="panel-body">
-							This is your model
+				<!-- TEMPLATES MENU -->
+				<div id="templates" ng-controller="TemplateController" class="col-md-4" ng-if="!workspace.fabric">
+					<uib-accordion close-others="true">
+						<div uib-accordion-group heading="My Prints">
+							<table class="table table-condensed">
+								<tbody>
+									<tr >
+										<td >
+											<div class="row">
+												<div class="col-sm-12">
+													The list of my prints
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
-					</div>
+						<div uib-accordion-group heading="{{ group.title }}" ng-repeat="group in templateGroups">
+							<table class="table table-condensed">
+								<tbody>
+									<tr ng-repeat="template in group.templates">
+										<td ng-click="selectTemplate(template)">
+											<div class="row">
+												<div class="col-sm-12">
+													
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</uib-accordion>
 				</div>
 				
+				<!-- FABRIC -->
 				<div class="col-md-3" ng-controller="ElementController" ng-if="workspace.fabric">
 	  
 					<uib-accordion close-others="true">

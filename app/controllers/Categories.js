@@ -3,13 +3,13 @@ var module = angular.module('cards.controllers.Categories',[]);
 module.controller('CategoriesController', ['$scope','$timeout','$location','$anchorScroll','$element','CategoriesService','BulletService'
   ,'DisplayService', function ($scope,$timeout,$location,$anchorScroll,$element,CategoriesService,BulletService,DisplayService) {
 	
-	$scope.categories = CategoriesService;
+	$scope.categories = CategoriesService.categories;
 
 	$scope.expand = function(view) {
-		for (var key in CategoriesService) {
-			if (CategoriesService.hasOwnProperty(key)) {
+		for (var key in CategoriesService.categories) {
+			if (CategoriesService.categories.hasOwnProperty(key)) {
 				if (key !== view) {
-					if (CategoriesService[key].expanded == true) {
+					if (CategoriesService.categories[key].expanded == true) {
 						$scope.toggle(key);
 					}
 				} else {
@@ -23,7 +23,7 @@ module.controller('CategoriesController', ['$scope','$timeout','$location','$anc
 		var target, content;
 		if (!target) target = document.querySelector('#'+id);
 		if (!content) content = target.querySelector('.slideable_content');
-		if(!CategoriesService[id].expanded) {
+		if(!CategoriesService.categories[id].expanded) {
 			content.style.border = '1px solid rgba(0,0,0,0)';
 			var y = content.clientHeight;
 			content.style.border = 0;
@@ -32,7 +32,7 @@ module.controller('CategoriesController', ['$scope','$timeout','$location','$anc
 			target.style.height = '0px';
 		}
 		$scope.mobile.collapsed = !$scope.mobile.collapsed;
-		CategoriesService[id].expanded = !CategoriesService[id].expanded;
+		CategoriesService.categories[id].expanded = !CategoriesService.categories[id].expanded;
 	}
 
 	
@@ -44,6 +44,7 @@ module.controller('CategoriesController', ['$scope','$timeout','$location','$anc
 		* @todo: add check to for object id
 		*/
 		if ((selected.type !== DisplayService.model.type) || (selected.id != DisplayService.model.id) ) {
+			CategoriesService.setSelected(selected);
 			var model = BulletService.fetchModel(selected);
 			DisplayService.setModel(model);  
 			DisplayService.materializeMesh();
