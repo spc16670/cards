@@ -17,6 +17,7 @@ module.directive('ngFabric', ['DisplayService',function (DisplayService) {
 		}
 		
         function init() {
+			console.log("ngFabric init()");
 			directive.canvas = document.createElement('canvas');
 			directive.canvas.id = "fabricCanvasElement";
 			directive.canvas.style.border = "1px solid";

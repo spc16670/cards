@@ -84,10 +84,12 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 			DisplayService.editingCanvas.remove(DisplayService.editingCanvas.getActiveObject());
 		}
 	}
+	
 	$scope.apply = function () {
 		DisplayService.updateModel(); // saves editingCanvas in model's fabricJson
 		DisplayService.materializeMesh();
 	}
+	
 	$scope.test = function () {
 		//$scope.workspace.fabric = true;
 		var imgElement = document.getElementById('huge_image');

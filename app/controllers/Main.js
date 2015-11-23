@@ -1,6 +1,6 @@
 var module = angular.module('cards.controllers.Main',[]);
 
-module.controller('MainController', ['$scope', function ($scope) {
+module.controller('MainController', ['$scope', 'DisplayService', function ($scope, DisplayService) {
 
 	$scope.mobile = { collapsed : true };
 	
@@ -29,8 +29,14 @@ module.controller('MainController', ['$scope', function ($scope) {
 		}
 	};
 	
+	/*
+	$scope.$watch(function() { return DisplayService.fabricShowing }, function () {
+		$scope.workspace.fabric = DisplayService.fabricShowing;
+	},true);
+	
 	$scope.$watch('workspace.fabric', function () {
 		console.log("fabric showing:::::::",$scope.workspace.fabric);
 	},true);
+	*/
 	
 }]);

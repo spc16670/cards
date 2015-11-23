@@ -10,12 +10,10 @@ module.controller('DisplayController', ['$scope','DisplayService', function ($sc
     $scope.fabricHeight = DisplayService.fabricHeight;
 	
 	$scope.$watch( function() { return DisplayService.fabricWidth }, function() { 
-		console.log("$scope.fabricWidth");
 		$scope.fabricWidth = DisplayService.fabricWidth;
 	},true);
 	
 	$scope.$watch( function() { return DisplayService.fabricHeight }, function() { 
-		console.log("$scope.fabricHeight");
 		$scope.fabricHeight = DisplayService.fabricHeight;
 	},true);
 	
@@ -35,12 +33,10 @@ module.controller('DisplayController', ['$scope','DisplayService', function ($sc
 	
 	// Display area controls in panel heading and footer
 	$scope.$watch( 'controls.scale', function() { 
-		console.log("$controls.scale");
 		DisplayService.setScale($scope.controls.scale);
 	},true);
 	
 	$scope.$watch( 'controls.spinning', function() { 
-		console.log("$controls.spinning");
 		DisplayService.setSpinning($scope.controls.spinning);
 	},true);
 	
@@ -49,12 +45,10 @@ module.controller('DisplayController', ['$scope','DisplayService', function ($sc
 	});
 	
 	$scope.$watch( 'controls.helpers', function() { 
-		console.log("$controls.helpers");
 		DisplayService.setHelpers($scope.controls.helpers);
 	},true);
 	
 	$scope.$watch( 'controls.normals', function() { 
-		console.log("$controls.normals");
 		DisplayService.setNormals($scope.controls.normals);
 	},true);
 

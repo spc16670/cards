@@ -177,13 +177,104 @@
 			</div>
 		</div>
 
-		<!-- Editor -->
-		<div id="editor" class="container" ng-show="toggler.editor">
-			<div class="row">
 
-				<div class="col-md-3" ng-controller="ToolsController" ng-if="workspace.fabric">
+		
+		<!-- Main -->
+		<div id="editor" class="container" ng-show="toggler.editor" ng-controller="DisplayController">
+		
+			<div id="threeRow" class="row" ng-if="!workspace.fabric" >
+
+				<div id="editorDisplay" class="anchor col-md-8">  
+					<!-- WEBGL CANVAS -->
+					<div class="panel panel-default" >
 					
-					<!-- FABRIC TOOLS -->
+						<div class="panel-heading clearfix" style="border:0;background-color:#ffffff">
+							<div class="input-group input-group-sm pull-right">
+								<span>
+									<label for="spinning">		
+										<span>Spin</span>
+										<input type="checkbox" id="spinning" ng-model="controls.spinning"/>		
+									</label>
+									<label for="helpers">		
+										<span>Axes</span>
+										<input type="checkbox" id="helpers" ng-model="controls.helpers"/>				
+									</label>
+									<label for="wireframe">
+										<span>Frame</span>
+										<input type="checkbox" id="wireframe" ng-model="controls.wireframe"/>				
+									</label>
+									<label for="normals">
+										<span>Normals</span>
+										<input type="checkbox" id="normals" ng-model="controls.normals"/>		
+									</label>
+								</span>
+					
+							</div>
+						</div>
+						
+						<div class="panel-body">
+							<div id="threeCanvas" ng-webgl></div>
+						</div>
+						
+						<div class="panel-footer clearfix" style="border:0;background-color:#ffffff">
+							<div class="row">
+								<div class="col-xs-4">
+									<label for="scale">Scale</label>
+								</div>
+								<div class="col-xs-8">
+									<input type="range" name="scale" min="0.1" max="2.0" step="0.1" ng-model="controls.scale" class="add-bottom"/>		
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				
+				<!-- TEMPLATES MENU -->
+				<div id="templates" ng-controller="TemplateController" class="col-md-4">
+					<uib-accordion close-others="true">
+						<div uib-accordion-group heading="My Prints">
+							<table class="table table-condensed">
+								<tbody>
+									<tr >
+										<td >
+											<div class="row">
+												<div class="col-sm-12">
+													The list of my prints
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div uib-accordion-group heading="{{ group.title }}" ng-repeat="group in templateGroups">
+							<table class="table table-condensed">
+								<tbody>
+									<tr ng-repeat="template in group.templates">
+										<td ng-click="selectTemplate(template)">
+											<div class="row">
+												<div class="col-sm-12">
+													
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</uib-accordion>
+				</div>
+
+			</div>
+			
+			
+			
+			<div class="row" id="fabricRow" ng-if="workspace.fabric">
+			
+				<!-- FABRIC TOOLS -->
+				<div class="col-md-3" ng-controller="ToolsController">
+					
 					<div class="panel panel-default">
 						<div class="panel-heading">Editor</div>
 						<!-- Table -->
@@ -268,60 +359,13 @@
 
 							</tbody>
 						</table>
-						
 					</div>
-
 				</div>
-
-				<div id="editorDisplay" class="anchor col-md-8" ng-controller="DisplayController">  
-				
-					<!-- WEBGL CANVAS -->
-					<div class="panel panel-default" ng-if="!workspace.fabric">
-					
-						<div class="panel-heading clearfix" style="border:0;background-color:#ffffff">
-							<div class="input-group input-group-sm pull-right">
-								<span>
-									<label for="spinning">		
-										<span>Spin</span>
-										<input type="checkbox" id="spinning" ng-model="controls.spinning"/>		
-									</label>
-									<label for="helpers">		
-										<span>Axes</span>
-										<input type="checkbox" id="helpers" ng-model="controls.helpers"/>				
-									</label>
-									<label for="wireframe">
-										<span>Frame</span>
-										<input type="checkbox" id="wireframe" ng-model="controls.wireframe"/>				
-									</label>
-									<label for="normals">
-										<span>Normals</span>
-										<input type="checkbox" id="normals" ng-model="controls.normals"/>		
-									</label>
-								</span>
-					
-							</div>
-						</div>
-						
-						<div class="panel-body">
-							<div id="threeCanvas" ng-webgl></div>
-							<div id="scrollColumn" class="visible-xs"></div>
-						</div>
-						
-						<div class="panel-footer clearfix" style="border:0;background-color:#ffffff">
-							<div class="row">
-								<div class="col-xs-4">
-									<label for="scale">Scale</label>
-								</div>
-								<div class="col-xs-8">
-									<input type="range" name="scale" min="0.1" max="2.0" step="0.1" ng-model="controls.scale" class="add-bottom"/>		
-								</div>
-							</div>
-						</div>
-						
-					</div>
-					
-					<!-- FABRIC CANVAS -->
-					<div class="panel panel-default" ng-if="workspace.fabric">
+			
+			
+				<!-- FABRIC CANVAS -->
+				<div class="col-md-6">
+					<div class="panel panel-default">
 						<div class="panel-body">
 							<div id="fabricCanvas"
 								ng-fabric
@@ -329,50 +373,12 @@
 								height="fabricHeight"
 							>
 							</div>
-							<div id="scrollColumn" class="visible-xs"></div>
 						</div>
 					</div>
-					
 				</div>
 				
-				<!-- TEMPLATES MENU -->
-				<div id="templates" ng-controller="TemplateController" class="col-md-4" ng-if="!workspace.fabric">
-					<uib-accordion close-others="true">
-						<div uib-accordion-group heading="My Prints">
-							<table class="table table-condensed">
-								<tbody>
-									<tr >
-										<td >
-											<div class="row">
-												<div class="col-sm-12">
-													The list of my prints
-												</div>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<div uib-accordion-group heading="{{ group.title }}" ng-repeat="group in templateGroups">
-							<table class="table table-condensed">
-								<tbody>
-									<tr ng-repeat="template in group.templates">
-										<td ng-click="selectTemplate(template)">
-											<div class="row">
-												<div class="col-sm-12">
-													
-												</div>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</uib-accordion>
-				</div>
-				
-				<!-- FABRIC -->
-				<div class="col-md-3" ng-controller="ElementController" ng-if="workspace.fabric">
+				<!-- FABRIC ELEMENTS -->
+				<div class="col-md-3" ng-controller="ElementController">
 	  
 					<uib-accordion close-others="true">
 					  <div ng-click='loadElement(element)' uib-accordion-group heading="{{ element.title }}" ng-repeat="element in elements">
@@ -392,10 +398,24 @@
 					  </div>
 					</uib-accordion>
 				</div>
-
-				
+			
 			</div>
 		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		<!-- Contact -->

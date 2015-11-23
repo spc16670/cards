@@ -3,8 +3,8 @@ var module = angular.module('cards.directives.Display',[]);
 
 module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (DisplayService,$timeout,$rootScope) {
     return {
-      restrict: 'A',
-      link: function postLink(scope, element, attrs) {
+      restrict: 'A'
+      ,link: function postLink(scope, element, attrs) {
 
 		var directive = {
 			camera : null

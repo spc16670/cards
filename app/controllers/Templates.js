@@ -12,7 +12,9 @@ module.controller('TemplateController', ['$scope','CategoriesService','BulletSer
 	$scope.templateGroups = [];
 
 	$scope.loadTemplateGroup = function (category) {
-
+		if (category.type === "leaflets") {
+			
+		}
 	}
 
 	$scope.selectTemplate = function(template) {

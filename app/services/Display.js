@@ -94,6 +94,7 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 	* method to update the canvas.
 	*/
 	Service.updateCanvas = function() {
+		console.log("Service.updateCanvas",Service.model);
 		if (!Service.isEmpty(Service.model)) {
 			var i;
 			for (i=0;i<Service.model.fabrics.length;i++) {
@@ -110,7 +111,6 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 		var save = Service.editingCanvas.toObject();
 		//console.log("save:",save.objects[0]);
 		for (i=0;i<Service.model.fabrics.length;i++) {
-			console.log("asdf: ",Service.model.fabrics[i]);
 			if (Service.model.fabrics[i].materialIndex == this.facePointed) {
 				Service.model.fabrics[i].fabricJson = save;
 				return;
