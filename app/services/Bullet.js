@@ -12,7 +12,7 @@ module.service('BulletService', ['DisplayService',function (DisplayService) {
 			, size : { x : 250, y : 120 } 
 			, geometry : 'Card'
 			, fabrics : [
-				{ materialIndex : 0, fabricJson : { objects : [], background : "#BBDDFF"} }
+				{ materialIndex : 0, fabricJson : { objects : [], background : "#ff00ff"} }
 				,{ materialIndex : 1, fabricJson : { objects : [], background : "#BBDDFF"} }
 			]
 		}

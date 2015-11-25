@@ -17,20 +17,12 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 		
 		,fabricShowing : false
 		,materialIndex : 0
-		,bgColour : null
-		//,sideMaterial : []
+		//,bgColour : null
 		,model : {}
 		,mesh : {}
 		,editingCanvas : null
 		,facePointed : 0
 	}
-
-	Service.resizeCanvases = function() {
-		$rootScope.$broadcast("display:resize");
-		$rootScope.$broadcast("fabric:resize");
-	}
-	
-	window.addEventListener('resize', Service.resizeCanvases, false );
 	
 	Service.setResizeFabric = function(value) {
 		Service.resizeFabric = value;
@@ -49,8 +41,8 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 	}
 
 	//----------------------- Display Area Controls ---------------------------
-	Service.setScale = function(sc) { Service.scale = sc; }
-	Service.setSpinning = function(spin) { Service.spinning = spin; }
+	Service.setScale = function(set) { Service.scale = set; }
+	Service.setSpinning = function(set) { Service.spinning = set; }
 	Service.setWireframe = function(set) { Service.wireframe = set; }
 	Service.setHelpers = function(set) { Service.helpers = set; }
 	Service.setNormals = function(set) { Service.normals = set; }
@@ -58,15 +50,10 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 	
 	Service.setFabricShowing = function(showing) {
 		Service.fabricShowing = showing;
-	}	
+	}
+	
 	Service.setEditingCanvas = function(canvas) {
 		Service.editingCanvas = canvas;
-	}
-	Service.setBgColour = function(colour) {
-		Service.bgColour = colour || "#ffffff";
-		if (Service.editingCanvas != null) {
-			Service.editingCanvas.setBackgroundColor(Service.bgColour,Service.editingCanvas.renderAll.bind(Service.editingCanvas));
-		}
 	}
 	
 	Service.setMesh = function(m) {
@@ -82,24 +69,28 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 	
 	Service.setFacePointed = function(face) {
 		this.facePointed = face;
-		var canvasSize = Service.getEditingCanvasSize(face);
-		if (canvasSize != undefined) {
-			Service.fabricWidth = canvasSize.x;
-			Service.fabricHeight = canvasSize.y;	
-		}
 	}
 	
+	Service.getCurrentFabric = function() {
+		return Service.editingCanvas.toObject();
+	}
 	/**
 	* Fabric directive updates the materialIndex value first and then calls the 
 	* method to update the canvas.
 	*/
-	Service.updateCanvas = function() {
-		console.log("Service.updateCanvas",Service.model);
+	Service.materializeFabric = function() {
+		console.log("Service.materializeFabric",Service.model);
 		if (!Service.isEmpty(Service.model)) {
 			var i;
 			for (i=0;i<Service.model.fabrics.length;i++) {
 				if (Service.model.fabrics[i].materialIndex == this.facePointed) {
-					Service.editingCanvas.loadFromJSON(Service.model.fabrics[i].fabricJson);
+					console.log(" FACE " + this.facePointed,Service.model.fabrics[i].fabricJson);
+					Service.editingCanvas.loadFromJSON(Service.model.fabrics[i].fabricJson,Service.editingCanvas.renderAll.bind(Service.editingCanvas));
+					var canvasSize = Service.getEditingCanvasSize(this.facePointed);
+					if (canvasSize != undefined) {
+						Service.fabricWidth = canvasSize.x;
+						Service.fabricHeight = canvasSize.y;	
+					}
 					return;
 				}
 			}
@@ -108,11 +99,9 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 	
 	Service.updateModel = function () {
 		var i;
-		var save = Service.editingCanvas.toObject();
-		//console.log("save:",save.objects[0]);
 		for (i=0;i<Service.model.fabrics.length;i++) {
 			if (Service.model.fabrics[i].materialIndex == this.facePointed) {
-				Service.model.fabrics[i].fabricJson = save;
+				Service.model.fabrics[i].fabricJson = Service.getCurrentFabric();
 				return;
 			}
 		}

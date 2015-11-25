@@ -1,7 +1,7 @@
 'use strict';
 var module = angular.module('cards.directives.Fabric',[]);
 
-module.directive('ngFabric', ['DisplayService',function (DisplayService) {
+module.directive('ngFabric', ['DisplayService','UtilsService',function (DisplayService,UtilsService) {
     return {
       restrict: 'A',
       scope: { 
@@ -23,17 +23,16 @@ module.directive('ngFabric', ['DisplayService',function (DisplayService) {
 			directive.canvas.style.border = "1px solid";
 			element[0].appendChild(directive.canvas);
 			DisplayService.setEditingCanvas(new fabric.Canvas('fabricCanvasElement'));
-			DisplayService.updateCanvas();
+			DisplayService.materializeFabric();
+			window.addEventListener('resize', scope.resizeCanvas, false );
 			scope.resizeCanvas();
+
         };
 		
         // -----------------------------------
         // Event listeners
         // -----------------------------------
-        scope.onWindowResize = function () {
-			console.log("resizing onWindowResize");
-			scope.resizeCanvas();
-        };
+
 
         // -----------------------------------
         // Updates
@@ -57,20 +56,16 @@ module.directive('ngFabric', ['DisplayService',function (DisplayService) {
 			scope.resizeCanvas();
         });
 
-        scope.$on("fabric:resize",function() {
-			console.log("fabric:resize");
-			scope.resizeCanvas();
-		})
-		
 		scope.$on('$destroy', function() {
-			function empty(elem) {
-				while (elem.lastChild) elem.removeChild(elem.lastChild);
-			}
-			scope.onWindowResize = null;
 			directive.canvas = null;
-			empty(element[0]);
-			element[0].remove();
 			directive = null;
+			
+			var x = element[0];
+			UtilsService.removeChildren(x);
+			x.remove();
+			
+			x = window;
+			UtilsService.removeListener(x,'resize',scope.resizeCanvas);
         });
 		
 		init();

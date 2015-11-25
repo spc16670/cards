@@ -6,6 +6,8 @@ var app = angular.module('CardsApp', [
   ,'cards.services.Display'
   ,'cards.services.Bullet'
   ,'cards.services.Categories'
+  ,'cards.services.Utils'
+  ,'cards.services.Common'
   ,'cards.controllers.Display'
   ,'cards.controllers.Tools'
   ,'cards.controllers.Elements'
@@ -14,11 +16,17 @@ var app = angular.module('CardsApp', [
   ,'cards.controllers.Main'
   ,'cards.directives.Display'
   ,'cards.directives.Fabric'
-  ,'cards.directives.Util'
   ,'cards.directives.Slideable'
   ,'cards.directives.Thumbnail'
 ]);
 
+app.constant("CONSTANTS", {
+	FABRIC_CANVAS : {
+		DEFAULT_BCKG_COLOUR : "#ffffff"
+		,DEFAULT_FONT_SIZE : 15
+	}
+})
+	
 app.config(function($interpolateProvider){
 });
 

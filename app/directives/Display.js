@@ -1,13 +1,17 @@
 'use strict';
 var module = angular.module('cards.directives.Display',[]);
 
-module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (DisplayService,$timeout,$rootScope) {
+module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope','UtilsService'
+	,function (DisplayService,$timeout,$rootScope,UtilsService) {
+		
     return {
       restrict: 'A'
       ,link: function postLink(scope, element, attrs) {
 
 		var directive = {
-			camera : null
+			contW : DisplayService.displayWidth == 0 ? element[0].clientWidth : DisplayService.displayWidth
+			,contH : DisplayService.displayHeight == 0 ? element[0].clientHeight : DisplayService.displayHeight
+			,camera : null
 			,scene : null
 			,renderer : null
 			,rafId : null 
@@ -24,9 +28,6 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 			,raycaster : new THREE.Raycaster()
 			,mouse : new THREE.Vector2()
 		}
-		
-		directive.contW = DisplayService.displayWidth == 0 ? element[0].clientWidth : DisplayService.displayWidth;
-		directive.contH = DisplayService.displayHeight == 0 ? element[0].clientHeight : DisplayService.displayHeight;
 			
          function init() {
 			console.log("Display init()");
@@ -69,6 +70,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 			element[0].addEventListener('mouseout', scope.mouseOut);
 			element[0].addEventListener('mousedown', scope.mouseDown );
 			element[0].addEventListener('mouseup', scope.mouseUp );
+			window.addEventListener('resize', scope.resizeCanvas, false );
 
 			directive.controls = new THREE.OrbitControls( directive.camera, directive.renderer.domElement );
 			directive.controls.addEventListener('change', render );
@@ -155,9 +157,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
         // -----------------------------------
         // Event listeners
         // -----------------------------------
-        scope.onWindowResize = function () {
-			scope.resizeCanvas();
-        };
+
 		
         // -----------------------------------
         // Updates
@@ -280,20 +280,10 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 			}
         });
 
-        scope.$on("display:resize",function() {
-			scope.resizeCanvas();
-		})
-
 		scope.$on('$destroy', function() {
-			function empty(elem) {
-				while (elem.lastChild) elem.removeChild(elem.lastChild);
-			}
 			$timeout.cancel(directive.clickPromise);
 			cancelAnimationFrame(directive.rafId);// Stop the animation
-			directive.renderer.domElement.addEventListener('mouseover', null, false); //remove listener to render
-			directive.renderer.domElement.addEventListener('mouseout', null, false); //remove listener to render
-			directive.renderer.domElement.addEventListener('mousedown', null, false); //remove listener to render
-			directive.renderer.domElement.addEventListener('mouseup', null, false); //remove listener to render
+	
 			directive.scene = null;
 			directive.projector = null;
 			directive.camera = null;
@@ -304,9 +294,20 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope',function (
 			directive.mouse = null;
 			directive.obj = null;
 			directive.clickPromise = null;
-			empty(element[0]);
-			element[0].remove();
 			directive = null;
+			
+			var x = element[0];
+			UtilsService.removeListener(x,'mouseover',scope.mouseOver);
+			UtilsService.removeListener(x,'mouseout',scope.mouseOut);
+			UtilsService.removeListener(x,'mousedown', scope.mouseDown);
+			UtilsService.removeListener(x,'mouseup',scope.mouseUp);
+			UtilsService.removeChildren(x);
+			x.remove();
+			
+			x = window;
+			UtilsService.removeListener(x,'resize',scope.resizeCanvas);
+			
+			
         });
 
 		// -----------------------------------

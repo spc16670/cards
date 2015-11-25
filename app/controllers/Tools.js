@@ -1,28 +1,24 @@
 var module = angular.module('cards.controllers.Tools',[]);
 
-module.controller('ToolsController', ['$scope','$rootScope','DisplayService', function ($scope,$rootScope,DisplayService) {
+module.controller('ToolsController', ['CONSTANTS','$scope','$rootScope','DisplayService','CommonService', 
+	function (CONSTANTS,$scope,$rootScope,DisplayService,CommonService) {
 
-	$scope.fonts = [
-		{ name : "arial black", style: { fontFamily : "arial black" } }
-		,{ name : "Aaargh", style: { fontFamily : "Aaargh" } }
-	];
-	
-	$scope.toggled = function(open) {
-		console.log('Dropdown is now: ', open);
-	};
-
+	$scope.fonts = CommonService.fonts;
+	$scope.fontSizes = CommonService.fontSizes;
+	/*
 	$scope.toggleDropdown = function($event) {
 		$event.preventDefault();
 		$event.stopPropagation();
-	};
+	};*/
 	
 	$scope.canvas = {
 		width : DisplayService.displayWidth
 		,height : DisplayService.displayHeight
-		,bgColour : "#f0f0f0"
-		,font : null
+		,bgColour : CONSTANTS.FABRIC_CANVAS.DEFAULT_BCKG_COLOUR
+		,font : $scope.fonts[0]
+		,fontSize : CONSTANTS.FABRIC_CANVAS.DEFAULT_FONT_SIZE
 	}
-	
+
 	$scope.selectedImgFile = { };
 	
 	$scope.$watch( function() { return $scope.canvas  }, function() { 
@@ -31,7 +27,17 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 	},true)
 	
 	$scope.$watch(function(){return $scope.canvas.bgColour}, function() {
-		DisplayService.setBgColour($scope.canvas.bgColour);
+		var colour = $scope.canvas.bgColour;
+		if (colour === CONSTANTS.FABRIC_CANVAS.DEFAULT_BCKG_COLOUR) {
+			var f = DisplayService.getCurrentFabric();
+			colour = f.background;
+		}
+		if (DisplayService.editingCanvas != null) {
+			DisplayService.editingCanvas.setBackgroundColor(
+				colour
+				,DisplayService.editingCanvas.renderAll.bind(DisplayService.editingCanvas)
+			);
+		}
     });
 	
 	$scope.fileSelected = function(element) {
@@ -62,9 +68,11 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 		});
 		DisplayService.editingCanvas.renderAll();
 	}
+	
 	$scope.close = function () {
 		DisplayService.setFabricShowing( !DisplayService.fabricShowing );
 	}
+	
 	$scope.write = function () {
 		var left = (DisplayService.editingCanvas.width / 2);
 		var top = (DisplayService.editingCanvas.height / 2);
@@ -107,6 +115,11 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService', fu
 	$scope.selectedFont = function (font) {
 		$scope.canvas.font = font;
 		console.log("selected font:",$scope.canvas.font);
+	}
+	
+	$scope.selectedFontSize = function (size) {
+		$scope.canvas.fontSize = size;
+		console.log("selected font size:",$scope.canvas.fontSize);
 	}
 	
 }]);

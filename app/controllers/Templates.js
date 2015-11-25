@@ -12,8 +12,10 @@ module.controller('TemplateController', ['$scope','CategoriesService','BulletSer
 	$scope.templateGroups = [];
 
 	$scope.loadTemplateGroup = function (category) {
-		if (category.type === "leaflets") {
+		if (category != null) {
+			if (category.type === "leaflets") {
 			
+			}
 		}
 	}
 
