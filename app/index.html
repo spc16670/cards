@@ -12,7 +12,7 @@
 
 		<!-- Bootstrap core CSS -->
 		<link href="../static/css/bootstrap-3.3.5/bootstrap.min.css" rel="stylesheet">
-		<link href="../static/css/font-awesome-4.0.3/font-awesome.min.css" rel="stylesheet">
+		<link href="../static/css/font-awesome-4.5.0/font-awesome.min.css" rel="stylesheet">
 		<link href="../static/css/soil-0.0.1/soil.css" rel="stylesheet">
 
 		<script src="../static/lib/fabric-js-1.5.0/fabric.min.js"></script>
@@ -278,11 +278,117 @@
 				<div class="col-md-3" ng-controller="ToolsController">
 					
 					<div class="panel panel-default">
-						<div class="panel-heading">Editor</div>
+						<!-- <div class="panel-heading">Editor</div> -->
 
 						<div class="panel-body">
 						
-						<p>...</p>
+
+				
+							<div class="row">		
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+					
+									<!-- Split button -->
+									<div class="btn-group btn-block" uib-dropdown>
+									  <a class="btn btn-default col-sm-10" href="#">{{ canvas.font.name }}</a>
+									  <button type="button" class="btn btn-secondary col-sm-2" uib-dropdown-toggle>
+										<span class="caret"></span>
+										<span class="sr-only">Split button!</span>
+									  </button>
+									  <ul class="uib-dropdown-menu" role="menu" aria-labelledby="split-button">
+										<li role="menuitem" ng-repeat="font in fonts">
+											<a href ng-style="{{font.style}}" ng-click="selectedFont(font)">{{ font.name }}</a>
+										</li>
+									  </ul>
+									</div>
+							
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+									<!-- Split button -->
+									<div class="btn-group btn-block" role="group">
+										<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
+											<i class="fa fa-align-left"></i>
+										</button>
+										<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
+											<i class="fa fa-align-center"></i>
+										</button>
+										<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
+											<i class="fa fa-align-right"></i>
+										</button>
+										<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
+											<i class="fa fa-align-justify"></i>
+										</button>
+									</div>
+									
+								</div>
+							</div>
+				
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+								<div class="btn-group pull-right" uib-dropdown>
+									  <a class="btn btn-default" href="#">{{ canvas.fontSize }}</a>
+									  <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
+										<span class="caret"></span>
+										<span class="sr-only">Split button!</span>
+									  </button>
+									  <ul class="uib-dropdown-menu" role="menu" aria-labelledby="split-button">
+										<li role="menuitem" ng-repeat="size in fontSizes">
+											<a href ng-click="selectedFontSize(size)">{{ size }}</a>
+										</li>
+									  </ul>
+									</div>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+									<div class="btn-group btn-block" role="group">
+										<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
+											<i class="fa fa-bold"></i>
+										</button>
+										<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
+											<i class="fa fa-italic"></i>
+										</button>
+										<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
+											<i class="fa fa-underline"></i>
+										</button>
+										<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
+											<i class="fa fa-strikethrough"></i>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+								<div class="input-group">
+								  <a class="input-group-addon" ng-click="write()"><i class="fa fa-pencil"></i></a>
+								  <a class="btn btn-default col-xs-12" href="#" ng-click="write()">Write &nbsp;</a>
+								</div>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+									<label for="canvas-background-picker">Colour:</label>
+									<input class="pull-right" type="color" ng-model="canvas.bgColour">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+									<label for="canvas-background-picker">Text Colour:</label>
+									<input class="pull-right" type="color" ng-model="canvas.bgColour">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+									<label for="canvas-background-picker">Stroke Colour:</label>
+									<input class="pull-right" type="color" ng-model="canvas.bgColour">
+								</div>
+							</div>
+							<p>1</p>
+							<p>2</p>
 						</div>
 
 						<!-- List group -->
@@ -290,105 +396,15 @@
 							<li class="list-group-item">
 								<div id="canvas-background">
 									<label for="canvas-background-picker">Background:</label>
-									<input type="color" ng-model="canvas.bgColour">
+									<input class="pull-right" type="color" ng-model="canvas.bgColour">
 								</div>
 							</li>
 						<li class="list-group-item">
-
-										<div class="row">
-										
-											<div class="col-sm-8">
-												<!-- Split button -->
-												<div class="btn-group" uib-dropdown>
-												  <button id="split-button" type="button" class="btn btn-default">{{ canvas.font.name }}</button>
-												  <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
-													<span class="caret"></span>
-													<span class="sr-only">Split button!</span>
-												  </button>
-												  <ul class="uib-dropdown-menu" role="menu" aria-labelledby="split-button">
-													<li role="menuitem" ng-repeat="font in fonts">
-														<a href ng-style="{{font.style}}" ng-click="selectedFont(font)">{{ font.name }}</a>
-													</li>
-												  </ul>
-												</div>
-											</div>
-											
-											<div class="col-sm-4">
-												<!-- Split button -->
-												<div class="btn-group" uib-dropdown>
-												  <button id="split-button" type="button" class="btn btn-default">{{ canvas.fontSize }}</button>
-												  <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
-													<span class="caret"></span>
-													<span class="sr-only">Split button!</span>
-												  </button>
-												  <ul class="uib-dropdown-menu" role="menu" aria-labelledby="split-button">
-													<li role="menuitem" ng-repeat="size in fontSizes">
-														<a href ng-click="selectedFontSize(size)">{{ size }}</a>
-													</li>
-												  </ul>
-												</div>
-											</div>
-											<!--
-											<div class="col-sm-7">
-												<div class="input-group">
-													<div class="input-group-btn" uib-dropdown>
-														<button id="split-button" type="button" class="btn btn-secondary" uib-dropdown-toggle>
-															<span class="caret"></span>
-															<span class="sr-only">Size</span>
-														</button>
-														<ul class="uib-dropdown-menu" role="menu" aria-labelledby="split-button">
-															<li role="menuitem" ng-repeat="font in fonts">
-																<a href ng-style="{{font.style}}" ng-click="selectedFont(font)">{{ font.name }}</a>
-															</li>
-														</ul>										  
-													</div>
-													<input type="text" class="form-control" ng-value="canvas.font.name" aria-label="Size input with dropdown button">
-												</div>
-											</div>
-											-->
-											<!--
-											<div class="col-sm-5">
-												<div class="input-group">
-													<input type="text" class="form-control" ng-value="canvas.fontSize" aria-label="Size input with dropdown button">
-													<div class="input-group-btn" uib-dropdown>
-														<button id="split-button" type="button" class="btn btn-secondary" uib-dropdown-toggle>
-															<span class="caret"></span>
-															<span class="sr-only">Size</span>
-														</button>
-														<ul class="uib-dropdown-menu" role="menu" aria-labelledby="split-button">
-															<li role="menuitem" ng-repeat="size in fontSizes">
-																<a href ng-click="selectedFontSize(size)">{{ size }}</a>
-															</li>
-														</ul>										  
-													</div>
-												</div>
-											</div>
-											-->
-										</div>
-										<div class="row">
-											<div class="col-sm-6">
-												<div class="btn-group" role="group">
-													<button type="button" class="btn btn-default" ng-click="write()">
-														<span class="glyphicon glyphicon-bold" aria-hidden="true"></span>
-													</button>
-													<button type="button" class="btn btn-default" ng-click="write()">
-														<span class="glyphicon glyphicon-italic" aria-hidden="true"></span>
-													</button>
-													<button type="button" class="btn btn-default" ng-click="write()">
-														<i class="fa fa-underline"></i>
-														
-													</button>
-												</div>
-											</div>
-											<div class="col-sm-6">
-												<button type="button" class="btn btn-default" ng-click="write()">
-													<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Write
-												</button>
-											</div>
-										</div>
 						</li>
-						<li class="list-group-item">Morbi leo risus</li>
-						<li class="list-group-item">Porta ac consectetur ac</li>
+						<li class="list-group-item">
+						</li>
+						<li class="list-group-item">
+						</li>
 						<li class="list-group-item">Vestibulum at eros</li>
 						</ul>
 						
