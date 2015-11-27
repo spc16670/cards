@@ -276,122 +276,10 @@
 			
 				<!-- FABRIC TOOLS -->
 				<div class="col-md-3" ng-controller="ToolsController">
-					
+				
+					<!-- GENERAL CANVAS TOOLS -->
 					<div class="panel panel-default">
-						<!-- <div class="panel-heading">Editor</div> -->
-
-						<div class="panel-body">
-						
-
-				
-							<div class="row">		
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
-					
-									<!-- Split button -->
-									<div class="btn-group btn-block" uib-dropdown>
-									  <a class="btn btn-default col-sm-10" href="#">{{ canvas.font.name }}</a>
-									  <button type="button" class="btn btn-secondary col-sm-2" uib-dropdown-toggle>
-										<span class="caret"></span>
-										<span class="sr-only">Split button!</span>
-									  </button>
-									  <ul class="uib-dropdown-menu" role="menu" aria-labelledby="split-button">
-										<li role="menuitem" ng-repeat="font in fonts">
-											<a href ng-style="{{font.style}}" ng-click="selectedFont(font)">{{ font.name }}</a>
-										</li>
-									  </ul>
-									</div>
-							
-								</div>
-							</div>
-							
-							<div class="row">
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
-									<!-- Split button -->
-									<div class="btn-group btn-block" role="group">
-										<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
-											<i class="fa fa-align-left"></i>
-										</button>
-										<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
-											<i class="fa fa-align-center"></i>
-										</button>
-										<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
-											<i class="fa fa-align-right"></i>
-										</button>
-										<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
-											<i class="fa fa-align-justify"></i>
-										</button>
-									</div>
-									
-								</div>
-							</div>
-				
-							<div class="row">
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
-								<div class="btn-group pull-right" uib-dropdown>
-									  <a class="btn btn-default" href="#">{{ canvas.fontSize }}</a>
-									  <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
-										<span class="caret"></span>
-										<span class="sr-only">Split button!</span>
-									  </button>
-									  <ul class="uib-dropdown-menu" role="menu" aria-labelledby="split-button">
-										<li role="menuitem" ng-repeat="size in fontSizes">
-											<a href ng-click="selectedFontSize(size)">{{ size }}</a>
-										</li>
-									  </ul>
-									</div>
-								</div>
-							</div>
-							
-							<div class="row">
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
-									<div class="btn-group btn-block" role="group">
-										<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
-											<i class="fa fa-bold"></i>
-										</button>
-										<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
-											<i class="fa fa-italic"></i>
-										</button>
-										<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
-											<i class="fa fa-underline"></i>
-										</button>
-										<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
-											<i class="fa fa-strikethrough"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
-								<div class="input-group">
-								  <a class="input-group-addon" ng-click="write()"><i class="fa fa-pencil"></i></a>
-								  <a class="btn btn-default col-xs-12" href="#" ng-click="write()">Write &nbsp;</a>
-								</div>
-								</div>
-							</div>
-							
-							<div class="row">
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
-									<label for="canvas-background-picker">Colour:</label>
-									<input class="pull-right" type="color" ng-model="canvas.bgColour">
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
-									<label for="canvas-background-picker">Text Colour:</label>
-									<input class="pull-right" type="color" ng-model="canvas.bgColour">
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
-									<label for="canvas-background-picker">Stroke Colour:</label>
-									<input class="pull-right" type="color" ng-model="canvas.bgColour">
-								</div>
-							</div>
-							<p>1</p>
-							<p>2</p>
-						</div>
-
-						<!-- List group -->
+					<!-- <div class="panel-heading">Editor</div> -->
 						<ul class="list-group">
 							<li class="list-group-item">
 								<div id="canvas-background">
@@ -399,78 +287,165 @@
 									<input class="pull-right" type="color" ng-model="canvas.bgColour">
 								</div>
 							</li>
-						<li class="list-group-item">
-						</li>
-						<li class="list-group-item">
-						</li>
-						<li class="list-group-item">
-						</li>
-						<li class="list-group-item">Vestibulum at eros</li>
+							<li class="list-group-item">
+								<input type="file" onchange="angular.element(this).scope().fileSelected(this)" accept="image/*" id="fabricImgFile" ng-model="selectedImgFile"/>
+							</li>
 						</ul>
-						
-						
-						<!-- Table -->
-						<table class="table table-condensed">
-							<tbody>
-								<tr>
-									<td>
-										
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="file" onchange="angular.element(this).scope().fileSelected(this)" accept="image/*" class="form-control" id="fabricImgFile" ng-model="selectedImgFile"/>
-										<!--
-										<button type="button" class="btn btn-default" >
-											<span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Load Image
-										</button>-->
-										<!--<file-field class="btn btn-default" ng-model="selectedImgFile"></file-field>-->
-									</td>
-								</tr>
-								<tr>
-									<td>
-
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<button type="button" class="btn btn-default" ng-click="remove()">
-											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Remove
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<button type="button" class="btn btn-default" ng-click="test()">
-											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Test
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<button type="button" class="btn btn-default" ng-click="close()">
-											<span class="glyphicon glyphicon-star" aria-hidden="true"></span> Close
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<button type="button" class="btn btn-default" ng-click="fitImage()">
-											<span class="glyphicon glyphicon-star" aria-hidden="true"></span> Fit Image
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<button type="button" class="btn btn-default" ng-click="apply()">
-											<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Apply
-										</button>
-									</td>
-								</tr>
-
-							</tbody>
-						</table>
 					</div>
+					
+					<div class="panel panel-default well">
+					<!-- <div class="panel-heading">Editor</div> -->
+
+						<div class="row">		
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+				
+								<!-- Split button -->
+								<div class="btn-group btn-block" uib-dropdown>
+								  <a class="btn btn-default col-sm-10" href="#">{{ canvas.font.name }}</a>
+								  <button type="button" class="btn btn-secondary col-sm-2" uib-dropdown-toggle>
+									<span class="caret"></span>
+									<span class="sr-only">Split button!</span>
+								  </button>
+								  <ul class="uib-dropdown-menu" role="menu" aria-labelledby="split-button">
+									<li role="menuitem" ng-repeat="font in fonts">
+										<a href ng-style="{{font.style}}" ng-click="selectedFont(font)">{{ font.name }}</a>
+									</li>
+								  </ul>
+								</div>
+						
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+								<!-- Split button -->
+								<div class="btn-group btn-block" role="group">
+									<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
+										<i class="fa fa-align-left"></i>
+									</button>
+									<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
+										<i class="fa fa-align-center"></i>
+									</button>
+									<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
+										<i class="fa fa-align-right"></i>
+									</button>
+									<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
+										<i class="fa fa-align-justify"></i>
+									</button>
+								</div>
+								
+							</div>
+						</div>
+			
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+							<div class="btn-group pull-right" uib-dropdown>
+								  <a class="btn btn-default" href="#">{{ canvas.fontSize }}</a>
+								  <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
+									<span class="caret"></span>
+									<span class="sr-only">Split button!</span>
+								  </button>
+								  <ul class="uib-dropdown-menu" role="menu" aria-labelledby="split-button">
+									<li role="menuitem" ng-repeat="size in fontSizes">
+										<a href ng-click="selectedFontSize(size)">{{ size }}</a>
+									</li>
+								  </ul>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+								<div class="btn-group btn-block" role="group">
+									<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
+										<i class="fa fa-bold"></i>
+									</button>
+									<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
+										<i class="fa fa-italic"></i>
+									</button>
+									<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
+										<i class="fa fa-underline"></i>
+									</button>
+									<button type="button" class="btn btn-default col-xs-3" ng-click="write()">
+										<i class="fa fa-strikethrough"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+						<!-- TEXT COLOUR -->
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+								<div class="input-group pull-right">
+									<span class="input-group-addon" id="basic-addon1">
+										<span class="glyphicon glyphicon-text-color" aria-hidden="true"></span>
+									</span>
+									<span class="form-control" id="basic-addon2">
+										<input type="color" ng-model="canvas.bgColour" aria-describedby="basic-addon1">
+									</span>
+								</div>
+							</div>
+						</div>
+						<!-- TEXT BACKGROUND -->
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+								<div class="input-group pull-right">
+									<span class="input-group-addon" id="basic-addon1">
+										<span class="glyphicon glyphicon-text-background" aria-hidden="true"></span>
+									</span>
+									<span class="form-control" id="basic-addon2">
+										<input type="color" ng-model="canvas.bgColour"aria-describedby="basic-addon1">
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+								<label for="canvas-background-picker">Stroke Colour:</label>
+								<input class="pull-right" type="color" ng-model="canvas.bgColour">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+							<div class="input-group">
+							  <span class="input-group-addon" id="basic-addon1">
+									<span class="glyphicon glyphicon-pencil" ng-click="write()" aria-hidden="true"></span>
+							  </span>
+							  <a class="btn btn-default form-control" href="#" ng-click="write()">Write &nbsp;</a>
+							</div>
+							</div>
+						</div>
+
+					</div>
+					
+					<!-- IMAGE SPECIFIC -->
+					<div class="btn-group btn-group-justified" role="group" aria-label="...">
+					  <div class="btn-group" role="group">
+						<button type="button" class="btn btn-default" ng-click="fitImage()">
+							<span class="glyphicon glyphicon-star" aria-hidden="true"></span> Fit Image
+						</button>
+					  </div>
+					  <div class="btn-group" role="group">
+						<button type="button" class="btn btn-default" ng-click="remove()">
+							<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Remove
+						</button>
+					  </div>
+					</div>
+					<!-- GENERAL-->
+
+					<div class="btn-group btn-group-justified" role="group" aria-label="...">
+					  <div class="btn-group" role="group">
+						<button type="button" class="btn btn-default" ng-click="close()">
+							<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Cancel
+						</button>
+					  </div>
+					  <div class="btn-group" role="group">
+						<button type="button" class="btn btn-default" ng-click="apply()">
+							<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Apply
+						</button>
+					  </div>
+					</div>
+
+					
 				</div>
 			
 			
