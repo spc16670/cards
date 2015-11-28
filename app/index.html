@@ -8,11 +8,12 @@
 		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 		<meta name="description" content="">
 		<meta name="author" content="IONAS SOFTWARE LTD">
-		<title>Kartki</title>
+		<title>Drook</title>
 
 		<!-- Bootstrap core CSS -->
 		<link href="../static/css/bootstrap-3.3.5/bootstrap.min.css" rel="stylesheet">
 		<link href="../static/css/font-awesome-4.5.0/font-awesome.min.css" rel="stylesheet">
+		<link href="../static/css/angular-bootstrap-colorpicker-3.0.21/colorpicker.min.css" rel="stylesheet">
 		<link href="../static/css/soil-0.0.1/soil.css" rel="stylesheet">
 
 		<script src="../static/lib/fabric-js-1.5.0/fabric.min.js"></script>
@@ -20,6 +21,7 @@
 		<script src="../static/lib/angular-1.4.7/angular.min.js"></script>
 		<script src="../static/lib/angular-touch-1.4.7/angular-touch.min.js"></script>
 		<script src="../static/lib/ng-file-upload-10.0.2/ng-file-upload.min.js"></script>
+		<script src="../static/lib/angular-bootstrap-colorpicker-3.0.21/bootstrap-colorpicker-module.min.js"></script>
 		
 		<script src="../static/lib/angular-ui-bootstrap-0.14.3/ui-bootstrap-tpls.min.js"></script>
 
@@ -296,25 +298,49 @@
 					<div class="panel panel-default well">
 					<!-- <div class="panel-heading">Editor</div> -->
 
-						<div class="row">		
+						<!-- FONT FAMILY AND SIZE -->
+						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
-				
-								<!-- Split button -->
-								<div class="btn-group btn-block" uib-dropdown>
-								  <a class="btn btn-default col-sm-10" href="#">{{ canvas.font.name }}</a>
-								  <button type="button" class="btn btn-secondary col-sm-2" uib-dropdown-toggle>
-									<span class="caret"></span>
-									<span class="sr-only">Split button!</span>
-								  </button>
-								  <ul class="uib-dropdown-menu" role="menu" aria-labelledby="split-button">
-									<li role="menuitem" ng-repeat="font in fonts">
-										<a href ng-style="{{font.style}}" ng-click="selectedFont(font)">{{ font.name }}</a>
-									</li>
-								  </ul>
+								<div class="btn-group" role="group">
+							
+										<!-- Split button -->
+										<div class="btn-group btn-group-justified" style="width:60%" role="group" uib-dropdown>
+											<div class="btn-group" style="width:70%" role="group">
+												<button class="btn btn-default" href="#"><div class="crop">{{ canvas.font.name }}</div></button>
+											</div>
+											<div class="btn-group" style="width:30%" role="group">
+												<button type="button" class="btn btn-secondary"  uib-dropdown-toggle>
+													<span class="caret"></span>
+													<span class="sr-only">Split button!</span>
+												</button>
+											</div>
+											<ul class="uib-dropdown-menu" role="menu" aria-labelledby="split-button">
+												<li role="menuitem" ng-repeat="font in fonts">
+													<a href ng-style="{{font.style}}" ng-click="selectedFont(font)">{{ font.name }}</a>
+												</li>
+											</ul>
+										</div>
+							
+										<div class="btn-group btn-group-justified" role="group" style="width:40%" uib-dropdown>
+											<div class="btn-group" style="width:50%" role="group">
+												<button class="btn btn-default" href="#">{{ canvas.fontSize }}</button>
+											</div>
+											<div class="btn-group" style="width:50%" role="group">
+												<button type="button" class="btn btn-secondary" uib-dropdown-toggle>
+													<span class="caret"></span>
+													<span class="sr-only">Split button!</span>
+												</button>
+											</div>
+											<ul class="uib-dropdown-menu" role="menu" aria-labelledby="split-button">
+												<li role="menuitem" ng-repeat="size in fontSizes">
+													<a href ng-click="selectedFontSize(size)">{{ size }}</a>
+												</li>
+											</ul>
+										</div>
 								</div>
-						
-							</div>
+							</div>	
 						</div>
+						
 						
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
@@ -336,23 +362,6 @@
 								
 							</div>
 						</div>
-			
-						<div class="row">
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
-							<div class="btn-group pull-right" uib-dropdown>
-								  <a class="btn btn-default" href="#">{{ canvas.fontSize }}</a>
-								  <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
-									<span class="caret"></span>
-									<span class="sr-only">Split button!</span>
-								  </button>
-								  <ul class="uib-dropdown-menu" role="menu" aria-labelledby="split-button">
-									<li role="menuitem" ng-repeat="size in fontSizes">
-										<a href ng-click="selectedFontSize(size)">{{ size }}</a>
-									</li>
-								  </ul>
-								</div>
-							</div>
-						</div>
 						
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
@@ -372,38 +381,24 @@
 								</div>
 							</div>
 						</div>
+						
 						<!-- TEXT COLOUR -->
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
-								<div class="input-group pull-right">
-									<span class="input-group-addon" id="basic-addon1">
+								<div class="input-group">
+									<span colorpicker class="input-group-addon" ng-model="canvas.fontColour" id="basic-addon1" ng-style="{ 'background-color' : canvas.fontColour }">
 										<span class="glyphicon glyphicon-text-color" aria-hidden="true"></span>
 									</span>
-									<span class="form-control" id="basic-addon2">
-										<input type="color" ng-model="canvas.bgColour" aria-describedby="basic-addon1">
-									</span>
-								</div>
-							</div>
-						</div>
-						<!-- TEXT BACKGROUND -->
-						<div class="row">
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
-								<div class="input-group pull-right">
-									<span class="input-group-addon" id="basic-addon1">
+									<span colorpicker class="input-group-addon" ng-model="canvas.textBgColour" id="basic-addon2" ng-style="{ 'background-color' : canvas.textBgColour }">
 										<span class="glyphicon glyphicon-text-background" aria-hidden="true"></span>
 									</span>
-									<span class="form-control" id="basic-addon2">
-										<input type="color" ng-model="canvas.bgColour"aria-describedby="basic-addon1">
+									<span colorpicker class="input-group-addon" ng-model="canvas.strokeColour" id="basic-addon3" ng-style="{ 'background-color' : canvas.strokeColour }">
+										<span class="glyphicon glyphicon-text-color" aria-hidden="true"></span>
 									</span>
 								</div>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
-								<label for="canvas-background-picker">Stroke Colour:</label>
-								<input class="pull-right" type="color" ng-model="canvas.bgColour">
-							</div>
-						</div>
+						
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
 							<div class="input-group">

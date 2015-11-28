@@ -16,8 +16,6 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope','UtilsServ
 			,renderer : null
 			,rafId : null 
 			,obj : null
-			,contW : 0
-			,contH : 0
 			,sprites : null
 			,materials : {}
 			,controls : null

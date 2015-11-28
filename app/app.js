@@ -1,6 +1,7 @@
 'use strict';
 
 var app = angular.module('CardsApp', [
+  ,'colorpicker.module'
   ,'ui.bootstrap'
   ,'ngFileUpload'
   ,'cards.services.Display'
@@ -21,8 +22,12 @@ var app = angular.module('CardsApp', [
 ]);
 
 app.constant("CONSTANTS", {
-	FABRIC_CANVAS : {
+	DEFAULT_COLOUR : "#ffffff"
+	,FABRIC_CANVAS : {
 		DEFAULT_BCKG_COLOUR : "#ffffff"
+		,DEFAULT_TEXT_BCKG_COLOUR : "#ffffff"
+		,DEFAULT_FONT_COLOUR : "#000000"
+		,DEFAULT_STROKE_COLOUR : "#ffffff"
 		,DEFAULT_FONT_SIZE : 15
 	}
 })

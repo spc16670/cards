@@ -15,16 +15,42 @@ module.controller('ToolsController', ['CONSTANTS','$scope','$rootScope','Display
 		width : DisplayService.displayWidth
 		,height : DisplayService.displayHeight
 		,bgColour : CONSTANTS.FABRIC_CANVAS.DEFAULT_BCKG_COLOUR
+		,textBgColour : CONSTANTS.FABRIC_CANVAS.DEFAULT_TEXT_FONT_COLOUR
+		,fontColour : CONSTANTS.FABRIC_CANVAS.DEFAULT_FONT_COLOUR
+		,strokeColour : CONSTANTS.FABRIC_CANVAS.DEFAULT_STROKE_COLOUR
 		,font : $scope.fonts[0]
 		,fontSize : CONSTANTS.FABRIC_CANVAS.DEFAULT_FONT_SIZE
 	}
-
+	
 	$scope.selectedImgFile = { };
 	
 	$scope.$watch( function() { return $scope.canvas  }, function() { 
 		DisplayService.setDisplayWidth( $scope.canvas.width );
 		DisplayService.setDisplayHeight( $scope.canvas.height );
 	},true)
+	
+	$scope.$watch(function(){return $scope.canvas.bgColour}, function() {
+		var colour = $scope.canvas.bgColour;
+		if (colour === CONSTANTS.FABRIC_CANVAS.DEFAULT_BCKG_COLOUR) {
+			var f = DisplayService.getCurrentFabric();
+			colour = f.background;
+		}
+		if (DisplayService.editingCanvas != null) {
+			DisplayService.editingCanvas.setBackgroundColor(
+				colour
+				,DisplayService.editingCanvas.renderAll.bind(DisplayService.editingCanvas)
+			);
+		}
+    });
+	
+	$scope.$watch(function(){return $scope.canvas.textBgColour}, function() {
+    });
+	
+	$scope.$watch(function(){return $scope.canvas.fontColour}, function() {
+    });
+	
+	$scope.$watch(function(){return $scope.canvas.strokeColour}, function() {
+    });
 	
 	$scope.$watch(function(){return $scope.canvas.bgColour}, function() {
 		var colour = $scope.canvas.bgColour;
@@ -77,7 +103,10 @@ module.controller('ToolsController', ['CONSTANTS','$scope','$rootScope','Display
 		var left = (DisplayService.editingCanvas.width / 2);
 		var top = (DisplayService.editingCanvas.height / 2);
 		var textItem = new fabric.IText('Tap and Type', { 
-			fontFamily: $scope.canvas.font.name || 'arial black'
+			fontFamily: $scope.canvas.font.name
+			,fontStyle : "" // italic
+			,textBackgroundColor : $scope.canvas.fontColour
+			,colour : $scope.canvas.fontColour
 			,left: left 
 			,top: top 
 		})

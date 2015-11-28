@@ -7,6 +7,7 @@ module.service('CommonService', [function () {
 	Service.fonts = [
 		{ name : "arial black", style: { fontFamily : "arial black" } }
 		,{ name : "Aaargh", style: { fontFamily : "Aaargh" } }
+		,{ name : "Veeeeeeeeeeeeeeeeeeeeeeeeeryyy long name", style: { fontFamily : "Aaargh" } }
 	];
 	
 	Service.fontSizes = [
