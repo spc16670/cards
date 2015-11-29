@@ -74,6 +74,16 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 	Service.getCurrentFabric = function() {
 		return Service.editingCanvas.toObject();
 	}
+	
+	Service.getSelectedEditingElements = function() {
+		var selected = [];
+		if(Service.editingCanvas.getActiveGroup()) {
+			Service.editingCanvas.getActiveGroup().forEachObject(function(o){ selected.push(o) });
+		} else {
+			selected.push(Service.editingCanvas.getActiveObject());
+		}
+		return selected;
+	}
 	/**
 	* Fabric directive updates the materialIndex value first and then calls the 
 	* method to update the canvas.

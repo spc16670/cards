@@ -1,28 +1,20 @@
 var module = angular.module('cards.controllers.Tools',[]);
 
-module.controller('ToolsController', ['CONSTANTS','$scope','$rootScope','DisplayService','CommonService', 
-	function (CONSTANTS,$scope,$rootScope,DisplayService,CommonService) {
+module.controller('ToolsController', ['$scope','$rootScope','DisplayService','CommonService', 
+	function ($scope,$rootScope,DisplayService,CommonService) {
 
-	$scope.fonts = CommonService.fonts;
-	$scope.fontSizes = CommonService.fontSizes;
-	/*
-	$scope.toggleDropdown = function($event) {
-		$event.preventDefault();
-		$event.stopPropagation();
-	};*/
+	$scope.fonts = CommonService.text.fonts;
+	$scope.fontSizes = CommonService.text.fontSizes;
+	
+	// ------------------------------------------------------------------------
+	// -------------------------- GENEREAL CANVAS -----------------------------
+	// ------------------------------------------------------------------------
 	
 	$scope.canvas = {
-		width : DisplayService.displayWidth
+		bgColour : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_BCKG_COLOUR
+		,width : DisplayService.displayWidth
 		,height : DisplayService.displayHeight
-		,bgColour : CONSTANTS.FABRIC_CANVAS.DEFAULT_BCKG_COLOUR
-		,textBgColour : CONSTANTS.FABRIC_CANVAS.DEFAULT_TEXT_FONT_COLOUR
-		,fontColour : CONSTANTS.FABRIC_CANVAS.DEFAULT_FONT_COLOUR
-		,strokeColour : CONSTANTS.FABRIC_CANVAS.DEFAULT_STROKE_COLOUR
-		,font : $scope.fonts[0]
-		,fontSize : CONSTANTS.FABRIC_CANVAS.DEFAULT_FONT_SIZE
 	}
-	
-	$scope.selectedImgFile = { };
 	
 	$scope.$watch( function() { return $scope.canvas  }, function() { 
 		DisplayService.setDisplayWidth( $scope.canvas.width );
@@ -31,7 +23,7 @@ module.controller('ToolsController', ['CONSTANTS','$scope','$rootScope','Display
 	
 	$scope.$watch(function(){return $scope.canvas.bgColour}, function() {
 		var colour = $scope.canvas.bgColour;
-		if (colour === CONSTANTS.FABRIC_CANVAS.DEFAULT_BCKG_COLOUR) {
+		if (colour === CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_BCKG_COLOUR) {
 			var f = DisplayService.getCurrentFabric();
 			colour = f.background;
 		}
@@ -43,28 +35,63 @@ module.controller('ToolsController', ['CONSTANTS','$scope','$rootScope','Display
 		}
     });
 	
-	$scope.$watch(function(){return $scope.canvas.textBgColour}, function() {
-    });
+	// ------------------------------------------------------------------------
+	// ---------------------------- TEXT EDITING ------------------------------
+	// ------------------------------------------------------------------------
 	
-	$scope.$watch(function(){return $scope.canvas.fontColour}, function() {
-    });
+	$scope.text = {
+		font : $scope.fonts[0]
+		,fontSize : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_FONT_SIZE
+		,fontStyle : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_FONT_STYLE
+		,fontColour : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_FONT_COLOUR
+		,strokeColour : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_STROKE_COLOUR
+		,bgColour : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_TEXT_BCKG_COLOUR
+		,fontWeight : CommonService.CONSTANTS.EMPTY_STRING
+		,textDecoration : CommonService.CONSTANTS.EMPTY_STRING
+		,textAlign : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_TEXT_ALIGN
+	}
 	
-	$scope.$watch(function(){return $scope.canvas.strokeColour}, function() {
-    });
+	$scope.selectedTextFont = function (font) {
+		$scope.text.font = font;
+	}
 	
-	$scope.$watch(function(){return $scope.canvas.bgColour}, function() {
-		var colour = $scope.canvas.bgColour;
-		if (colour === CONSTANTS.FABRIC_CANVAS.DEFAULT_BCKG_COLOUR) {
-			var f = DisplayService.getCurrentFabric();
-			colour = f.background;
-		}
-		if (DisplayService.editingCanvas != null) {
-			DisplayService.editingCanvas.setBackgroundColor(
-				colour
-				,DisplayService.editingCanvas.renderAll.bind(DisplayService.editingCanvas)
-			);
-		}
-    });
+	$scope.selectedTextFontSize = function (size) {
+		$scope.text.fontSize = size;
+	}
+	
+	$scope.selectedTextDecoration = function (index) {
+		$scope.text.textDecoration = CommonService.text.textDecorations[index];
+	}
+	$scope.selectedFontWeight = function (index) {
+		$scope.text.fontWeight = CommonService.text.fontWeights[index];
+	}
+	
+	$scope.$watch(function(){return $scope.text}, function() {
+		
+    },true);
+
+	
+	$scope.write = function () {
+		var left = (DisplayService.editingCanvas.width / 2);
+		var top = (DisplayService.editingCanvas.height / 2);
+		var textItem = new fabric.IText('Tap and Type', { 
+			fontFamily: $scope.text.font.name
+			,fontStyle : $scope.text.fontStyle
+			,fontWeight : $scope.text.fontWeight
+			,textDecoration : $scope.text.textDecoration
+			,textBackgroundColor : $scope.text.bgColour
+			,colour : $scope.text.fontColour
+			,left: left 
+			,top: top 
+		})
+		DisplayService.editingCanvas.add(textItem);
+	}
+	
+	// ------------------------------------------------------------------------
+	// --------------------------- UPLOAD EDITING -----------------------------
+	// ------------------------------------------------------------------------
+	
+	$scope.selectedImgFile = { };
 	
 	$scope.fileSelected = function(element) {
 		$scope.$apply(function(scope) {
@@ -99,26 +126,19 @@ module.controller('ToolsController', ['CONSTANTS','$scope','$rootScope','Display
 		DisplayService.setFabricShowing( !DisplayService.fabricShowing );
 	}
 	
-	$scope.write = function () {
-		var left = (DisplayService.editingCanvas.width / 2);
-		var top = (DisplayService.editingCanvas.height / 2);
-		var textItem = new fabric.IText('Tap and Type', { 
-			fontFamily: $scope.canvas.font.name
-			,fontStyle : "" // italic
-			,textBackgroundColor : $scope.canvas.fontColour
-			,colour : $scope.canvas.fontColour
-			,left: left 
-			,top: top 
-		})
-		DisplayService.editingCanvas.add(textItem);
-	}
-	
+
 	$scope.remove = function () {
-		if(DisplayService.editingCanvas.getActiveGroup()) {
-			DisplayService.editingCanvas.getActiveGroup().forEachObject(function(o){ DisplayService.editingCanvas.remove(o) });
-			DisplayService.editingCanvas.discardActiveGroup().renderAll();
-		} else {
+		var selected = DisplayService.getSelectedEditingElements();
+		if (selected.length == 0) {
+			return;
+		} else if (selected.length == 1) {
 			DisplayService.editingCanvas.remove(DisplayService.editingCanvas.getActiveObject());
+		} else {
+			var i;
+			for (i=0;i<selected.length;i++) {
+				DisplayService.editingCanvas.remove(selected[i]);
+			}
+			DisplayService.editingCanvas.discardActiveGroup().renderAll();
 		}
 	}
 	
@@ -141,14 +161,5 @@ module.controller('ToolsController', ['CONSTANTS','$scope','$rootScope','Display
 		//window.open(DisplayService.editingCanvas.toDataURL('png'));
 	}
 	
-	$scope.selectedFont = function (font) {
-		$scope.canvas.font = font;
-		console.log("selected font:",$scope.canvas.font);
-	}
-	
-	$scope.selectedFontSize = function (size) {
-		$scope.canvas.fontSize = size;
-		console.log("selected font size:",$scope.canvas.fontSize);
-	}
 	
 }]);

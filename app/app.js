@@ -21,17 +21,6 @@ var app = angular.module('CardsApp', [
   ,'cards.directives.Thumbnail'
 ]);
 
-app.constant("CONSTANTS", {
-	DEFAULT_COLOUR : "#ffffff"
-	,FABRIC_CANVAS : {
-		DEFAULT_BCKG_COLOUR : "#ffffff"
-		,DEFAULT_TEXT_BCKG_COLOUR : "#ffffff"
-		,DEFAULT_FONT_COLOUR : "#000000"
-		,DEFAULT_STROKE_COLOUR : "#ffffff"
-		,DEFAULT_FONT_SIZE : 15
-	}
-})
-	
 app.config(function($interpolateProvider){
 });
 
