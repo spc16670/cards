@@ -28,7 +28,8 @@ module.service('CommonService', [function () {
 	}
 	
 	Service.CONSTANTS = {
-		EMPTY_STRING : ""
+		EMPTY_ARRAY : []
+		,EMPTY_STRING : ""
 		,DEFAULT_COLOUR : "#ffffff"
 		,FABRIC_CANVAS : {
 			DEFAULT_BCKG_COLOUR : "#ffffff"

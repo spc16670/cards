@@ -22,6 +22,13 @@ body {
 	overflow:hidden
 }
 
+.bottom-space {
+	padding-bottom : 5px
+}
+
+.scrollxy {
+	overflow : scroll
+}
 
 /* Custom page CSS
 -------------------------------------------------- */

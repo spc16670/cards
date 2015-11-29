@@ -48,6 +48,7 @@ module.controller('CategoriesController', ['$scope','$timeout','$location','$anc
 			var model = BulletService.fetchModel(selected);
 			DisplayService.setModel(model);  
 			DisplayService.materializeMesh();
+			DisplayService.setFabricShowing(false);
 			$timeout(function() {
 				//$anchorScroll.yOffset = -100;
 				//$location.hash('menu');

@@ -7,8 +7,8 @@ module.controller('ElementController', ['$scope','DisplayService','BulletService
 	$scope.elements = [
 		{
 			id : 1
-			,name: 'ornaments'
-			,title: 'Ornaments'
+			,name: 'flourishes'
+			,title: 'Flourishes'
 			,members: []
 		}
 		,{
@@ -39,7 +39,7 @@ module.controller('ElementController', ['$scope','DisplayService','BulletService
 
 	$scope.loadElement = function (element) {
 		if (element.members.length == 0) {
-			if (element.name === "ornaments") {
+			if (element.name === "flourishes") {
 				element.members.push({ groupId : 1, title: "Baroque", img: "baroq1.jpg", id: 1});
 			} else if (element.name === "graphics") {
 				element.members.push({ groupId : 2, title: "Lion", img: "lion1.jpg", id: 1});
