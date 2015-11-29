@@ -163,25 +163,6 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService','Co
 	// ------------------------------------------------------------------------
 	// --------------------------- UPLOAD EDITING -----------------------------
 	// ------------------------------------------------------------------------
-	
-	$scope.selectedImgFile = { };
-	
-	$scope.fileSelected = function(element) {
-		$scope.$apply(function(scope) {
-			var photofile = element.files[0];
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				//console.log(element.value.replace(/^.*\\/, ""));
-				$scope.selectedImgFile = { base64 : e.target.result };
-				fabric.Image.fromURL($scope.selectedImgFile.base64, function(img) {
-					img.scale(0.2).setLeft(10).setTop(10);
-					DisplayService.editingCanvas.add(img);
-					//DisplayService.editingCanvas.renderAll();
-				});
-			};
-			reader.readAsDataURL(photofile);
-		});
-	};
 
 	$scope.fitImage = function () {
 		var shape = DisplayService.editingCanvas.getActiveObject();
@@ -194,11 +175,6 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService','Co
 		DisplayService.editingCanvas.renderAll();
 	}
 	
-	$scope.close = function () {
-		DisplayService.setFabricShowing( !DisplayService.fabricShowing );
-	}
-	
-
 	$scope.remove = function () {
 		var selected = DisplayService.getSelectedEditingElements();
 		if (selected.length == 0) {
@@ -212,12 +188,6 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService','Co
 			}
 			DisplayService.editingCanvas.discardActiveGroup().renderAll();
 		}
-	}
-	
-	$scope.apply = function () {
-		$scope.resetZoom();
-		DisplayService.updateModel(); // saves editingCanvas in model's fabricJson
-		DisplayService.materializeMesh();
 	}
 	
 	$scope.test = function () {
@@ -234,93 +204,5 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService','Co
 		//window.open(DisplayService.editingCanvas.toDataURL('png'));
 	}
 	
-	
-	// ------------------------------------------------------------------------
-	// ------------------------------ ZOOMING ---------------------------------
-	// ------------------------------------------------------------------------
-
-
-	$scope.zoomTracker = 0;
-	$scope.canvasScale = 1;
-	$scope.SCALE_FACTOR = 1.2;
-
-
-	// Zoom In
-	$scope.zoomIn = function() {
-		// TODO limit the max canvas zoom in
-		var canvas = DisplayService.editingCanvas;
-		canvasScale = $scope.canvasScale * $scope.SCALE_FACTOR;
-		
-		canvas.setHeight(canvas.getHeight() * $scope.SCALE_FACTOR);
-		canvas.setWidth(canvas.getWidth() * $scope.SCALE_FACTOR);
-		
-		var objects = canvas.getObjects();
-		for (var i in objects) {
-			var scaleX = objects[i].scaleX;
-			var scaleY = objects[i].scaleY;
-			var left = objects[i].left;
-			var top = objects[i].top;
-			
-			var tempScaleX = scaleX * $scope.SCALE_FACTOR;
-			var tempScaleY = scaleY * $scope.SCALE_FACTOR;
-			var tempLeft = left * $scope.SCALE_FACTOR;
-			var tempTop = top * $scope.SCALE_FACTOR;
-			
-			objects[i].scaleX = tempScaleX;
-			objects[i].scaleY = tempScaleY;
-			objects[i].left = tempLeft;
-			objects[i].top = tempTop;
-			
-			objects[i].setCoords();
-		}
-			
-		canvas.renderAll();
-		$scope.zoomTracker++;
-	}
-
-	// Zoom Out
-	$scope.zoomOut = function() {
-		// TODO limit max cavas zoom out
-		var canvas = DisplayService.editingCanvas;
-		$scope.canvasScale = $scope.canvasScale / $scope.SCALE_FACTOR;
-		
-		canvas.setHeight(canvas.getHeight() * (1 / $scope.SCALE_FACTOR));
-		canvas.setWidth(canvas.getWidth() * (1 / $scope.SCALE_FACTOR));
-		
-		var objects = canvas.getObjects();
-		for (var i in objects) {
-			var scaleX = objects[i].scaleX;
-			var scaleY = objects[i].scaleY;
-			var left = objects[i].left;
-			var top = objects[i].top;
-		
-			var tempScaleX = scaleX * (1 / $scope.SCALE_FACTOR);
-			var tempScaleY = scaleY * (1 / $scope.SCALE_FACTOR);
-			var tempLeft = left * (1 / $scope.SCALE_FACTOR);
-			var tempTop = top * (1 / $scope.SCALE_FACTOR);
-
-			objects[i].scaleX = tempScaleX;
-			objects[i].scaleY = tempScaleY;
-			objects[i].left = tempLeft;
-			objects[i].top = tempTop;
-
-			objects[i].setCoords();
-		}
-		
-		canvas.renderAll();
-		$scope.zoomTracker--;		
-	}
-
-	// Reset Zoom
-	$scope.resetZoom = function() {
-		while ($scope.zoomTracker != 0) {
-			if ($scope.zoomTracker > 0) {
-				$scope.zoomOut();
-			} else {
-				$scope.zoomIn();
-			}
-		}
-
-	}
 
 }]);

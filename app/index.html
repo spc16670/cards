@@ -48,6 +48,7 @@
 		<script src="services/Categories.js"></script>
 		<script src="services/Utils.js"></script>
 		<script src="services/Common.js"></script>
+		<script src="services/Elements.js"></script>
 		<script src="directives/Fabric.js"></script>
 		<script src="directives/Display.js"></script>
 		<script src="directives/Slideable.js"></script>
@@ -56,7 +57,7 @@
 		<script src="app.js"></script>
 	</head>
 
-	<body ng-controller="MainController">
+	<body ng-controller="MainController" ng-cloak>
 
 		<!-- Categories -->
 		<div id="menu" ng-controller="CategoriesController">
@@ -282,25 +283,6 @@
 					<!-- GENERAL CANVAS TOOLS -->
 					<div class="panel panel-default well">
 					<!-- <div class="panel-heading">Editor</div> -->
-					
-						<!-- ZOOM -->
-						<div class="btn-group btn-group-justified" role="group" aria-label="...">
-						<div class="btn-group" role="group">
-							<button type="button" class="btn btn-default" ng-click="zoomIn()">
-								<span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
-							</button>
-						</div>
-						<div class="btn-group" role="group">
-							<button type="button" class="btn btn-default" ng-click="zoomOut()">
-								<span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span>
-							</button>
-						</div>
-						<div class="btn-group" role="group">
-							<button type="button" class="btn btn-default" ng-click="resetZoom()">
-								<span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-							</button>
-						</div>
-						</div>
 						
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
@@ -311,12 +293,6 @@
 								</div>
 							</div>
 						</div>
-						
-						<ul class="list-group">
-							<li class="list-group-item crop">
-								<input type="file" onchange="angular.element(this).scope().fileSelected(this)" accept="image/*" id="fabricImgFile" ng-model="selectedImgFile"/>
-							</li>
-						</ul>
 						
 						<!-- IMAGE SPECIFIC -->
 						<div class="btn-group btn-group-justified" role="group" aria-label="...">
@@ -485,29 +461,50 @@
 							</div>
 						</div>
 					</div>
-					
-					<!-- GENERAL-->
-
-					<div class="btn-group btn-group-justified" role="group" aria-label="...">
-					  <div class="btn-group" role="group">
-						<button type="button" class="btn btn-default" ng-click="close()">
-							<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Cancel
-						</button>
-					  </div>
-					  <div class="btn-group" role="group">
-						<button type="button" class="btn btn-default" ng-click="apply()">
-							<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Apply
-						</button>
-					  </div>
-					</div>
 
 					
 				</div>
 			
-			
-				<!-- FABRIC CANVAS -->
+				<!------------------------------------------------------------>
+				<!--------------------- FABRIC CANVAS ------------------------>
+				<!------------------------------------------------------------>
 				<div class="col-md-6">
+				
 					<div class="panel panel-default">
+						<div class="panel-heading">
+						
+							<!-- ZOOM -->
+							<div class="btn-group btn-group-justified" role="group" aria-label="...">
+								<div class="btn-group" role="group">
+									<button type="button" class="btn btn-default" ng-click="zoomIn()">
+										<span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
+									</button>
+								</div>
+								<div class="btn-group" role="group">
+									<button type="button" class="btn btn-default" ng-click="zoomOut()">
+										<span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span>
+									</button>
+								</div>
+								<div class="btn-group" role="group">
+									<button type="button" class="btn btn-default" ng-disabled="fabricZoomTracker == 0" ng-click="resetZoom()">
+										<span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+									</button>
+								</div>
+								<div class="btn-group" role="group">
+									<button type="button" class="btn btn-default" ng-click="hide()">
+										<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Cancel
+									</button>
+								</div>
+								<div class="btn-group" role="group">
+									<button type="button" class="btn btn-default" ng-click="apply()">
+										<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Apply
+									</button>
+								</div>
+							</div>
+						
+						</div> 
+					
+					
 						<div class="panel-body scrollxy">
 							<div id="fabricCanvas"
 								ng-fabric
@@ -522,22 +519,43 @@
 				<!-- FABRIC ELEMENTS -->
 				<div class="col-md-3" ng-controller="ElementController">
 	  
-					<uib-accordion close-others="true">
-					  <div ng-click='loadElement(element)' uib-accordion-group heading="{{ element.title }}" ng-repeat="element in elements">
-						<table class="table table-condensed">
-							<tbody>
-								<tr ng-repeat="member in element.members">
-									<td ng-click="selectElement(member)">
-										<div class="row">
-											<div class="col-sm-12">
-												<img ng-src="images/elements/{{ element.name }}/{{ member.img }}" class="img-thumbnail" alt="Member Image" />
+					<uib-accordion>
+						<div uib-accordion-group heading="{{ uploads.title }}" is-open="true">
+							<ul class="list-group">
+								<li class="list-group-item crop">
+									<input type="file" onchange="angular.element(this).scope().fileSelected(this)" accept="image/*" id="fabricImgFile" ng-model="selectedImgFile"/>
+								</li>
+							</ul>
+							<table class="table table-condensed">
+								<tbody>
+									<tr ng-repeat="member in uploads.members">
+										<td ng-click="selectElement(member)">
+											<div class="row">
+												<div class="col-sm-12">
+													<img ng-src="images/elements/{{ uploads.name }}/{{ member.img }}" class="img-thumbnail" alt="Member Image" />
+												</div>
 											</div>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					  </div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<div uib-accordion-group heading="{{ element.title }}" ng-click='loadElement(element)' ng-repeat="element in elements">
+							<table class="table table-condensed">
+								<tbody>
+									<tr ng-repeat="member in element.members">
+										<td ng-click="selectElement(member)">
+											<div class="row">
+												<div class="col-sm-12">
+													<img ng-src="images/elements/{{ element.name }}/{{ member.img }}" class="img-thumbnail" alt="Member Image" />
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</uib-accordion>
 				</div>
 			

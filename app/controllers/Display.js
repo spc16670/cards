@@ -51,5 +51,27 @@ module.controller('DisplayController', ['$scope','DisplayService', function ($sc
 	$scope.$watch( 'controls.normals', function() { 
 		DisplayService.setNormals($scope.controls.normals);
 	},true);
+	
+	$scope.fabricZoomTracker = DisplayService.fabricZoomTracker;
+	
+	$scope.$watch( function() { return DisplayService.fabricZoomTracker }, function() { 
+		$scope.fabricZoomTracker = DisplayService.fabricZoomTracker;
+	},true);
+	
+	$scope.zoomIn = function() {
+		DisplayService.zoomFabricIn();
+	}
+	$scope.zoomOut = function() {
+		DisplayService.zoomFabricOut();
+	}
+	$scope.resetZoom = function() {
+		DisplayService.resetFabricZoom();
+	}
+	$scope.apply = function () {
+		DisplayService.applyFabric();
+	}
+	$scope.hide = function () {
+		DisplayService.setFabricShowing( !DisplayService.fabricShowing );
+	}
 
 }]);

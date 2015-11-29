@@ -1,64 +1,38 @@
 
 var module = angular.module('cards.controllers.Elements',[]);
 
-module.controller('ElementController', ['$scope','DisplayService','BulletService'
-  , function ($scope,DisplayService,BulletService) {
+module.controller('ElementController', ['$scope','ElementsService'
+  , function ($scope,ElementsService) {
 
-	$scope.elements = [
-		{
-			id : 1
-			,name: 'flourishes'
-			,title: 'Flourishes'
-			,members: []
-		}
-		,{
-			id : 2
-			,name: 'graphics'
-			,title: 'Graphics'
-			,members: []
-		}
-		,{
-			id : 3
-			,name: 'symbols'
-			,title: 'Symbols'
-			,members: []
-		}
-		,{
-			id : 4
-			,name: 'pictures'
-			,title: 'Pictures'
-			,members: []
-		}
-		,{
-			id : 5
-			,name: 'uploads'
-			,title: 'Uploads'
-			,members: []
-		}
-	];
-
-	$scope.loadElement = function (element) {
-		if (element.members.length == 0) {
-			if (element.name === "flourishes") {
-				element.members.push({ groupId : 1, title: "Baroque", img: "baroq1.jpg", id: 1});
-			} else if (element.name === "graphics") {
-				element.members.push({ groupId : 2, title: "Lion", img: "lion1.jpg", id: 1});
-			} else if (element.name === "symbols") {
-				element.members.push({ groupId : 3, title: "Fish", img: "christian1.jpg", id: 1});
-			} else if (element.name === "pictures") {
-				element.members.push({ groupId : 4, title: "Rose", img: "rose1.jpg", id: 1});
-			} else if (element.name === "uploads") {
-				element.members.push({ groupId : 5, title: "Huge", img: "huge.jpg", id: 1});
-			} 
-		}
+	$scope.elements = ElementsService.elements;
+	$scope.uploads = ElementsService.uploads;
+	
+	$scope.loadElement = function(element) {
+		ElementsService.loadElement(element);
 	}
+	
+	$scope.selectedImgFile = { };
+	
+	$scope.fileSelected = function(element) {
+		/*
+		$scope.$apply(function(scope) {
+			var photofile = element.files[0];
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				//console.log(element.value.replace(/^.*\\/, ""));
+				$scope.selectedImgFile = { base64 : e.target.result };
+				fabric.Image.fromURL($scope.selectedImgFile.base64, function(img) {
+					img.scale(0.2).setLeft(10).setTop(10);
+					DisplayService.editingCanvas.add(img);
+					//DisplayService.editingCanvas.renderAll();
+				});
+			};
+			reader.readAsDataURL(photofile);
+		});*/
+	};
+	
+	$scope.selectElement = function(element) {
 
-	$scope.selectElement = function(member) {
-		if (member.groupId != DisplayService.model.groupId) {
-			var model = BulletService.fetchModel(member);
-			DisplayService.setModel(member);  
-			DisplayService.materializeMesh();
-		}
 	}
 
 }]);

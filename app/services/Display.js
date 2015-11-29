@@ -173,6 +173,99 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 		$timeout(function(){ console.log(Service.mesh);Service.setFabricShowing(false); })
 	}
 	
+	/**
+	* This method applies the Fabric onto a side on the THREE mesh model.
+	*/
+	Service.applyFabric = function () {
+		Service.resetFabricZoom();
+		Service.updateModel(); // saves editingCanvas in model's fabricJson
+		Service.materializeMesh();
+	}
+	
+	// ------------------------------------------------------------------------
+	// ------------------------- FABRIC ZOOMING -------------------------------
+	// ------------------------------------------------------------------------
+
+	Service.fabricZoomTracker = 0;
+	Service.fabricCanvasScale = 1;
+	Service.FABRIC_SCALE_FACTOR = 1.2;
+
+	// Zoom In
+	Service.zoomFabricIn = function() {
+		var canvas = Service.editingCanvas;
+		fabricCanvasScale = Service.fabricCanvasScale * Service.FABRIC_SCALE_FACTOR;
+		
+		canvas.setHeight(canvas.getHeight() * Service.FABRIC_SCALE_FACTOR);
+		canvas.setWidth(canvas.getWidth() * Service.FABRIC_SCALE_FACTOR);
+		
+		var objects = canvas.getObjects();
+		for (var i in objects) {
+			var scaleX = objects[i].scaleX;
+			var scaleY = objects[i].scaleY;
+			var left = objects[i].left;
+			var top = objects[i].top;
+			
+			var tempScaleX = scaleX * Service.FABRIC_SCALE_FACTOR;
+			var tempScaleY = scaleY * Service.FABRIC_SCALE_FACTOR;
+			var tempLeft = left * Service.FABRIC_SCALE_FACTOR;
+			var tempTop = top * Service.FABRIC_SCALE_FACTOR;
+			
+			objects[i].scaleX = tempScaleX;
+			objects[i].scaleY = tempScaleY;
+			objects[i].left = tempLeft;
+			objects[i].top = tempTop;
+			
+			objects[i].setCoords();
+		}
+			
+		canvas.renderAll();
+		Service.fabricZoomTracker++;
+	}
+
+	// Zoom Out
+	Service.zoomFabricOut = function() {
+		// TODO limit max cavas zoom out
+		var canvas = Service.editingCanvas;
+		Service.fabricCanvasScale = Service.fabricCanvasScale / Service.FABRIC_SCALE_FACTOR;
+		
+		canvas.setHeight(canvas.getHeight() * (1 / Service.FABRIC_SCALE_FACTOR));
+		canvas.setWidth(canvas.getWidth() * (1 / Service.FABRIC_SCALE_FACTOR));
+		
+		var objects = canvas.getObjects();
+		for (var i in objects) {
+			var scaleX = objects[i].scaleX;
+			var scaleY = objects[i].scaleY;
+			var left = objects[i].left;
+			var top = objects[i].top;
+		
+			var tempScaleX = scaleX * (1 / Service.FABRIC_SCALE_FACTOR);
+			var tempScaleY = scaleY * (1 / Service.FABRIC_SCALE_FACTOR);
+			var tempLeft = left * (1 / Service.FABRIC_SCALE_FACTOR);
+			var tempTop = top * (1 / Service.FABRIC_SCALE_FACTOR);
+
+			objects[i].scaleX = tempScaleX;
+			objects[i].scaleY = tempScaleY;
+			objects[i].left = tempLeft;
+			objects[i].top = tempTop;
+
+			objects[i].setCoords();
+		}
+		
+		canvas.renderAll();
+		Service.fabricZoomTracker--;		
+	}
+
+	// Reset Zoom
+	Service.resetFabricZoom = function() {
+		while (Service.fabricZoomTracker != 0) {
+			if (Service.fabricZoomTracker > 0) {
+				Service.zoomFabricOut();
+			} else {
+				Service.zoomFabricIn();
+			}
+		}
+
+	}
 	return Service;
 
 }]);
