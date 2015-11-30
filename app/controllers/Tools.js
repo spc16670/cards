@@ -65,12 +65,19 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService','Co
 		,fontWeight : CommonService.CONSTANTS.EMPTY_STRING
 		,textDecoration : CommonService.CONSTANTS.EMPTY_ARRAY
 		,textAlign : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_TEXT_ALIGN
+		,shadow : {
+			colour : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_SHADOW_COLOUR
+			,blur : 3
+			,offset : { h : 3, v : 3 }
+		}
 		,toggles : {
 			bold : false
 			,italic : false
 			,underline : false
 			,strikethrough : false
 			,overline : false
+			,shadow : false
+			,border : false
 		}
 	}
 	

@@ -41,6 +41,7 @@ module.service('CommonService', [function () {
 			,DEFAULT_TEXT_ALIGN : "left"
 			,TEXT_BOLD_INDEX : 1
 			,TEXT_ITALIC_INDEX : 1
+			,DEFAULT_SHADOW_COLOUR : 'green'
 		}
 	}
 	
