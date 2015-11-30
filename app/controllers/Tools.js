@@ -49,6 +49,7 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService','Co
 			,textDecoration : $scope.text.textDecoration
 			,textBackgroundColor : $scope.text.bgColour
 			,fill : $scope.text.fontColour
+			,shadow : $scope.text.shadow.value
 			,left: left 
 			,top: top 
 		})
@@ -66,9 +67,30 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService','Co
 		,textDecoration : CommonService.CONSTANTS.EMPTY_ARRAY
 		,textAlign : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_TEXT_ALIGN
 		,shadow : {
+			value : CommonService.CONSTANTS.EMPTY_STRING
+			,properties : {	
+				colour : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_SHADOW_COLOUR
+				,blur : 3
+				,h : ((CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_MIN 
+					+ CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_MAX) / 2) + 3
+				,v : ((CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_MIN 
+					+ CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_MAX) / 2) + 3
+			}
+			,range : { 
+				min : CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_MIN
+				,max : CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_MAX
+				,step : CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_STEP
+			} 
+		}
+		,stroke : {
 			colour : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_SHADOW_COLOUR
-			,blur : 3
-			,offset : { h : 3, v : 3 }
+			,width : ((CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_MIN 
+					+ CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_MAX) / 2) + 3
+			,range : { 
+				min : CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_MIN
+				,max : CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_MAX
+				,step : CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_STEP
+			} 
 		}
 		,toggles : {
 			bold : false
@@ -77,7 +99,7 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService','Co
 			,strikethrough : false
 			,overline : false
 			,shadow : false
-			,border : false
+			,stroke : false
 		}
 	}
 	
@@ -166,6 +188,52 @@ module.controller('ToolsController', ['$scope','$rootScope','DisplayService','Co
 	$scope.$watch(function(){return $scope.text.fontColour}, function() {
 		$scope.textChangeUpdate('fill',$scope.text.fontColour);
     },true);
+	
+	// -------------------------------- SHADOW --------------------------------
+	
+	$scope.shadowValue = function () {
+		var middle = (CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_MIN + 
+			CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_MAX) / 2;
+		var h = $scope.text.shadow.properties.h - middle;
+		var v = $scope.text.shadow.properties.v - middle;	
+		var val = $scope.text.shadow.properties.colour + " " + h  
+			+ "px " + v
+			+ "px " + $scope.text.shadow.properties.blur + "px"
+		return new fabric.Shadow(val);
+	}
+	
+	$scope.$watch(function(){return $scope.text.shadow.properties}, function() {
+		if ($scope.text.toggles.shadow) {
+			$scope.text.shadow.value = $scope.shadowValue();
+			$scope.textChangeUpdate('shadow',$scope.text.shadow.value);
+		}
+    },true);
+	
+	$scope.toggleTextShadow = function () {
+		$scope.text.toggles.shadow = !$scope.text.toggles.shadow;
+		if ($scope.text.toggles.shadow) {
+			$scope.text.shadow.value = $scope.shadowValue();
+		} else {
+			$scope.text.shadow.value = CommonService.CONSTANTS.EMPTY_STRING;
+		}
+	}
+	// -------------------------------- STROKE --------------------------------
+	
+	$scope.$watch(function(){return $scope.text.stroke.colour}, function() {
+		if ($scope.text.toggles.stroke) {
+			$scope.textChangeUpdate('stroke',$scope.text.stroke.colour);
+		}
+    },true);
+	
+	$scope.$watch(function(){return $scope.text.stroke.width}, function() {
+		if ($scope.text.toggles.stroke) {
+			$scope.textChangeUpdate('strokeWidth',$scope.text.stroke.width);
+		}
+    },true);
+	
+	$scope.toggleTextStroke = function () {
+		$scope.text.toggles.stroke = !$scope.text.toggles.stroke;
+	}
 	
 	// ------------------------------------------------------------------------
 	// --------------------------- UPLOAD EDITING -----------------------------

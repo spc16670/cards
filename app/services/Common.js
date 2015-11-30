@@ -41,7 +41,10 @@ module.service('CommonService', [function () {
 			,DEFAULT_TEXT_ALIGN : "left"
 			,TEXT_BOLD_INDEX : 1
 			,TEXT_ITALIC_INDEX : 1
-			,DEFAULT_SHADOW_COLOUR : 'green'
+			,DEFAULT_SHADOW_COLOUR : 'rgba(195,212,173,1)'
+			,SHADOW_RANGE_MIN : 0
+			,SHADOW_RANGE_MAX : 60
+			,SHADOW_RANGE_STEP : 1
 		}
 	}
 	
