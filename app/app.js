@@ -11,6 +11,7 @@ var app = angular.module('CardsApp', [
 	,'cards.services.Common'
 	,'cards.services.Elements'
 	,'cards.controllers.Display'
+	,'cards.controllers.General'
 	,'cards.controllers.Text'
 	,'cards.controllers.Tools'
 	,'cards.controllers.Elements'

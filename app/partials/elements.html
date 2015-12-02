@@ -1,0 +1,40 @@
+<div ng-controller="ElementController">
+	<uib-accordion>
+		<div uib-accordion-group heading="{{ uploads.title }}" is-open="true">
+			<ul class="list-group">
+				<li class="list-group-item crop">
+					<input type="file" onchange="angular.element(this).scope().fileSelected(this)" accept="image/*" id="fabricImgFile" ng-model="selectedImgFile"/>
+				</li>
+			</ul>
+			<table class="table table-condensed">
+				<tbody>
+					<tr ng-repeat="member in uploads.members">
+						<td ng-click="selectElement(member)">
+							<div class="row">
+								<div class="col-sm-12">
+									<img ng-src="images/elements/{{ uploads.name }}/{{ member.img }}" class="img-thumbnail" alt="Member Image" />
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div uib-accordion-group heading="{{ element.title }}" ng-click='loadElement(element)' ng-repeat="element in elements">
+			<table class="table table-condensed">
+				<tbody>
+					<tr ng-repeat="member in element.members">
+						<td ng-click="selectElement(member)">
+							<div class="row">
+								<div class="col-sm-12">
+									<img ng-src="images/elements/{{ element.name }}/{{ member.img }}" class="img-thumbnail" alt="Member Image" />
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</uib-accordion>
+</div>

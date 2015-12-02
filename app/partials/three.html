@@ -1,0 +1,43 @@
+	<!-- WEBGL CANVAS -->
+	<div class="panel panel-default" >
+	
+		<div class="panel-heading clearfix" style="border:0;background-color:#ffffff">
+			<div class="input-group input-group-sm pull-right">
+				<span>
+					<label for="spinning">		
+						<span>Spin</span>
+						<input type="checkbox" id="spinning" ng-model="controls.spinning"/>		
+					</label>
+					<label for="helpers">		
+						<span>Axes</span>
+						<input type="checkbox" id="helpers" ng-model="controls.helpers"/>				
+					</label>
+					<label for="wireframe">
+						<span>Frame</span>
+						<input type="checkbox" id="wireframe" ng-model="controls.wireframe"/>				
+					</label>
+					<label for="normals">
+						<span>Normals</span>
+						<input type="checkbox" id="normals" ng-model="controls.normals"/>		
+					</label>
+				</span>
+	
+			</div>
+		</div>
+		
+		<div class="panel-body">
+			<div id="threeCanvas" ng-webgl></div>
+		</div>
+		
+		<div class="panel-footer clearfix" style="border:0;background-color:#ffffff">
+			<div class="row">
+				<div class="col-xs-4">
+					<label for="scale">Scale</label>
+				</div>
+				<div class="col-xs-8">
+					<input type="range" name="scale" min="0.1" max="2.0" step="0.1" ng-model="controls.scale" class="add-bottom"/>		
+				</div>
+			</div>
+		</div>
+		
+	</div>

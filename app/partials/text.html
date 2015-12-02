@@ -1,0 +1,252 @@
+	
+	
+<!-- TEXT TOOLS -->
+<div class="panel panel-default" ng-controller="TextController">
+	<div class="panel-heading" style="padding-bottom:5px;padding-top:5px"><small><strong>Text</strong></small></div> 
+	<div class="panel-body">
+	
+		<!-- FONT FAMILY AND SIZE -->
+		<div class="row bottom-space">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+				<div class="btn-group" role="group">
+			
+						<!-- Split button -->
+						<div class="btn-group btn-group-justified" style="width:60%" role="group" uib-dropdown>
+							<div class="btn-group" style="width:70%" role="group">
+								<button class="btn btn-default" href="#"><div class="crop">{{ text.font.name }}</div></button>
+							</div>
+							<div class="btn-group" style="width:30%" role="group">
+								<button type="button" class="btn btn-secondary"  uib-dropdown-toggle>
+									<span class="caret"></span>
+									<span class="sr-only">Split button!</span>
+								</button>
+							</div>
+							<ul class="uib-dropdown-menu" role="menu" aria-labelledby="split-button">
+								<li role="menuitem" ng-repeat="font in fonts">
+									<a href ng-style="{{font.style}}" ng-click="selectedTextFont(font)">{{ font.name }}</a>
+								</li>
+							</ul>
+						</div>
+			
+						<div class="btn-group btn-group-justified" role="group" style="width:40%" uib-dropdown>
+							<div class="btn-group" style="width:60%" role="group">
+								<button type="button" class="btn btn-default"> {{ text.fontSize }} </button>
+							</div>
+							<div class="btn-group" style="width:40%" role="group">
+								<button type="button" class="btn btn-secondary" uib-dropdown-toggle>
+									<span class="caret"></span>
+									<span class="sr-only">Split button!</span>
+								</button>
+							</div>
+							<ul class="uib-dropdown-menu" role="menu" aria-labelledby="split-button">
+								<li role="menuitem" ng-repeat="size in fontSizes">
+									<a href ng-click="selectedTextFontSize(size)">{{ size }}</a>
+								</li>
+							</ul>
+						</div>
+				</div>
+			</div>	
+		</div>
+	
+	
+		<div class="row bottom-space">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+				<!-- Split button -->
+				<div class="btn-group btn-group-justified" role="group">
+					<div class="btn-group btn-group-sm" role="group">
+						<button type="button" class="btn btn-xs btn-default" ng-model="text.textAlign" uib-btn-radio="'left'">
+							<i class="fa fa-align-left"></i>
+						</button>
+					</div>
+					<div class="btn-group btn-group-sm" role="group">
+						<button type="button" class="btn btn-xs btn-default" ng-model="text.textAlign" uib-btn-radio="'center'">
+							<i class="fa fa-align-center"></i>
+						</button>
+					</div>
+					<div class="btn-group btn-group-sm" role="group">
+						<button type="button" class="btn btn-xs btn-default" ng-model="text.textAlign" uib-btn-radio="'right'">
+							<i class="fa fa-align-right"></i>
+						</button>
+					</div>
+					<div class="btn-group btn-group-sm" role="group">
+						<button type="button" class="btn btn-xs btn-default" ng-model="text.textAlign" uib-btn-radio="'justified'">
+							<i class="fa fa-align-justify"></i>
+						</button>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	
+		<div class="row bottom-space">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+				<div class="btn-group btn-group-justified" role="group">
+					<div class="btn-group btn-group-sm" role="group">
+						<button type="button" class="btn btn-default" ng-class="{active: text.toggles.bold}" ng-click="toggleTextWeight('bold')">
+							<i class="fa fa-bold"></i>
+						</button>
+					</div>
+					<div class="btn-group btn-group-sm" role="group">
+						<button type="button" class="btn btn-default" ng-class="{active: text.toggles.italic}" ng-click="toggleTextStyle('italic')">
+							<i class="fa fa-italic"></i>
+						</button>
+					</div>
+					<div class="btn-group btn-group-sm" role="group">
+						<button type="button" class="btn btn-default" ng-class="{active: text.toggles.underline}" ng-click="toggleTextDecoration('underline')">
+							<i class="fa fa-underline"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+		
+		<div class="row bottom-space">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+				<div class="btn-group btn-group-justified" role="group">
+					<div class="btn-group btn-group-sm" role="group">
+						<button type="button" class="btn btn-default" ng-class="{active: text.toggles.strikethrough}" ng-click="toggleTextDecoration('strikethrough')">
+							<i class="fa fa-strikethrough"></i>
+						</button>
+					</div>
+					<div class="btn-group btn-group-sm" role="group">
+						<button type="button" class="btn btn-default" ng-class="{active: text.toggles.overline}" ng-click="toggleTextDecoration('overline')">
+							&#332
+						</button>
+					</div>
+					<div class="btn-group btn-group-sm" role="group">
+						<button type="button" class="btn btn-default" ng-class="{active: text.toggles.shadow}" ng-click="toggleTextShadow()">
+							S&#738
+						</button>
+					</div>
+					<div class="btn-group btn-group-sm" role="group">
+						<button type="button" class="btn btn-default" ng-class="{active: text.toggles.stroke}" ng-click="toggleTextStroke()">
+							B
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+		<!-- SHADOW HELPERS -->
+		<div class="row" ng-if="text.toggles.shadow">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+			
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+							<div class="row">
+								<div class="col-xs-4 col-sm-4 col-md-4">
+									<label for="shadowColour" class="pull-right">
+										<small><strong>Colour:</strong></small>
+									</label>
+								</div>
+								<div class="col-xs-8 col-sm-8 col-md-8">
+									<span colorpicker="rgba" class="btn btn-sm pull-right" ng-model="text.shadow.properties.colour" 
+										id="shadowColour" ng-style="{ 'background-color' : text.shadow.properties.colour }">
+										<i class="fa fa-tint"></i>
+									</span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-4 col-sm-4 col-md-4">
+									<label for="shadowOffsetH" class="pull-right">
+										<small><strong>H:</strong></small>
+									</label>
+								</div>
+								<div class="col-xs-8 col-sm-8 col-md-8">
+									<input type="range" min="{{ text.shadow.range.min }}" max="{{ text.shadow.range.max }}" 
+										step="{{ text.shadow.range.step }}" ng-model="text.shadow.properties.h"
+										id="shadowOffsetH">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-4 col-sm-4 col-md-4">
+									<label for="shadowOffsetV" class="pull-right">
+										<small><strong>V:</strong></small>
+									</label>
+								</div>
+								<div class="col-xs-8 col-sm-8 col-md-8">
+									<input type="range" min="{{ text.shadow.range.min }}" max="{{ text.shadow.range.max }}" 
+										step="{{ text.shadow.range.step }}" ng-model="text.shadow.properties.v"
+										id="shadowOffsetV">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-4 col-sm-4 col-md-4">
+									<label for="shadowBlur" class="pull-right">
+										<small><strong>Blur:</strong></small>
+									</label>
+								</div>
+								<div class="col-xs-8 col-sm-8 col-md-8">
+									<input type="range" min="{{ text.shadow.range.min }}" max="{{ text.shadow.range.max }}" 
+										step="{{ text.shadow.range.step }}" ng-model="text.shadow.properties.blur" id="shadowBlur">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- STROKE HELPERS -->
+		<div class="row" ng-if="text.toggles.stroke">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+			
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+							<div class="row">
+								<div class="col-xs-4 col-sm-4 col-md-4">
+									<label for="strokeColour" class="pull-right">
+										<small><strong>Colour:</strong></small>
+									</label>
+								</div>
+								<div class="col-xs-8 col-sm-8 col-md-8">
+									<span colorpicker="rgba" class="btn btn-xs pull-right" ng-model="text.stroke.colour" 
+										id="strokeColour" ng-style="{ 'background-color' : text.stroke.colour }">
+										<i class="fa fa-tint"></i>
+									</span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-4 col-sm-4 col-md-4">
+									<label for="strokeWidth" class="pull-right">
+										<small><strong>Width:</strong></small>
+									</label>
+								</div>
+								<div class="col-xs-8 col-sm-8 col-md-8">
+									<input type="range" min="{{ text.stroke.range.min }}" max="10" 
+										step="{{ text.stroke.range.step }}" ng-model="text.stroke.width" id="strokeWidth">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- TEXT COLOUR -->
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+				<div class="input-group input-group-sm">
+					<span colorpicker="rgba" class="input-group-addon" ng-model="text.fontColour" id="basic-addon1" ng-style="{ 'background-color' : text.fontColour }">
+						<span class="glyphicon glyphicon-text-color" aria-hidden="true"></span>
+					</span>
+					<span colorpicker="rgba" class="input-group-addon" ng-model="text.bgColour" id="basic-addon2" ng-style="{ 'background-color' : text.bgColour }">
+						<span class="glyphicon glyphicon-text-background" aria-hidden="true"></span>
+					</span>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+	<div class="panel-footer">
+		<div class="input-group input-group-sm">
+		  <span class="input-group-addon" id="basic-addon1">
+				<span class="glyphicon glyphicon-pencil" ng-click="write()" aria-hidden="true"></span>
+		  </span>
+		  <a class="btn btn-default form-control" href="#" ng-click="write()">Write &nbsp;</a>
+		</div>
+	</div>
+</div>
