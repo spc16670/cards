@@ -45,6 +45,7 @@ module.service('CommonService', [function () {
 			,SHADOW_RANGE_MIN : 0
 			,SHADOW_RANGE_MAX : 60
 			,SHADOW_RANGE_STEP : 1
+			,DEFAULT_LINE_HEIGHT : 1
 		}
 	}
 	

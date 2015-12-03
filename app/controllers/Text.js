@@ -19,7 +19,15 @@ module.controller('TextController', ['$scope','DisplayService','CommonService',
 		,bgColour : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_TEXT_BCKG_COLOUR
 		,fontWeight : CommonService.CONSTANTS.EMPTY_STRING
 		,textDecoration : CommonService.CONSTANTS.EMPTY_ARRAY
-		,textAlign : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_TEXT_ALIGN
+		,align : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_TEXT_ALIGN
+		,lineHeight : {
+			value :  CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_LINE_HEIGHT
+			,range : { 
+				min : CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_MIN
+				,max : CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_MAX
+				,step : CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_STEP
+			} 
+		}
 		,shadow : {
 			value : CommonService.CONSTANTS.EMPTY_STRING
 			,properties : {	
@@ -54,6 +62,7 @@ module.controller('TextController', ['$scope','DisplayService','CommonService',
 			,overline : false
 			,shadow : false
 			,stroke : false
+			,lineHeight : false
 		}
 	}
 	
@@ -66,6 +75,8 @@ module.controller('TextController', ['$scope','DisplayService','CommonService',
 			,fontWeight : $scope.text.fontWeight
 			,textDecoration : $scope.text.textDecoration
 			,textBackgroundColor : $scope.text.bgColour
+			,textAlign : $scope.text.align
+			,lineHeight : $scope.text.lineHeight.value
 			,fill : $scope.text.fontColour
 			,shadow : $scope.text.shadow.value
 			,left: left 
@@ -116,6 +127,9 @@ module.controller('TextController', ['$scope','DisplayService','CommonService',
 		}
 	}
 
+	$scope.toggleTextLineHeight = function () {
+		$scope.text.toggles.lineHeight = !$scope.text.toggles.lineHeight;
+	}
 	
 	// ------------------------------------------------------------------------
 	$scope.textChangeUpdate = function (prop,val) {
@@ -158,6 +172,13 @@ module.controller('TextController', ['$scope','DisplayService','CommonService',
 		$scope.textChangeUpdate('fill',$scope.text.fontColour);
     },true);
 	
+	$scope.$watch(function(){return $scope.text.align}, function() {
+		$scope.textChangeUpdate('textAlign',$scope.text.align);
+    },true);
+	
+	$scope.$watch(function(){return $scope.text.lineHeight.value}, function() {
+		$scope.textChangeUpdate('lineHeight',$scope.text.lineHeight.value);
+    },true);
 	// -------------------------------- SHADOW --------------------------------
 	
 	$scope.shadowValue = function () {
