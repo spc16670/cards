@@ -1,12 +1,12 @@
 var module = angular.module('cards.controllers.Text',[]);
 
-module.controller('TextController', ['$scope','DisplayService','CommonService', 
-	function ($scope,DisplayService,CommonService) {
+module.controller('TextController', ['$scope','DisplayService','CommonService'
+	,'UtilsService',function ($scope,DisplayService,CommonService,UtilsService) {
 
 	// ------------------------------------------------------------------------
 	// ---------------------------- TEXT EDITING ------------------------------
 	// ------------------------------------------------------------------------
-	
+
 	$scope.fonts = CommonService.text.fonts;
 	$scope.fontSizes = CommonService.text.fontSizes;
 	
@@ -25,7 +25,7 @@ module.controller('TextController', ['$scope','DisplayService','CommonService',
 			,range : { 
 				min : CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_MIN
 				,max : CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_MAX
-				,step : CommonService.CONSTANTS.FABRIC_CANVAS.SHADOW_RANGE_STEP
+				,step : CommonService.CONSTANTS.FABRIC_CANVAS.LINE_HEIGHT_RANGE_STEP
 			} 
 		}
 		,shadow : {
@@ -111,24 +111,22 @@ module.controller('TextController', ['$scope','DisplayService','CommonService',
 		}
 	}
 	
+	
 	$scope.toggleTextDecoration = function (what) {
 		$scope.text.toggles[what] = !$scope.text.toggles[what];
-		if ($scope.text.toggles[what]) {
-			if (what === "strikethrough") {
-				what = CommonService.text.textDecorations[3];
-			}
+		if (what === CommonService.CONSTANTS.FABRIC_CANVAS.TEXT_DECORATION_STRIKETHROUGH) {
+			what = CommonService.text.textDecorations[3];
+		}
+		var i = $scope.text.textDecoration.indexOf(what);
+		if (i == -1) {
 			$scope.text.textDecoration.push(what);
 		} else {
-			if (what === "strikethrough") {
-				what = CommonService.text.textDecorations[3];
-			}
-			var i = $scope.text.textDecoration.indexOf(what);
 			$scope.text.textDecoration.splice(i,1);
 		}
 	}
 
 	$scope.toggleTextLineHeight = function () {
-		$scope.text.toggles.lineHeight = !$scope.text.toggles.lineHeight;
+		$scope.toggle('lineHeight');
 	}
 	
 	// ------------------------------------------------------------------------
@@ -200,7 +198,7 @@ module.controller('TextController', ['$scope','DisplayService','CommonService',
     },true);
 	
 	$scope.toggleTextShadow = function () {
-		$scope.text.toggles.shadow = !$scope.text.toggles.shadow;
+		$scope.toggle('shadow');
 		if ($scope.text.toggles.shadow) {
 			$scope.text.shadow.value = $scope.shadowValue();
 		} else {
@@ -222,7 +220,22 @@ module.controller('TextController', ['$scope','DisplayService','CommonService',
     },true);
 	
 	$scope.toggleTextStroke = function () {
-		$scope.text.toggles.stroke = !$scope.text.toggles.stroke;
+		$scope.toggle('stroke');
 	}
+	// ------------
+
+	$scope.toggle = function(view) {
+		for (var key in $scope.text.toggles) {
+			if ($scope.text.toggles.hasOwnProperty(key)) {
+				if (key !== view) {
+					if ($scope.text.toggles[key] == true) {
+						$scope.text.toggles[key] = false;
+					}
+				} else {
+					$scope.text.toggles[key] = !$scope.text.toggles[key];
+				}
+			}
+		}
+	};
 
 }]);

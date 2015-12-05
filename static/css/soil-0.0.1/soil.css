@@ -26,10 +26,20 @@ body {
 	padding-bottom : 5px
 }
 
+.bottom-space-margin {
+	margin-bottom : 5px
+}
+
 .scrollxy {
 	overflow : scroll
 }
 
+.icon-star-empty::before {
+    -webkit-text-shadow: 1px 0px 3px rgb(159, 92, 74);
+    text-shadow: 1px 0px 3px rgb(159, 92, 74);
+    font-size: x-large;
+    color: #ffe200;
+}
 /* Custom page CSS
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */

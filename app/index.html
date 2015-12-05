@@ -13,6 +13,7 @@
 		<!-- Bootstrap core CSS -->
 		<link href="../static/css/bootstrap-3.3.5/bootstrap.min.css" rel="stylesheet">
 		<link href="../static/css/font-awesome-4.5.0/font-awesome.min.css" rel="stylesheet">
+		<link href="../static/css/whhg-font-1.0.0/whhg.css" rel="stylesheet">
 		<link href="../static/css/angular-bootstrap-colorpicker-3.0.21/colorpicker.min.css" rel="stylesheet">
 		<link href="../static/css/soil-0.0.1/soil.css" rel="stylesheet">
 
@@ -43,7 +44,8 @@
 		<script src="controllers/Categories.js"></script>
 		<script src="controllers/Templates.js"></script>
 		<script src="controllers/Text.js"></script>
-		<script src="controllers/General.js"></script>
+		<script src="controllers/Selection.js"></script>
+		<script src="controllers/Drawings.js"></script>
 		<script src="controllers/Main.js"></script>
 		
 		<script src="services/Bullet.js"></script>
@@ -89,8 +91,9 @@
 			<div id="fabricRow" class="row" ng-if="workspace.fabric">
 
 				<div class="col-md-3" ng-controller="ToolsController">
-					<div ng-include src="'partials/general.html'"></div>
-					<div ng-include src="'partials/text.html'"></div>
+					<div ng-include src="'partials/selection.html'" ></div>
+					<div ng-include src="'partials/text.html'" ></div>
+					<div ng-include src="'partials/drawings.html'" ></div>
 				</div>
 
 				<div class="col-md-6">
@@ -100,6 +103,13 @@
 						
 							<!-- ZOOM -->
 							<div class="btn-group btn-group-justified" role="group" aria-label="...">
+								<div class="btn-group" role="group" colorpicker="rgb" ng-model="canvas.bgColour">
+									<button type="button" class="btn btn-default btn-sm" ng-style="{ 'background-color' : canvas.bgColour }">
+										<span id="basic-addon1">
+											<i class="fa fa-tint"></i>
+										</span>
+									</button>
+								</div>
 								<div class="btn-group" role="group">
 									<button type="button" class="btn btn-default btn-sm" ng-click="zoomIn()">
 										<span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>

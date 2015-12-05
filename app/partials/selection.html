@@ -1,0 +1,36 @@
+<!-- GENERAL TOOLS -->
+<div class="panel panel-default" ng-controller="SelectionController">
+	<div class="panel-heading" ng-click="collapsed.selection = !collapsed.selection" style="padding-bottom:5px;padding-top:5px">
+		<a><small><strong>Selection</strong></small></a>
+	</div> 
+	<ul class="list-group" uib-collapse="collapsed.selection">
+		<li class="list-group-item">
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+					<div class="btn-group btn-group-justified" role="group" aria-label="...">
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-default" ng-click="sendToBack()">
+								<i class="fa fa-hand-o-left"></i>
+							</button>
+						</div>
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-default" ng-click="bringToFront()">
+								<i class="fa fa-hand-o-right"></i>
+							</button>
+						</div>
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-default" ng-click="stretch()">
+								<i class="fa fa-arrows-alt"></i>
+							</button>
+						</div>
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-default" ng-click="remove()">
+								<i class="fa fa-trash"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>

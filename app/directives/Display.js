@@ -109,10 +109,9 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope','UtilsServ
 					if (pointed != null) {
 						directive.sceneClicked = false;
 						scope.resetAnimation();
-						console.log("material POINTED:",pointed);
 						DisplayService.setFacePointed(pointed);
-						DisplayService.setFabricShowing(true);
-						scope.$apply();
+						$timeout(function(){ DisplayService.setFabricShowing(true) });
+						//scope.$apply();
 					} else {
 						scope.resetAnimation();
 					}	
@@ -138,7 +137,6 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope','UtilsServ
 			directive.mouse.y = - ( (event.clientY - canvasPosition.top) / directive.contH ) * 2 + 1;
 			directive.raycaster.setFromCamera( directive.mouse, directive.camera );
 			var intersected = directive.raycaster.intersectObjects( directive.scene.children );
-			console.log("intersected: ",intersected);
 			if (intersected.length != 0) {
 				var i;
 				for (i=0;i<intersected.length;i++) {
@@ -271,7 +269,6 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope','UtilsServ
 				directive.scene.remove(directive.obj);
 				directive.obj = DisplayService.mesh;
 				directive.materials.printed = directive.obj.material;
-				console.log("Adding to Scene: directive.scene.add(directive.obj)");
 				directive.scene.add(directive.obj);	
 				directive.obj.geometry.print();
 				$timeout(function() { scope.resizeCanvas (); scope.positionCamera() },1);
@@ -317,19 +314,15 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope','UtilsServ
         };
 
 		function render () {
-			
 			if (!directive.hoovering && scope.spinning) {
 				directive.obj.rotation.y += 0.005
 			}
-			
 			if (directive.obj.geometry.play != undefined) {
 				if (directive.sceneClicked) { 
 					directive.obj.geometry.play();
 					scope.updateSpritePositions();
 				}
 			}
-
-			
 			directive.renderer.render( directive.scene, directive.camera );
 		};
 		

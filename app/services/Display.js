@@ -72,7 +72,13 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 	}
 	
 	Service.getCurrentFabric = function() {
-		return Service.editingCanvas.toObject();
+		if (Service.editingCanvas != null) {
+			var obj = Service.editingCanvas.toObject();
+			console.log("obj",obj);
+			return obj;
+		} else {
+			return null;
+		}
 	}
 	
 	Service.getSelectedEditingElements = function() {
@@ -80,7 +86,10 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 		if(Service.editingCanvas.getActiveGroup()) {
 			Service.editingCanvas.getActiveGroup().forEachObject(function(o){ selected.push(o) });
 		} else {
-			selected.push(Service.editingCanvas.getActiveObject());
+			var active = Service.editingCanvas.getActiveObject();
+			if (active != null) {
+				selected.push(Service.editingCanvas.getActiveObject());
+			}
 		}
 		return selected;
 	}

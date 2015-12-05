@@ -1,11 +1,11 @@
 
 var module = angular.module('cards.controllers.Display',[]);
 
-module.controller('DisplayController', ['$scope','DisplayService', function ($scope,DisplayService) {
+module.controller('DisplayController', ['$scope','DisplayService','CommonService', function ($scope,DisplayService,CommonService) {
 
 	$scope.mesh = DisplayService.mesh;
 	$scope.editingCanvas = DisplayService.editingCanvas;
-	
+
     $scope.fabricWidth = DisplayService.fabricWidth;
     $scope.fabricHeight = DisplayService.fabricHeight;
 	
@@ -16,6 +16,34 @@ module.controller('DisplayController', ['$scope','DisplayService', function ($sc
 	$scope.$watch( function() { return DisplayService.fabricHeight }, function() { 
 		$scope.fabricHeight = DisplayService.fabricHeight;
 	},true);
+	
+	$scope.canvas = {
+		bgColour : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_BCKG_COLOUR
+		,width : DisplayService.displayWidth
+		,height : DisplayService.displayHeight
+	}
+	
+	
+	$scope.$watch( function() { return $scope.canvas  }, function() { 
+		DisplayService.setDisplayWidth( $scope.canvas.width );
+		DisplayService.setDisplayHeight( $scope.canvas.height );
+	},true)
+	
+	$scope.$watch( function() {return $scope.canvas.bgColour}, function() {
+		var colour = $scope.canvas.bgColour;
+		if (colour === CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_BCKG_COLOUR) {
+			var f = DisplayService.getCurrentFabric();
+			if (f != null) {
+				colour = f.background;
+			}
+		}
+		if (DisplayService.editingCanvas != null) {
+			DisplayService.editingCanvas.setBackgroundColor(
+				colour
+				,DisplayService.editingCanvas.renderAll.bind(DisplayService.editingCanvas)
+			);
+		}
+    });
 	
 	$scope.$watch( function() { return DisplayService.fabricShowing }, function() { 
 		$scope.workspace.fabric = DisplayService.fabricShowing;

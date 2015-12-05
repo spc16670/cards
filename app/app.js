@@ -11,7 +11,8 @@ var app = angular.module('CardsApp', [
 	,'cards.services.Common'
 	,'cards.services.Elements'
 	,'cards.controllers.Display'
-	,'cards.controllers.General'
+	,'cards.controllers.Selection'
+	,'cards.controllers.Drawings'
 	,'cards.controllers.Text'
 	,'cards.controllers.Tools'
 	,'cards.controllers.Elements'
@@ -27,5 +28,7 @@ var app = angular.module('CardsApp', [
 app.config(function($interpolateProvider){
 });
 
-app.run(['$rootScope',function($rootScope) {
+app.run(['$templateCache','CommonService','$cacheFactory',function($templateCache,CommonService,$cacheFactory) {
+
 }]);
+
