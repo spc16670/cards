@@ -1,6 +1,6 @@
 var module = angular.module('cards.services.Elements',[]);
 
-module.service('ElementsService', ['BulletService', function (BulletService) {
+module.service('ElementsService', ['BulletService','Upload', function (BulletService,Upload) {
 
 	var Service = {}
 	
