@@ -92,9 +92,7 @@ module.service('DisplayService', ['$rootScope','$timeout','UtilsService'
 			Service.editingCanvas.getActiveGroup().forEachObject(function(o){ selected.push(o) });
 		} else {
 			var active = Service.editingCanvas.getActiveObject();
-			if (active != null) {
-				selected.push(Service.editingCanvas.getActiveObject());
-			}
+			if (active != null) selected.push(active);
 		}
 		return selected;
 	}

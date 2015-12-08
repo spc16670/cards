@@ -1,10 +1,11 @@
 <!-- GENERAL TOOLS -->
 <div class="panel panel-default bottom-space-margin" ng-controller="SelectionController">
-	<div class="panel-heading" ng-click="collapsed.selection = !collapsed.selection" style="padding-bottom:5px;padding-top:5px">
+	<div class="panel-heading top-bottom-padding-5" ng-click="collapsed.selection = !collapsed.selection">
 		<a><small><strong>Selection</strong></small></a>
 	</div> 
 	<ul class="list-group" uib-collapse="collapsed.selection">
 		<li class="list-group-item">
+		
 			<div class="row bottom-space">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
 					<div class="btn-group btn-group-justified" role="group" aria-label="...">
@@ -32,13 +33,37 @@
 				</div>
 			</div>
 			
+			
+			<!-- Opacity -->
+			<div class="row bottom-space">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12" >
+					<div class="panel panel-default bottom-space-margin">
+						<ul class="list-group">
+							<li class="list-group-item top-bottom-padding-3">
+								<div class="row">
+									<div class="col-xs-4 col-sm-4 col-md-4">
+										<label for="opacityFilter">
+											<small><strong>Opacity:</strong></small>
+										</label>
+									</div>
+									<div class="col-xs-8 col-sm-8 col-md-8">
+										<input class="pull-right" type="range" min="{{filters.opacity.range.min }}" max="{{ filters.opacity.range.max }}" 
+											step="{{ filters.opacity.range.step }}" ng-model="filters.opacity.value" id="opacityFilter">
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+							
 			<!-- Filters -->
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12" ng-if="!collapsed.filters">
 					
 					<div class="panel panel-default">
 						<ul class="list-group">
-							<li class="list-group-item top-bottom-padding-5">
+							<li class="list-group-item top-bottom-padding-3">
 								<div class="row">
 									<div class="col-xs-4 col-sm-4 col-md-4">
 										<label for="grayscaleFilter">
@@ -50,7 +75,7 @@
 									</div>
 								</div>
 							</li>
-							<li class="list-group-item top-bottom-padding-5">
+							<li class="list-group-item top-bottom-padding-3">
 								<div class="row">
 									<div class="col-xs-4 col-sm-4 col-md-4">
 										<label for="invertFilter">
@@ -62,7 +87,7 @@
 									</div>
 								</div>
 							</li>
-							<li class="list-group-item top-bottom-padding-5">
+							<li class="list-group-item top-bottom-padding-3">
 								<div class="row">
 									<div class="col-xs-4 col-sm-4 col-md-4">
 										<label for="sharpenFilter">
@@ -74,7 +99,7 @@
 									</div>
 								</div>
 							</li>
-							<li class="list-group-item top-bottom-padding-5">
+							<li class="list-group-item top-bottom-padding-3">
 								<div class="row">
 									<div class="col-xs-4 col-sm-4 col-md-4">
 										<label for="embossFilter">
@@ -86,7 +111,7 @@
 									</div>
 								</div>
 							</li>
-							<li class="list-group-item top-bottom-padding-5">
+							<li class="list-group-item top-bottom-padding-3">
 								<div class="row">
 									<div class="col-xs-4 col-sm-4 col-md-4">
 										<label for="sepiaFilter">
@@ -101,7 +126,7 @@
 									</div>
 								</div>
 							</li>
-							<li class="list-group-item top-bottom-padding-5">
+							<li class="list-group-item top-bottom-padding-3">
 								<div class="row">
 									<div class="col-xs-4 col-sm-4 col-md-4">
 										<label for="brightnessFilter">
@@ -119,7 +144,7 @@
 									</div>
 								</div>
 							</li>
-							<li class="list-group-item top-bottom-padding-5">
+							<li class="list-group-item top-bottom-padding-3">
 								<div class="row">
 									<div class="col-xs-4 col-sm-4 col-md-4">
 										<label for="noiseFilter">
@@ -137,7 +162,7 @@
 									</div>
 								</div>
 							</li>
-							<li class="list-group-item top-bottom-padding-5">
+							<li class="list-group-item top-bottom-padding-3">
 								<div class="row">
 									<div class="col-xs-4 col-sm-4 col-md-4">
 										<label for="pixelateFilter">
@@ -155,7 +180,7 @@
 									</div>
 								</div>
 							</li>
-							<li class="list-group-item top-bottom-padding-5">
+							<li class="list-group-item top-bottom-padding-3">
 								<div class="row">
 									<div class="col-xs-4 col-sm-4 col-md-4">
 										<label for="tintFilter">

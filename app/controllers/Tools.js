@@ -4,9 +4,9 @@ module.controller('ToolsController', ['$scope','DisplayService','CommonService',
 	function ($scope,DisplayService,CommonService) {
 	
 	$scope.collapsed = {
-		text : true
+		text : false
 		,selection : false
-		,drawings : true
+		,drawings : false
 		,filters : true
 	}
 	
