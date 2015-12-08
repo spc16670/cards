@@ -14,7 +14,7 @@
 			<div class="panel-collapse collapse" uib-collapse="!isOpen">
 				<ul class="list-group">
 					<li class="list-group-item crop">
-						<div class="btn btn-primary form-control" role="button" ngf-select ng-model="files" ngf-multiple="true" ngf-capture="'camera'" >Select Files</div>
+						
 						<div class="drop-box" accept="image/*,application/pdf"
 							ngf-drop 
 							ngf-select 
@@ -24,7 +24,8 @@
 							ngf-allow-dir="true"
 							ngf-capture="'camera'" 
 							ngf-pattern="'image/*,application/pdf'">
-								Drop images here or click to upload
+								<div class="btn btn-primary btn-sm text-center" role="button" ngf-select ng-model="files" ngf-multiple="true" ngf-capture="'camera'" >Select Files</div>
+								<br>Drop images here or click to upload
 						</div>
 						<div ngf-no-file-drop>
 							File Drag/Drop is not supported for this browser
@@ -53,7 +54,7 @@
 						<td ng-click="selectElement(member)">
 							<div class="row">
 								<div class="col-sm-12">
-									<img ng-src="images/elements/{{ uploads.name }}/{{ member.img }}" class="img-thumbnail" alt="Member Image" />
+									<img id="{{ member.elementId }}" ng-src="images/elements/{{ uploads.name }}/{{ member.img }}" class="img-thumbnail" alt="Member Image" />
 								</div>
 							</div>
 						</td>
@@ -69,7 +70,7 @@
 						<td ng-click="selectElement(member)">
 							<div class="row">
 								<div class="col-sm-12">
-									<img ng-src="images/elements/{{ element.name }}/{{ member.img }}" class="img-thumbnail" alt="Member Image" />
+									<img id="{{ member.elementId }}" ng-src="images/elements/{{ element.name }}/{{ member.img }}" class="img-thumbnail" alt="Member Image" />
 								</div>
 							</div>
 						</td>

@@ -43,7 +43,7 @@ module.controller('DisplayController', ['$scope','DisplayService','CommonService
 				,DisplayService.editingCanvas.renderAll.bind(DisplayService.editingCanvas)
 			);
 		}
-    });
+    });5
 	
 	$scope.$watch( function() { return DisplayService.fabricShowing }, function() { 
 		$scope.workspace.fabric = DisplayService.fabricShowing;

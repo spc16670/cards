@@ -1,6 +1,7 @@
 var module = angular.module('cards.services.Display',[]);
 
-module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$timeout) {
+module.service('DisplayService', ['$rootScope','$timeout','UtilsService'
+  ,function ($rootScope,$timeout,UtilsService) {
 
 	
 	var Service = {
@@ -17,11 +18,17 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 		
 		,fabricShowing : false
 		,materialIndex : 0
-		//,bgColour : null
+
 		,model : {}
 		,mesh : {}
 		,editingCanvas : null
+		,activeObject : {}
 		,facePointed : 0
+	}
+	
+	
+	Service.setActiveObject = function(value) {
+		Service.activeObject = value;
 	}
 	
 	Service.setResizeFabric = function(value) {
@@ -73,9 +80,7 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 	
 	Service.getCurrentFabric = function() {
 		if (Service.editingCanvas != null) {
-			var obj = Service.editingCanvas.toObject();
-			console.log("obj",obj);
-			return obj;
+			return Service.editingCanvas.toObject();
 		} else {
 			return null;
 		}
@@ -99,7 +104,7 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 	*/
 	Service.materializeFabric = function() {
 		console.log("Service.materializeFabric",Service.model);
-		if (!Service.isEmpty(Service.model)) {
+		if (!UtilsService.isEmpty(Service.model)) {
 			var i;
 			for (i=0;i<Service.model.fabrics.length;i++) {
 				if (Service.model.fabrics[i].materialIndex == this.facePointed) {
@@ -124,14 +129,6 @@ module.service('DisplayService', ['$rootScope','$timeout',function ($rootScope,$
 				return;
 			}
 		}
-	}
-	
-	Service.isEmpty = function isEmpty(obj) {
-		for(var prop in obj) {
-			if(obj.hasOwnProperty(prop)) 
-				return false;
-		}
-		return true;
 	}
 	
 	Service.getEditingCanvasSize = function (faceIndex) {

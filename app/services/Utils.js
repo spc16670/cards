@@ -16,5 +16,17 @@ module.service('UtilsService', [function () {
 		while (elem.lastChild) elem.removeChild(elem.lastChild);
 	}
 	
+	Service.uuid = function () {
+		return THREE.Math.generateUUID();
+	}
+	
+	Service.isEmpty = function isEmpty(obj) {
+		for(var prop in obj) {
+			if(obj.hasOwnProperty(prop)) 
+				return false;
+		}
+		return true;
+	}
+	
 	return Service;
 }]);

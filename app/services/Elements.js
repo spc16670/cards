@@ -1,6 +1,6 @@
 var module = angular.module('cards.services.Elements',[]);
 
-module.service('ElementsService', ['BulletService','Upload', function (BulletService,Upload) {
+module.service('ElementsService', ['BulletService','UtilsService', function (BulletService,UtilsService) {
 
 	var Service = {}
 	
@@ -39,19 +39,21 @@ module.service('ElementsService', ['BulletService','Upload', function (BulletSer
 	];
 	
 	Service.loadUploads = function () {
-		Service.uploads.members.push({ groupId : 1, title: "Huge", img: "huge.jpg", id: 1});
+		Service.uploads.members.push({ groupId : 1, title: "Huge", img: "huge.jpg", id: 1, elementId : UtilsService.uuid()});
 	}
 
 	Service.loadElement = function (element) {
 		if (element.members.length == 0) {
 			if (element.name === "flourishes") {
-				element.members.push({ groupId : 2, title: "Baroque", img: "baroq1.jpg", id: 1});
+				element.members.push({ groupId : 2, title: "Baroque", img: "baroq1.jpg", id: 1, elementId : UtilsService.uuid() });
+				element.members.push({ groupId : 3, title: "Migotka", img: "flourish1.png", id: 1, elementId : UtilsService.uuid() });
 			} else if (element.name === "graphics") {
-				element.members.push({ groupId : 3, title: "Lion", img: "lion1.jpg", id: 1});
+				element.members.push({ groupId : 10, title: "Lion", img: "lion1.png", id: 1, elementId : UtilsService.uuid()});
+				element.members.push({ groupId : 11, title: "Earth", img: "earth1.png", id: 1, elementId : UtilsService.uuid()})
 			} else if (element.name === "symbols") {
-				element.members.push({ groupId : 4, title: "Fish", img: "christian1.jpg", id: 1});
+				element.members.push({ groupId : 20, title: "Fish", img: "christian1.jpg", id: 1, elementId : UtilsService.uuid()});
 			} else if (element.name === "pictures") {
-				element.members.push({ groupId : 5, title: "Rose", img: "rose1.jpg", id: 1});
+				element.members.push({ groupId : 30, title: "Rose", img: "rose1.jpg", id: 1, elementId : UtilsService.uuid()});
 			}  
 		}
 	}

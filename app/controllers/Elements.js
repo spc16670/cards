@@ -2,7 +2,8 @@
 var module = angular.module('cards.controllers.Elements',[]);
 
 module.controller('ElementController', ['$scope','ElementsService','Upload'
-  ,'$timeout', function ($scope,ElementsService,Upload,$timeout) {
+  ,'CommonService','$timeout','DisplayService',function ($scope
+  ,ElementsService,Upload,CommonService,$timeout,DisplayService) {
 
 	$scope.files = [];
 	$scope.file = null;
@@ -73,7 +74,15 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 	};
 	
 	$scope.selectElement = function(element) {
-
+		var img = document.getElementById(element.elementId)
+		var imgInstance = new fabric.Image(img, {
+			left: CommonService.CONSTANTS.FABRIC_CANVAS.ELEMENT_DROP_OFFSET
+			,top: CommonService.CONSTANTS.FABRIC_CANVAS.ELEMENT_DROP_OFFSET
+			//angle: 30,
+			//opacity: 0.85
+		});
+		imgInstance.crossOrigin = "";
+		DisplayService.editingCanvas.add(imgInstance);
 	}
 
 }]);

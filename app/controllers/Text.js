@@ -67,8 +67,6 @@ module.controller('TextController', ['$scope','DisplayService','CommonService'
 	}
 	
 	$scope.write = function () {
-		var left = (DisplayService.editingCanvas.width / 2);
-		var top = (DisplayService.editingCanvas.height / 2);
 		var textItem = new fabric.IText('Tap and Type', { 
 			fontFamily: $scope.text.font.name
 			,fontStyle : $scope.text.fontStyle
@@ -79,8 +77,8 @@ module.controller('TextController', ['$scope','DisplayService','CommonService'
 			,lineHeight : $scope.text.lineHeight.value
 			,fill : $scope.text.fontColour
 			,shadow : $scope.text.shadow.value
-			,left: left 
-			,top: top 
+			,left: CommonService.CONSTANTS.FABRIC_CANVAS.ELEMENT_DROP_OFFSET 
+			,top: CommonService.CONSTANTS.FABRIC_CANVAS.ELEMENT_DROP_OFFSET  
 		})
 		DisplayService.editingCanvas.add(textItem);
 	}

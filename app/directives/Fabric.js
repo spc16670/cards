@@ -1,7 +1,8 @@
 'use strict';
 var module = angular.module('cards.directives.Fabric',[]);
 
-module.directive('ngFabric', ['DisplayService','UtilsService',function (DisplayService,UtilsService) {
+module.directive('ngFabric', ['DisplayService','UtilsService','$timeout',
+	function (DisplayService,UtilsService,$timeout) {
     return {
       restrict: 'A',
       scope: { 
@@ -12,6 +13,13 @@ module.directive('ngFabric', ['DisplayService','UtilsService',function (DisplayS
 		
 		var directive = {
 			canvas : null
+			,editingCanvas : null
+			,onSelectListener : function(e) {
+				$timeout(function(){ DisplayService.setActiveObject(e.target)});
+			}
+			,offSelectListener : function(e) {
+				$timeout(function(){ DisplayService.setActiveObject({}); });
+			}
 			,contW : 0
 			,contH : 0
 		}
@@ -22,8 +30,11 @@ module.directive('ngFabric', ['DisplayService','UtilsService',function (DisplayS
 			directive.canvas.id = "fabricCanvasElement";
 			directive.canvas.style.border = "1px solid";
 			element[0].appendChild(directive.canvas);
-			DisplayService.setEditingCanvas(new fabric.Canvas('fabricCanvasElement'));
+			directive.editingCanvas = new fabric.Canvas('fabricCanvasElement');
+			DisplayService.setEditingCanvas(directive.editingCanvas);
 			DisplayService.materializeFabric();
+			directive.editingCanvas.on('object:selected', directive.onSelectListener);
+			directive.editingCanvas.on('selection:cleared', directive.offSelectListener);
 			window.addEventListener('resize', scope.resizeCanvas, false );
 			scope.resizeCanvas();
 
@@ -57,6 +68,9 @@ module.directive('ngFabric', ['DisplayService','UtilsService',function (DisplayS
         });
 
 		scope.$on('$destroy', function() {
+			fabric.util.removeListener(directive.canvas, 'object:selected', directive.onSelectListener);
+			fabric.util.removeListener(directive.canvas, 'selection:cleared', directive.offSelectListener);
+			directive.editingCanvas = null;
 			directive.canvas = null;
 			directive = null;
 			

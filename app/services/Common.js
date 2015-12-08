@@ -48,27 +48,9 @@ module.service('CommonService', [function () {
 			,DEFAULT_LINE_HEIGHT : 1
 			,LINE_HEIGHT_RANGE_STEP : 0.25
 			,TEXT_DECORATION_STRIKETHROUGH : "strikethrough"
+			,ELEMENT_DROP_OFFSET : 13
 		}
 	}
-	
-	Service.UUID = function() {
-		function getRandom(max) {
-			return Math.random() * max;
-		}
-		var id = '', i;
-		for(i = 0; i < 36; i++) {
-			if (i === 14) {
-				id += '4';
-			} else if (i === 19) {
-				id += '89ab'.charAt(getRandom(4));
-			} else if(i === 8 || i === 13 || i === 18 || i === 23) {
-				id += '-';
-			} else {
-				id += '0123456789abcdef'.charAt(getRandom(16));
-			}
-		}
-		return id;
-    }
 
 	return Service;
 }]);

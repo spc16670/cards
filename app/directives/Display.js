@@ -28,7 +28,6 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope','UtilsServ
 		}
 			
          function init() {
-			console.log("Display init()");
 			// Camera
 			directive.camera = new THREE.PerspectiveCamera( 20, directive.contW / directive.contH, 1, 8000 );
 			directive.camera.position.set( 0, 500, 1000 );
@@ -265,7 +264,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope','UtilsServ
         },true);
 		
 		scope.$watch(function () {return DisplayService.mesh}, function () {
-			if (!DisplayService.isEmpty(DisplayService.mesh)) {
+			if (!UtilsService.isEmpty(DisplayService.mesh)) {
 				directive.scene.remove(directive.obj);
 				directive.obj = DisplayService.mesh;
 				directive.materials.printed = directive.obj.material;

@@ -5,7 +5,7 @@
 	</div> 
 	<ul class="list-group" uib-collapse="collapsed.selection">
 		<li class="list-group-item">
-			<div class="row">
+			<div class="row bottom-space">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
 					<div class="btn-group btn-group-justified" role="group" aria-label="...">
 						<div class="btn-group" role="group">
@@ -29,6 +29,159 @@
 							</button>
 						</div>
 					</div>
+				</div>
+			</div>
+			
+			<!-- Filters -->
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12" ng-if="!collapsed.filters">
+					
+					<div class="panel panel-default">
+						<ul class="list-group">
+							<li class="list-group-item top-bottom-padding-5">
+								<div class="row">
+									<div class="col-xs-4 col-sm-4 col-md-4">
+										<label for="grayscaleFilter">
+											<small><strong>Grayscale:</strong></small>
+										</label>
+									</div>
+									<div class="col-xs-8 col-sm-8 col-md-8">
+										 <input class="pull-right" type="checkbox" aria-label="..." ng-model="filters.grayscale.selected" id="grayscaleFilter">
+									</div>
+								</div>
+							</li>
+							<li class="list-group-item top-bottom-padding-5">
+								<div class="row">
+									<div class="col-xs-4 col-sm-4 col-md-4">
+										<label for="invertFilter">
+											<small><strong>Invert:</strong></small>
+										</label>
+									</div>
+									<div class="col-xs-8 col-sm-8 col-md-8">
+										 <input class="pull-right" type="checkbox" aria-label="..." ng-model="filters.invert.selected" id="invertFilter">
+									</div>
+								</div>
+							</li>
+							<li class="list-group-item top-bottom-padding-5">
+								<div class="row">
+									<div class="col-xs-4 col-sm-4 col-md-4">
+										<label for="sharpenFilter">
+											<small><strong>Sharpen:</strong></small>
+										</label>
+									</div>
+									<div class="col-xs-8 col-sm-8 col-md-8">
+										 <input class="pull-right" type="checkbox" aria-label="..." ng-model="filters.sharpen.selected" id="sharpenFilter">
+									</div>
+								</div>
+							</li>
+							<li class="list-group-item top-bottom-padding-5">
+								<div class="row">
+									<div class="col-xs-4 col-sm-4 col-md-4">
+										<label for="embossFilter">
+											<small><strong>Emboss:</strong></small>
+										</label>
+									</div>
+									<div class="col-xs-8 col-sm-8 col-md-8">
+										 <input class="pull-right" type="checkbox" aria-label="..." ng-model="filters.emboss.selected" id="embossFilter">
+									</div>
+								</div>
+							</li>
+							<li class="list-group-item top-bottom-padding-5">
+								<div class="row">
+									<div class="col-xs-4 col-sm-4 col-md-4">
+										<label for="sepiaFilter">
+											<small><strong>Sepia:</strong></small>
+										</label>
+									</div>
+									<div class="col-xs-8 col-sm-8 col-md-8">
+										<div class="pull-right" id="sepiaFilter">
+											<input type="checkbox" aria-label="..." ng-model="filters.sepia.one.selected">
+											<input type="checkbox" aria-label="..." ng-model="filters.sepia.two.selected">
+										</div> 
+									</div>
+								</div>
+							</li>
+							<li class="list-group-item top-bottom-padding-5">
+								<div class="row">
+									<div class="col-xs-4 col-sm-4 col-md-4">
+										<label for="brightnessFilter">
+											<small><strong>Brightness:</strong></small>
+										</label>
+									</div>
+									<div class="col-xs-8 col-sm-8 col-md-8">
+										<input class="pull-right" type="checkbox" aria-label="..." ng-model="filters.brightness.selected" id="brightnessFilter">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-12 col-sm-12 col-md-12">
+										<input type="range" min="{{filters.brightness.range.min }}" max="{{ filters.brightness.range.max }}" 
+											step="{{ filters.brightness.range.step }}" ng-model="filters.brightness.value">
+									</div>
+								</div>
+							</li>
+							<li class="list-group-item top-bottom-padding-5">
+								<div class="row">
+									<div class="col-xs-4 col-sm-4 col-md-4">
+										<label for="noiseFilter">
+											<small><strong>Noise:</strong></small>
+										</label>
+									</div>
+									<div class="col-xs-8 col-sm-8 col-md-8">
+										<input class="pull-right" type="checkbox" aria-label="..." ng-model="filters.noise.selected" id="noiseFilter">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-12 col-sm-12 col-md-12">
+										<input type="range" min="{{filters.noise.range.min }}" max="{{ filters.noise.range.max }}" 
+											step="{{ filters.noise.range.step }}" ng-model="filters.noise.value">
+									</div>
+								</div>
+							</li>
+							<li class="list-group-item top-bottom-padding-5">
+								<div class="row">
+									<div class="col-xs-4 col-sm-4 col-md-4">
+										<label for="pixelateFilter">
+											<small><strong>Pixelate:</strong></small>
+										</label>
+									</div>
+									<div class="col-xs-8 col-sm-8 col-md-8">
+										<input class="pull-right" type="checkbox" aria-label="..." ng-model="filters.pixelate.selected" id="pixelateFilter">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-12 col-sm-12 col-md-12">
+										<input type="range" min="{{filters.pixelate.range.min }}" max="{{ filters.pixelate.range.max }}" 
+											step="{{ filters.pixelate.range.step }}" ng-model="filters.pixelate.value">
+									</div>
+								</div>
+							</li>
+							<li class="list-group-item top-bottom-padding-5">
+								<div class="row">
+									<div class="col-xs-4 col-sm-4 col-md-4">
+										<label for="tintFilter">
+											<small><strong>Tint:</strong></small>
+										</label>
+									</div>
+									<div class="col-xs-8 col-sm-8 col-md-8">
+										<input class="pull-right" type="checkbox" aria-label="..." ng-model="filters.tint.selected" id="tintFilter">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-9 col-sm-9 col-md-9">
+										<input type="range" min="{{filters.tint.opacity.range.min }}" max="{{ filters.tint.opacity.range.max }}" 
+											step="{{ filters.tint.opacity.range.step }}" ng-model="filters.tint.opacity.value">
+									</div>
+									<div class="col-xs-3 col-sm-3 col-md-3">
+										<button colorpicker="rgba" class="btn btn-xs pull-right" ng-model="filters.tint.colour" 
+											id="tintColour" ng-style="{ 'background-color' : filters.tint.colour }">
+											<i class="fa fa-tint"></i>
+										</button>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+
 				</div>
 			</div>
 		</li>
