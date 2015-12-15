@@ -9,8 +9,5 @@ module.controller('ToolsController', ['$scope','DisplayService','CommonService',
 		,drawings : false
 		,filters : true
 	}
-	
-	//$scope.uuid = function () {
-	//	return CommonService.UUID();
-	//}
+
 }]);

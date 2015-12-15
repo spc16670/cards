@@ -4,6 +4,7 @@ module.service('CategoriesService', [function () {
 
 	var Service = {
 		selected : null
+		,expanded : null
 		,categories : {
 			businessCards : { 
 				expanded : false

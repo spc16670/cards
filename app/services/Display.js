@@ -107,6 +107,7 @@ module.service('DisplayService', ['$rootScope','$timeout','UtilsService'
 			for (i=0;i<Service.model.fabrics.length;i++) {
 				if (Service.model.fabrics[i].materialIndex == this.facePointed) {
 					console.log(" FACE " + this.facePointed,Service.model.fabrics[i].fabricJson);
+				    //console.log(JSON.stringify( Service.model ) );
 					Service.editingCanvas.loadFromJSON(Service.model.fabrics[i].fabricJson,Service.editingCanvas.renderAll.bind(Service.editingCanvas));
 					var canvasSize = Service.getEditingCanvasSize(this.facePointed);
 					if (canvasSize != undefined) {

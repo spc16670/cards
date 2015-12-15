@@ -45,11 +45,11 @@ module.controller('SelectionController', ['$scope','DisplayService','CommonServi
 	}
 	
 	$scope.$watch(function () {return DisplayService.activeObject}, function () {
-		if (DisplayService.activeObject instanceof fabric.Image) {
+		/*if (DisplayService.activeObject instanceof fabric.Image) {
 			$scope.collapsed.filters = false;
 		} else {
 			$scope.collapsed.filters = true;
-		}
+		}*/
 		if (DisplayService.activeObject instanceof fabric.IText) {
 			$scope.collapsed.text = false;
 		} 

@@ -32,7 +32,8 @@
 		  <ul class="nav navbar-nav navbar-right">
 			<li><a href="#" ng-click="visible('contact')">Contact</a></li>
 			<li><a href="#" ng-click="visible('basket')">Basket</a></li>
-			<li><a href="#" ng-click="visible('profile')">Profile</a></li>
+			<li><a href="#" ng-if="user.loggedIn" ng-click="visible('profile')">{{ user.name }}</a></li>
+			<li><a href="#" ng-if="!user.loggedIn" ng-click="visible('login')">Sign In</a></li>
 		  </ul>
 		</div><!--/.nav-collapse -->
 	  </div>

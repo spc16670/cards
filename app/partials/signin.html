@@ -1,0 +1,78 @@
+<div class="row" ng-controller="SignInController">
+	<div class="row" ng-if="!toggler.register">
+		<div class="col-md-4">
+			<div class="col-md-12">
+				<h3>Sign in</h3>
+				<hr></hr>
+			</div>
+			<div class="col-md-12">
+			<form class="form-signin">
+				<label for="inputEmail" class="sr-only">Email address</label>
+				<label for="inputEmail">Email address</label>
+				<div class="input-group">
+					<span class="input-group-addon" id="basic-addon1"><i class="fa fa-envelope"></i></span>
+					<input type="email" id="inputEmail" ng-model="loginForm.email" class="form-control" placeholder="Email address" required autofocus>
+				</div>
+				<label for="inputPassword" class="sr-only">Password</label>
+				<label for="inputPassword">Password</label>
+				
+				<div class="input-group">
+					<span class="input-group-addon" id="basic-addon2"><i class="fa fa-key"></i></span>
+					<input type="password" id="inputPassword" ng-model="loginForm.password" class="form-control" placeholder="Password" required>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" ng-model="loginForm.remember" value="remember-me"> Remember me
+					</label>
+				</div>
+				<button class="btn btn-primary btn-block" type="submit" ng-click="login()">Sign in</button>
+			</form>
+			</div>
+		</div>
+		<div class="col-md-8">
+			<div class="col-md-12">
+				<h3>Don't have an account yet?</h3>
+				<hr></hr>
+				<p ng-if="!toggler.register" class="lead">Go ahead and register your details with us. <code>padding-top: 60px;</code> on the <code>body > .container</code>.</p>
+				<button class="btn btn-primary" ng-click="toggler.register = !toggler.register">Create an account</button>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row" ng-if="toggler.register">
+		<div class="col-md-6">
+			<form class="form-register">
+				<label for="firstName" class="sr-only">First Name</label>
+				<label for="firstName">First Name</label>
+				<input type="text" id="firstName" ng-model="registerForm.firstName" class="form-control" placeholder="First Name" required autofocus>
+				
+				<label for="lastName" class="sr-only">Last Name</label>
+				<label for="lastName">Last Name</label>
+				<input type="text" id="lastName" ng-model="registerForm.lastName" class="form-control" placeholder="Last Name" required>
+
+				<label for="registerEmail" class="sr-only">Email address</label>
+				<label for="registerEmail">Email address</label>
+				<input type="email" id="registerEmail" ng-model="registerForm.email" class="form-control" placeholder="Email address" required autofocus>
+				
+				<label for="registerPassword" class="sr-only">Password</label>
+				<label for="registerPassword">Password</label>
+				<input type="password" id="registerPassword" ng-model="registerForm.password" class="form-control" placeholder="Password" required>
+				
+				<label for="confirmPassword" class="sr-only">Re-Type Password</label>
+				<label for="confirmPassword">Password</label>
+				<input type="password" id="confirmPassword" ng-model="registerForm.rePassword" class="form-control" placeholder="Password" required>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" ng-model="registerForm.tnc"> <small>I accept the Drook Terms and conditions </small>
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" ng-model="registerForm.promo"> <small> Yes, please send me special offers and updates by email on Drook products and services.</small>
+					</label>
+				</div>
+				<button class="btn btn-primary" ng-click="register()">Register</button>
+			</form>	
+		</div>
+	</div>
+</div>

@@ -4,6 +4,12 @@ module.controller('CategoriesController', ['$scope','$timeout','$location','$anc
   ,'DisplayService', function ($scope,$timeout,$location,$anchorScroll,$element,CategoriesService,BulletService,DisplayService) {
 	
 	$scope.categories = CategoriesService.categories;
+	
+	$scope.$on('categories:hide',function(event,obj){
+		if (CategoriesService.expanded != null) {
+			$scope.expand(CategoriesService.expanded);
+		}
+	});
 
 	$scope.expand = function(view) {
 		for (var key in CategoriesService.categories) {
@@ -24,11 +30,13 @@ module.controller('CategoriesController', ['$scope','$timeout','$location','$anc
 		if (!target) target = document.querySelector('#'+id);
 		if (!content) content = target.querySelector('.slideable_content');
 		if(!CategoriesService.categories[id].expanded) {
+			CategoriesService.expanded = id;
 			content.style.border = '1px solid rgba(0,0,0,0)';
 			var y = content.clientHeight;
 			content.style.border = 0;
 			target.style.height = y + 'px';
 		} else {
+			CategoriesService.expanded = null;
 			target.style.height = '0px';
 		}
 		$scope.mobile.collapsed = !$scope.mobile.collapsed;
