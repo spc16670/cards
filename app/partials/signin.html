@@ -6,7 +6,7 @@
 				<hr></hr>
 			</div>
 			<div class="col-md-12">
-			<form class="form-signin">
+			<form class="form-signin" name="signInForm" >
 				<label for="inputEmail" class="sr-only">Email address</label>
 				<label for="inputEmail">Email address</label>
 				<div class="input-group">
@@ -40,38 +40,83 @@
 	</div>
 	
 	<div class="row" ng-if="toggler.register">
-		<div class="col-md-6">
-			<form class="form-register">
-				<label for="firstName" class="sr-only">First Name</label>
-				<label for="firstName">First Name</label>
-				<input type="text" id="firstName" ng-model="registerForm.firstName" class="form-control" placeholder="First Name" required autofocus>
-				
-				<label for="lastName" class="sr-only">Last Name</label>
-				<label for="lastName">Last Name</label>
-				<input type="text" id="lastName" ng-model="registerForm.lastName" class="form-control" placeholder="Last Name" required>
-
-				<label for="registerEmail" class="sr-only">Email address</label>
-				<label for="registerEmail">Email address</label>
-				<input type="email" id="registerEmail" ng-model="registerForm.email" class="form-control" placeholder="Email address" required autofocus>
-				
-				<label for="registerPassword" class="sr-only">Password</label>
-				<label for="registerPassword">Password</label>
-				<input type="password" id="registerPassword" ng-model="registerForm.password" class="form-control" placeholder="Password" required>
-				
-				<label for="confirmPassword" class="sr-only">Re-Type Password</label>
-				<label for="confirmPassword">Password</label>
-				<input type="password" id="confirmPassword" ng-model="registerForm.rePassword" class="form-control" placeholder="Password" required>
-				<div class="checkbox">
-					<label>
-						<input type="checkbox" ng-model="registerForm.tnc"> <small>I accept the Drook Terms and conditions </small>
-					</label>
+		<div class="col-md-8">
+			<form class="form-register" name="registerForm" >
+				<div class="row top-bottom-padding-3">
+					<div class="col-md-4">
+						<label for="firstName" class="sr-only">First Name</label>
+						<label for="firstName" class="pull-right">First Name</label>
+					</div>
+					<div class="col-md-8">
+						<input type="text" id="firstName" ng-model="registerForm.firstName" class="form-control" placeholder="First Name" required autofocus>
+					</div>
 				</div>
-				<div class="checkbox">
-					<label>
-						<input type="checkbox" ng-model="registerForm.promo"> <small> Yes, please send me special offers and updates by email on Drook products and services.</small>
-					</label>
+				<div class="row top-bottom-padding-3">
+					<div class="col-md-4">
+						<label for="lastName" class="sr-only">Last Name</label>
+						<label for="lastName" class="pull-right">Last Name</label>
+					</div>
+					<div class="col-md-8">
+						<input type="text" id="lastName" ng-model="registerForm.lastName" class="form-control" placeholder="Last Name" required>
+					</div>
 				</div>
-				<button class="btn btn-primary" ng-click="register()">Register</button>
+				<div class="row top-bottom-padding-3">
+					<div class="col-md-4">
+						<label for="registerEmail" class="sr-only">Email address</label>
+						<label for="registerEmail" class="pull-right">Email address</label>
+					</div>
+					<div class="col-md-8">
+						<input type="email" id="registerEmail" ng-model="registerForm.email" class="form-control" placeholder="Email address" required autofocus>
+					</div>
+				</div>
+				<div class="row top-bottom-padding-3">
+					<div class="col-md-4">
+						<label for="registerPassword" class="sr-only">Password</label>
+						<label for="registerPassword" class="pull-right">Password</label>
+					</div>
+					<div class="col-md-8">
+						<input type="password" id="registerPassword" ng-model="registerForm.password" class="form-control" placeholder="Password" required>
+					</div>
+				</div>
+				<div class="row top-bottom-padding-3">
+					<div class="col-md-4">
+						<label for="confirmPassword" class="sr-only">Re-Type Password</label>
+						<label for="confirmPassword" class="pull-right">Re-Type Password</label>
+					</div>
+					<div class="col-md-8">
+						<input type="password" id="confirmPassword" name="confirmPassword" ng-model="registerForm.rePassword" class="form-control" placeholder="Re-Type Password" match="registerForm.password" required>
+						<div ng-show="registerForm.confirmPassword.$error.match">Fields do not match!</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+					</div>
+					<div class="col-md-8">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" ng-model="registerForm.tnc" required> <small>I accept the Drook Terms and conditions </small>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+					</div>
+					<div class="col-md-8">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" ng-model="registerForm.promo"> <small> Yes, please send me special offers and updates by email on Drook products and services.</small>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+					</div>
+					<div class="col-md-8">
+						<button class="btn btn-primary" ng-click="register()">Register</button>
+					</div>
+				</div>
 			</form>	
 		</div>
 	</div>

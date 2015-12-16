@@ -25,6 +25,7 @@ var app = angular.module('CardsApp', [
 	,'cards.directives.Fabric'
 	,'cards.directives.Slideable'
 	,'cards.directives.Thumbnail'
+	,'cards.directives.Validate'
 ]);
 
 app.config(function($interpolateProvider){
