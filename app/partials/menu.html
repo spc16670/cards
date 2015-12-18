@@ -1,0 +1,273 @@
+<div ng-controller="MenuController">
+	<!-- NAVBAR -->
+	<nav class="navbar navbar-default navbar-static-top" >
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" ng-click="mobile.collapsed = !mobile.collapsed" 
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#" ng-click="visible('home')">DROOK</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse" uib-collapse="mobile.collapsed">
+				<ul class="nav navbar-nav">
+					<li ng-class="{active: tabs.businessCards.expanded}"><a href="#" ng-click="expand('businessCards')">Business Cards</a></li>
+					<li ng-class="{active: tabs.invitations.expanded}"><a href="#" ng-click="expand('invitations')">Invitations</a></li>
+					<li ng-class="{active: tabs.leaflets.expanded}"><a href="#" ng-click="expand('leaflets')">Leaflets</a></li>
+
+					<li class="dropdown" uib-dropdown>
+						<a href="#" uib-dropdown-toggle role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+						<ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
+							<li><a href="#">Action</a></li>
+							<li><a href="#">Another action</a></li>
+							<li><a href="#">Something else here</a></li>
+							<li role="separator" class="divider"></li>
+							<li class="dropdown-header">Nav header</li>
+							<li><a href="#">Separated link</a></li>
+							<li><a href="#">One more separated link</a></li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#" ng-click="visible('contact')">Contact</a></li>
+					<li><a href="#" ng-click="visible('basket')">Basket</a></li>
+					<li><a href="#" ng-if="user.loggedIn" ng-click="visible('profile')">{{ user.name }}</a></li>
+					<li ng-class="{active: tabs.login.expanded}"><a href="#" ng-if="!user.loggedIn" ng-click="expand('login')">Sign In</a></li>
+				</ul>
+			</div><!--/.nav-collapse -->
+		</div>
+	</nav>
+	
+
+	<!-- EXPANDED CATEGORIES -->
+	<div id="expandedCategory" class="container">
+		<script type="text/ng-template" id="businessCards.thumbnail.tpl">
+			<div class="col-sm-{{item.thumbnailSize}}" >
+				<a href="#" ng-click="itemClick(item)" class="thumbnail">
+					<div class="row">
+						<div class="col-md-6">
+							<img ng-src="{{item.icon}}" alt="{{item.title}}" class="img-responsive">
+						</div>
+						<div class="col-md-6">
+							<h3>{{item.title}} </h3>
+							<p>{{item.desc}}</p>
+						</div>
+					</div>
+				</a>
+			</div>
+		</script>
+	
+		<script type="text/ng-template" id="standard.thumbnail.tpl">
+			<div class="col-sm-{{item.thumbnailSize}}" >
+				<a href="#" ng-click="itemClick(item)" class="thumbnail">
+					<div class="row">
+						<div class="col-md-6">
+							<img ng-src="{{item.icon}}" alt="{{item.title}}" class="img-responsive">
+						</div>
+						<div class="col-md-6">
+							<h3>{{item.title}} </h3>
+							<p>{{item.desc}}</p>
+						</div>
+					</div>
+				</a>
+			</div>
+		</script>
+	
+		<div id="leaflets" class="row slideable">
+			<div ng-repeat="thumbnail in tabs.leaflets.thumbnails">
+				<span ng-if="$index % 6 == 0">
+					<div class="row">
+						<div ng-if="tabs.leaflets.thumbnails[$index+0]"><thumbnail item="tabs.leaflets.thumbnails[$index+0]" item-click="clicked(tabs.leaflets.thumbnails[$index+0])"></thumbnail></div>
+						<div ng-if="tabs.leaflets.thumbnails[$index+1]"><thumbnail item="tabs.leaflets.thumbnails[$index+1]" item-click="clicked(tabs.leaflets.thumbnails[$index+1])"></thumbnail></div>
+						<div ng-if="tabs.leaflets.thumbnails[$index+2]"><thumbnail item="tabs.leaflets.thumbnails[$index+2]" item-click="clicked(tabs.leaflets.thumbnails[$index+2])"></thumbnail></div>
+						<div ng-if="tabs.leaflets.thumbnails[$index+3]"><thumbnail item="tabs.leaflets.thumbnails[$index+3]" item-click="clicked(tabs.leaflets.thumbnails[$index+3])"></thumbnail></div>
+					</div>
+				</span>
+			</div>
+		</div>
+		
+		<div id="businessCards" class="row slideable">
+			<div ng-repeat="thumbnail in tabs.businessCards.thumbnails">
+				<span ng-if="$index % 6 == 0">
+					<div class="row">
+						<div ng-if="tabs.businessCards.thumbnails[$index+0]"><thumbnail item="tabs.businessCards.thumbnails[$index+0]" item-click="clicked(tabs.businessCards.thumbnails[$index+0])"></thumbnail></div>
+						<div ng-if="tabs.businessCards.thumbnails[$index+1]"><thumbnail item="tabs.businessCards.thumbnails[$index+1]" item-click="clicked(tabs.businessCards.thumbnails[$index+1])"></thumbnail></div>
+						<div ng-if="tabs.businessCards.thumbnails[$index+2]"><thumbnail item="tabs.businessCards.thumbnails[$index+2]" item-click="clicked(tabs.businessCards.thumbnails[$index+2])"></thumbnail></div>
+					</div>
+				</span>
+			</div>
+		</div>
+		<div id="invitations" class="row slideable">
+			<div ng-repeat="thumbnail in tabs.invitations.thumbnails">
+				<span ng-if="$index % 6 == 0">
+					<div class="row">
+						<div ng-if="tabs.invitations.thumbnails[$index+0]"><thumbnail item="tabs.invitations.thumbnails[$index+0]" item-click="clicked(tabs.invitations.thumbnails[$index+0])"></thumbnail></div>
+						<div ng-if="tabs.invitations.thumbnails[$index+1]"><thumbnail item="tabs.invitations.thumbnails[$index+1]" item-click="clicked(tabs.invitations.thumbnails[$index+1])"></thumbnail></div>
+					</div>
+				</span>
+			</div>
+		</div>
+		
+		
+		
+		<!-- SIGN IN / REGISTER -->
+		<div id="login" class="row slideable" ng-controller="SignInController">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="col-md-12">
+						<h3>Sign in</h3>
+						<hr></hr>
+					</div>
+					<div class="col-md-12">
+					<form class="form-signin" name="signInForm" novalidate>
+						<label for="email" class="sr-only">Email address</label>
+						<div class="input-group">
+							<span class="input-group-addon" id="basic-addon1"><i class="fa fa-envelope"></i></span>
+							<input type="email" id="email" name="email" ng-model="newLogin.email" class="form-control" placeholder="Email address" required autofocus>
+						</div>
+						<label for="password" class="sr-only">Password</label>
+						
+						<div class="input-group top-bottom-padding-3">
+							<span class="input-group-addon" id="basic-addon2"><i class="fa fa-key"></i></span>
+							<input ng-minlength="5" type="password" id="password" ng-model="newLogin.password" class="form-control" placeholder="Password" required>
+						</div>
+
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" ng-model="newLogin.remember" value="remember-me"> Remember me
+							</label>
+						</div>
+						<button class="btn btn-primary btn-block" type="submit" ng-click="login()">Sign in</button>
+					</form>
+					</div>
+				</div>
+				<div class="col-md-8">
+					<div class="col-md-12">
+						<h3>Don't have an account yet?</h3>
+						<hr></hr>
+						<p class="lead">Go ahead and register your details with us. <code>padding-top: 60px;</code> on the <code>body > .container</code>.</p>
+						<button class="btn btn-primary" ng-click="expand('register')">Create an account</button>
+					</div>
+				</div>
+			</div>
+		
+			<script type="text/ng-template" id="tncModal.html">
+				<div class="modal-header">
+					<h3 class="modal-title">Drook Terms and Conditions of online sales and services to customers</h3>
+				</div>
+				<div class="modal-body">
+					<ul>
+						<li ng-repeat="item in items">
+							<a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
+						</li>
+					</ul>
+					Selected: <b>{{ selected.item }}</b>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+					<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+				</div>
+			</script>
+		</div>
+		
+		<div id="register" class="row slideable" ng-controller="SignInController">
+			<div class="row">
+				<div class="col-md-8">
+					<form class="form-group" id="registerForm" name="registerForm" novalidate>
+						<div class="row top-bottom-padding-3">
+							<div class="col-md-4">
+								<label for="firstName" class="sr-only">First Name</label>
+								<label for="firstName" class="pull-right">First Name</label>
+							</div>
+							<div class="col-md-8">
+								<input type="text" id="firstName" name="firstName" ng-model="newRegister.firstName" class="form-control" placeholder="First Name" required autofocus>
+								<p ng-show="registerForm.firstName.$invalid && !registerForm.firstName.$pristine" class="help-block">You name is required.</p>
+							</div>
+						</div>
+						<div class="row top-bottom-padding-3">
+							<div class="col-md-4">
+								<label for="lastName" class="sr-only">Last Name</label>
+								<label for="lastName" class="pull-right">Last Name</label>
+							</div>
+							<div class="col-md-8">
+								<input type="text" id="lastName" name="lastName" ng-model="newRegister.lastName" class="form-control" placeholder="Last Name" required>
+								<p ng-show="registerForm.lastName.$invalid && !registerForm.lastName.$pristine" class="help-block">You name is required.</p>
+							</div>
+						</div>
+						<div class="row top-bottom-padding-3">
+							<div class="col-md-4">
+								<label for="email" class="sr-only">Email address</label>
+								<label for="email" class="pull-right">Email address</label>
+							</div>
+							<div class="col-md-8">
+								<input type="email" id="email" name="email" ng-model="newRegister.email" class="form-control" placeholder="Email address" required autofocus>
+								<p ng-show="registerForm.email.$invalid && !registerForm.email.$pristine" class="help-block">Enter a valid email.</p>
+							</div>
+						</div>
+						<div class="row top-bottom-padding-3">
+							<div class="col-md-4">
+								<label for="password" class="sr-only">Password</label>
+								<label for="password" class="pull-right">Password</label>
+							</div>
+							<div class="col-md-8">
+								<input ng-minlength="5" type="password" id="password" name="password" ng-model="newRegister.password" class="form-control" placeholder="Password" required>
+								<p ng-show="registerForm.password.$error.minlength" class="help-block">Password is too short.</p>
+							</div>
+						</div>
+						<div class="row top-bottom-padding-3">
+							<div class="col-md-4">
+								<label for="confirmPassword" class="sr-only">Re-Type Password</label>
+								<label for="confirmPassword" class="pull-right">Re-Type Password</label>
+							</div>
+							<div class="col-md-8">
+								<input type="password" id="confirmPassword" name="confirmPassword" ng-model="newRegister.rePassword" class="form-control" placeholder="Re-Type Password" match="newRegister.password" required>
+								<div ng-show="registerForm.confirmPassword.$error.match">Passwords do not match!</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+							</div>
+							<div class="col-md-8">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" ng-model="newRegister.tnc" required> <small>I accept the Drook <a href ng-click="tnc()">Terms and conditions</a> </small>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+							</div>
+							<div class="col-md-8">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" ng-model="newRegister.promo" ng-init="registerForm.promo=true" > <small> Yes, please send me special offers and updates by email on Drook products and services.</small>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<button class="btn btn-info pull-right" ng-click="expand('login')">Back</button>
+							</div>
+							<div class="col-md-8">
+								<button class="btn btn-primary" ng-disabled="registerForm.$invalid" ng-click="register()">Register</button>
+							</div>
+						</div>
+					</form>	
+				</div>
+				<div class="col-md-4">
+				<h4>Privacy first</h4>
+				<p><small>Drook respects your privacy. We will NEVER sell or rent your personal information without your consent. 
+				To learn more about how Drook may use information we automatically collect to improve your experience, please read our Online Privacy Statement.</small></p>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+
+</div>

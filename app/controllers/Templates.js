@@ -1,12 +1,12 @@
 
 var module = angular.module('cards.controllers.Templates',[]);
 
-module.controller('TemplateController', ['$scope','CategoriesService','BulletService'
-  , function ($scope,CategoriesService,BulletService) {
+module.controller('TemplateController', ['$scope','MenuService','BulletService'
+  , function ($scope,MenuService,BulletService) {
 	  
-	$scope.$watch(function(){return CategoriesService.selected}, function() {
-		console.log("selected category: ",CategoriesService.selected);
-		$scope.loadTemplateGroup(CategoriesService.selected);
+	$scope.$watch(function(){return MenuService.selected}, function() {
+		console.log("selected category: ",MenuService.selected);
+		$scope.loadTemplateGroup(MenuService.selected);
     });
 
 	$scope.templateGroups = [];

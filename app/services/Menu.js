@@ -1,12 +1,18 @@
-var module = angular.module('cards.services.Categories',[]);
+var module = angular.module('cards.services.Menu',[]);
 
-module.service('CategoriesService', [function () { 
+module.service('MenuService', [function () { 
 
 	var Service = {
 		selected : null
 		,expanded : null
-		,categories : {
-			businessCards : { 
+		,tabs : {
+			login : {
+				expanded : false
+			}
+			,register : {
+				expanded : false
+			}
+			,businessCards : { 
 				expanded : false
 				, thumbnails : [
 					{

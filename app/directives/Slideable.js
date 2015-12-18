@@ -1,5 +1,5 @@
 angular.module('cards.directives.Slideable', [])
-.directive('slideable', ['CategoriesService',function (CategoriesService) {
+.directive('slideable', [function () {
 
     return {
         restrict:'C',
