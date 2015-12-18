@@ -6,10 +6,16 @@ module.service('MenuService', [function () {
 		selected : null
 		,expanded : null
 		,tabs : {
-			login : {
+			home : {
+				expanded : false
+			}
+			,login : {
 				expanded : false
 			}
 			,register : {
+				expanded : false
+			}
+			,basket : {
 				expanded : false
 			}
 			,businessCards : { 

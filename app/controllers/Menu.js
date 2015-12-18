@@ -40,7 +40,7 @@ module.controller('MenuController', ['$scope','$timeout','$location','$anchorScr
 		$scope.tabs[id].expanded = !$scope.tabs[id].expanded;
 	}
 
-	
+
 	$scope.clicked = function (selected) {
 		$scope.toggle(selected.type);
 		//console.log("$element",$element[0].clientHeight);

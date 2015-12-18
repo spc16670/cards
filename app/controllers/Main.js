@@ -1,17 +1,16 @@
 var module = angular.module('cards.controllers.Main',[]);
 
-module.controller('MainController', ['$scope', 'DisplayService', 'AuthService', function ($scope, DisplayService, AuthService) {
+module.controller('MainController', ['$scope', 'DisplayService', 'AuthService','UtilsService',
+	function ($scope, DisplayService, AuthService,UtilsService) {
 
 	$scope.mobile = { collapsed : true };
 	$scope.workspace = { fabric : false };
-
+	$scope.year = UtilsService.getYear();
+	
 	$scope.toggler = {
 		home : true
 		,editor : false
-		,basket : false
-		,profile : false
 		,contact : false
-		,login : false
 	};
 	
 	$scope.user = { isLogged : false, user : AuthService.user };

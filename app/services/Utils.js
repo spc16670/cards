@@ -19,7 +19,9 @@ module.service('UtilsService', [function () {
 	Service.uuid = function () {
 		return THREE.Math.generateUUID();
 	}
-	
+	Service.getYear = function () {
+		return new Date().getFullYear();
+	}
 	Service.isEmpty = function isEmpty(obj) {
 		for(var prop in obj) {
 			if(obj.hasOwnProperty(prop)) 

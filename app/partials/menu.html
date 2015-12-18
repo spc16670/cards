@@ -33,7 +33,7 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#" ng-click="visible('contact')">Contact</a></li>
-					<li><a href="#" ng-click="visible('basket')">Basket</a></li>
+					<li ng-class="{active: tabs.basket.expanded}"><a href="#" ng-click="expand('basket')">Basket</a></li>
 					<li><a href="#" ng-if="user.loggedIn" ng-click="visible('profile')">{{ user.name }}</a></li>
 					<li ng-class="{active: tabs.login.expanded}"><a href="#" ng-if="!user.loggedIn" ng-click="expand('login')">Sign In</a></li>
 				</ul>
@@ -115,35 +115,43 @@
 		
 		<!-- SIGN IN / REGISTER -->
 		<div id="login" class="row slideable" ng-controller="SignInController">
-			<div class="row">
+			<div class="row top-bottom-padding-5">
 				<div class="col-md-4">
-					<div class="col-md-12">
-						<h3>Sign in</h3>
-						<hr></hr>
-					</div>
-					<div class="col-md-12">
-					<form class="form-signin" name="signInForm" novalidate>
-						<label for="email" class="sr-only">Email address</label>
-						<div class="input-group">
-							<span class="input-group-addon" id="basic-addon1"><i class="fa fa-envelope"></i></span>
-							<input type="email" id="email" name="email" ng-model="newLogin.email" class="form-control" placeholder="Email address" required autofocus>
-						</div>
-						<label for="password" class="sr-only">Password</label>
-						
-						<div class="input-group top-bottom-padding-3">
-							<span class="input-group-addon" id="basic-addon2"><i class="fa fa-key"></i></span>
-							<input ng-minlength="5" type="password" id="password" ng-model="newLogin.password" class="form-control" placeholder="Password" required>
-						</div>
+					<div class="panel panel-default bottom-space-margin">
+						<div class="panel-heading">
+							<strong>Sign in</strong>
+						</div> 
+						<ul class="list-group">
+							<li class="list-group-item">
+								<div class="row bottom-space">
+									<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+										<form class="form-signin" name="signInForm" novalidate>
+											<label for="email" class="sr-only">Email address</label>
+											<div class="input-group">
+												<span class="input-group-addon" id="basic-addon1"><i class="fa fa-envelope"></i></span>
+												<input type="email" id="email" name="email" ng-model="newLogin.email" class="form-control" placeholder="Email address" required autofocus>
+											</div>
+											<label for="password" class="sr-only">Password</label>
+											
+											<div class="input-group top-bottom-padding-3">
+												<span class="input-group-addon" id="basic-addon2"><i class="fa fa-key"></i></span>
+												<input ng-minlength="5" type="password" id="password" ng-model="newLogin.password" class="form-control" placeholder="Password" required>
+											</div>
 
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" ng-model="newLogin.remember" value="remember-me"> Remember me
-							</label>
-						</div>
-						<button class="btn btn-primary btn-block" type="submit" ng-click="login()">Sign in</button>
-					</form>
+											<div class="checkbox">
+												<label>
+													<input type="checkbox" ng-model="newLogin.remember" value="remember-me"> Remember me
+												</label>
+											</div>
+											<button class="btn btn-primary btn-block" type="submit" ng-click="login()">Sign in</button>
+										</form>
+									</div>
+								</div>
+							</li>
+						</ul>
 					</div>
 				</div>
+				
 				<div class="col-md-8">
 					<div class="col-md-12">
 						<h3>Don't have an account yet?</h3>
@@ -264,6 +272,13 @@
 				<p><small>Drook respects your privacy. We will NEVER sell or rent your personal information without your consent. 
 				To learn more about how Drook may use information we automatically collect to improve your experience, please read our Online Privacy Statement.</small></p>
 				</div>
+			</div>
+		</div>
+		
+		<!-- BASKET -->
+		<div id="basket" class="row slideable" ng-controller="BasketController">
+			<div class="row">
+				BASKET
 			</div>
 		</div>
 		

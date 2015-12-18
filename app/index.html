@@ -48,6 +48,7 @@
 		<script src="controllers/Drawings.js"></script>
 		<script src="controllers/SignIn.js"></script>
 		<script src="controllers/Main.js"></script>
+		<script src="controllers/Basket.js"></script>
 		
 		<script src="services/Bullet.js"></script>
 		<script src="services/Display.js"></script>
@@ -56,6 +57,7 @@
 		<script src="services/Common.js"></script>
 		<script src="services/Elements.js"></script>
 		<script src="services/Auth.js"></script>
+		<script src="services/Basket.js"></script>
 		
 		<script src="directives/Fabric.js"></script>
 		<script src="directives/Display.js"></script>
@@ -76,7 +78,7 @@
 		<!-- Home -->
 		<div class="container" ng-show="toggler.home">
 			<div ng-include src="'partials/home.html'"></div>
-		</div>
+		</div> 
 
 		<!-- Main -->
 		<div id="editor" class="container" ng-show="toggler.editor" ng-controller="DisplayController">
@@ -173,33 +175,24 @@
 		<!-- Contact -->
 		<div class="container" ng-show="toggler.contact">
 			<div class="row">
-				CONTACT
+				HELP
 			</div>
 		</div>
-		
-		<!-- BASKET -->
-		<div class="container" ng-show="toggler.basket">
-			<div class="row">
-				BASKET
-			</div>
-		</div>
-		
-		<!-- PROFILE -->
-		<div class="container" ng-show="toggler.profile">
-			<div class="row">
-				PROFILE
-			</div>
-		</div>
-		
-		<!-- PROFILE 
-		<div class="container" ng-show="toggler.login">
-			<div ng-include src="'partials/signin.html'"></div>
-		</div>-->
-		
+
+
 		<div id="canvasContainer"></div>
 		<footer class="footer">
 			<div class="container">
-				<p class="text-muted">Place sticky footer content here.</p>
+				<div class="row">
+					<div class="col-md-12">
+					<p class="text-muted text-center">Terms and Conditions | Contact Us</p>
+					<div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+					<small><p class="text-muted text-center"><i class="fa fa-copyright"></i> DROOK 2014 - {{ year }}. All rights reserved.</p></small>
+					<div>
+				</div>
 			</div>
 		</footer>
 
