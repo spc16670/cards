@@ -1,8 +1,21 @@
 var module = angular.module('cards.services.Common',[]);
 
-module.service('CommonService', [function () {
+module.service('CommonService', ['$cookies',function ($cookies) {
 
-	var Service = {}
+	var Service = {};
+
+	Service.refreshCookie = function () {
+		var sid = $cookies.get('SID');
+		var tsid = $cookies.get('TSID');
+		if (sid == undefined) {
+			console.log("SETTING SID",tsid);
+			$cookies.put('SID',tsid);
+    			this.sid = tsid;
+  		} else {
+			this.sid = sid;
+ 		}
+	}
+	Service.refreshCookie();
 	
 	Service.text = {
 		fonts : [

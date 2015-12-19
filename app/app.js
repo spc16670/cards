@@ -4,6 +4,7 @@ var app = angular.module('CardsApp', [
 	'colorpicker.module'
 	,'ui.bootstrap'
 	,'ngFileUpload'
+	,'ngCookies'
 	,'cards.services.Display'
 	,'cards.services.Bullet'
 	,'cards.services.Menu'

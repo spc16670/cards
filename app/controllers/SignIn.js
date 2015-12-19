@@ -1,7 +1,8 @@
 
 var module = angular.module('cards.controllers.SignIn',[]);
 
-module.controller('SignInController', ['$scope', '$uibModal',function ($scope,$uibModal) {
+module.controller('SignInController', ['$scope', '$uibModal','BulletService'
+  ,function ($scope,$uibModal,BulletService) {
 
 	$scope.toggler = { register : false }
 	
@@ -28,6 +29,7 @@ module.controller('SignInController', ['$scope', '$uibModal',function ($scope,$u
 		console.log($scope.newLogin);
 		$scope.registerForm.$setPristine()
 		angular.copy($scope.defaultLogin, $scope.newLogin);
+		//BulletService.
 	}
 
 	
