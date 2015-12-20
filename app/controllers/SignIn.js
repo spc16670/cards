@@ -1,42 +1,71 @@
 
 var module = angular.module('cards.controllers.SignIn',[]);
 
-module.controller('SignInController', ['$scope', '$uibModal','BulletService'
-  ,function ($scope,$uibModal,BulletService) {
+module.controller('SignInController', ['$scope', '$uibModal','BulletService','RequestFactory','CommonService','AuthService'
+  ,function ($scope,$uibModal,BulletService,RequestFactory,CommonService,AuthService) {
 
-	$scope.toggler = { register : false }
-	
 	$scope.defaultLogin = {
 		email : ""
 		,password : ""
 	}
 	$scope.newLogin = {};
-	angular.copy($scope.defaultLogin, $scope.newLogin);
-	
-	$scope.defaultRegister = {
-		firstName : ""
-		,lastName : ""
-		,email : ""
-		,rePassword : "" 
-		,password : ""
-		,tnc : false
-		,promo : true
-	}
-	$scope.newRegister = {}
-	angular.copy($scope.defaultRegister, $scope.newRegister);
+	angular.copy($scope.defaultLogin, $scope.newLogin);	
 	
 	$scope.login = function () {
 		console.log($scope.newLogin);
-		$scope.registerForm.$setPristine()
-		angular.copy($scope.defaultLogin, $scope.newLogin);
-		//BulletService.
+		$scope.signInForm.$setPristine();
+		var req = RequestFactory.login($scope.newLogin);
+		var promise = BulletService.fire(req);
+		angular.copy($scope.defaultLogin, $scope.newLogin );
+		promise.then(function(resp){
+			var authenticated = resp.body.authenticated;
+			if (authenticated) {
+				$scope.expand('login');
+			} else {
+				alert("We are sorry, please try again later");
+			}
+		});	
 	}
+
+	$scope.defaultUser = {
+		email : ""
+		,password : ""
+		,rePassword : ""
+	}
+	$scope.defaultCustomer = {
+		fname : ""
+		,lname : ""
+		,gender : "F"
+		,tnc : false
+		,promo : true
+	}
+	$scope.newUser = {};
+	angular.copy($scope.defaultUser, $scope.newUser);
+	$scope.newCustomer = {};
+	angular.copy($scope.defaultCustomer, $scope.newCustomer);
 
 	
 	$scope.register = function () {
-		console.log($scope.newRegister);
-		angular.copy($scope.defaultRegister, $scope.newRegister);
-		$scope.toggler.register = !$scope.toggler.register;
+		$scope.registerForm.$setPristine();
+		var user = {}; 
+		angular.copy($scope.newUser, user);
+		delete user.rePassword;
+		angular.copy($scope.defaultUser, $scope.newUser);
+		var customer = {};
+		angular.copy($scope.newCustomer, customer);
+		delete customer.tnc;
+		customer.promo = (customer.promo) ? 'Y' : 'N';
+		angular.copy($scope.defaultCustomer, $scope.newCustomer);
+		var req = RequestFactory.register(user,customer);
+		var promise = BulletService.fire(req);
+		promise.then(function(resp){
+			var registered = resp.body.registered;
+			if (registered) {
+				$scope.expand('login');
+			} else {
+				alert("We are sorry, please try again later");
+			}
+		});	
 	}
 	
 	// ------------------ TNC ------------------

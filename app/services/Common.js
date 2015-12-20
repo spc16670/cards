@@ -4,19 +4,29 @@ module.service('CommonService', ['$cookies',function ($cookies) {
 
 	var Service = {};
 
-	Service.refreshCookie = function () {
+	Service.init = function () {
 		var sid = $cookies.get('SID');
 		var tsid = $cookies.get('TSID');
 		if (sid == undefined) {
-			console.log("SETTING SID",tsid);
 			$cookies.put('SID',tsid);
-    			this.sid = tsid;
+    			this.SID = tsid;
   		} else {
-			this.sid = sid;
+			this.SID = sid;
  		}
+        	this.BULLET = { 
+			TIMEOUT : 60000
+			,PATH : "/bullet"
+		};
+	        var origin = window.location.origin;
+		this.BULLET.URL = origin.replace("http","ws").replace("https","wss") 
+			+ this.BULLET.PATH + "/" + this.SID;
+  		console.log("Bullet URL: ", this.BULLET.URL);
 	}
-	Service.refreshCookie();
-	
+
+	Service.init();
+
+
+
 	Service.text = {
 		fonts : [
 			{ name : "arial black", style: { fontFamily : "arial black" } }

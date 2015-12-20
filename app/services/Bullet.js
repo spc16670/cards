@@ -1,124 +1,113 @@
 var module = angular.module('cards.services.Bullet',[]);
 
 module.service('BulletService', ['DisplayService','CommonService','$q','$timeout','$rootScope'
-  ,function (DisplayService,CommonService,$q,$cookies,$timeout,$rootScope) {
+  ,function (DisplayService,CommonService,$q,$timeout,$rootScope) {
 
-	var Service = {  url : "", promise: null, cid : 0, timeout : $cookies.clientTimeout };
+	var Service = {
+ 		url : CommonService.BULLET.URL 
+		, timeout : CommonService.BULLET.TIMEOUT
+		, connected : false
+		, promise: null
+		, qid : 0
+		, queue : {}
+		, options : { 
+			disableEventSource: true
+			, disableXHRPolling : true
+			, disableWebSocket : false
+		}
+	};
 
-	Service.fire = function () {
-	}
 
+  	var Bullet = $.bullet(Service.url, Service.options);
 
-  var port = "8443";
-  var protocol = window.location.protocol;
-  if (protocol === "http:") {
-    protocol = "ws:"
-    port = "8080";
-  } else {
-    protocol = "wss:"
-  }
-  Service.url = protocol + '//' + window.location.hostname + ':' + port + '/bullet/' + CommonService.sid;
-  console.log("Bullet URL: ", Service.url);
+	Bullet.onopen = function(){
+		Service.connected = true;
+		for (var qid in Service.queue) {
+			if ( Service.queue.hasOwnProperty(qid)) {
+				if (!Service.queue[qid].fired) {
+					fireBullet(Service.queue[qid].req);
+				}
+			}
+		}
+  	}
 
-  var options = { disableEventSource: true, disableXHRPolling : true, disableWebSocket : false};
+	Bullet.onclose = Bullet.ondisconnect = function(){
+    		Service.connected = false;
+  	};
 
-  var bullet = $.bullet(Service.url, options);
-  var callbacks = {};
-  var currentCallbackId = 0;
-
-  var isOpened = false;
-  var scheduledQueue = [];
-
-  bullet.onopen = function(){
-    isOpened = true;
-    for (var i = 0; i < scheduledQueue.length; i++) {
-      console.log("DEQUEUING REQUESTS",scheduledQueue);
-      fireBullet(scheduledQueue[i]);
-      scheduledQueue.splice(i,1);
-    }
-  }
-
-  bullet.onclose = bullet.ondisconnect = function(){
-    console.log('CONNECTION CLOSED');
-    isOpened = false;
-  };
-
-  bullet.onmessage = function(e){
-    if (e.data != 'pong'){
-      var json = $.parseJSON(e.data);
-      listener(json);
-      if (json.hasOwnProperty('header')) { 
-        if (json.header.type === "news") {
-          console.log('NEWS RECEIVED' + json)
-        }
-      }
-    }
-  };
+  	Bullet.onmessage = function(e){
+    		if (e.data != 'pong'){
+      			var json = $.parseJSON(e.data);
+	      		if (json.hasOwnProperty('header')) { 
+				json.header.result = "ok";
+        			if (json.header.type === "news") {
+          				console.log('NEWS RECEIVED' + json)
+        			}
+				listener(json);
+			} else {
+				console.log("INVALID",json);
+			}
+    		}
+  	};
   
 
-function sendRequest(request) {
-    var defer = $q.defer();
-    var callbackId = getCallbackId();
-    Service.cid = callbackId; 
-    request.header.cbid = callbackId;
-    var timeoutPromise = $timeout(function(data){
-      var timeoutRequest = request;
-      timeoutRequest.header.cbid = callbackId;
-      timeoutRequest.header.result = "timeout";
-      timeoutRequest.header.msg = "A timeout occurred";
-      listener(timeoutRequest);
-    },clientTimeout);
+	function fireBullet(req) {
+		Service.queue[req.header.qid].fired = true;
+		Service.promise = Service.queue[req.header.qid].cb; 
+		Bullet.send(JSON.stringify(req));
+	}
 
-    callbacks[callbackId] = {
-      time: new Date(),
-      cb: defer,
-      timeoutPromise: timeoutPromise
-    };
+	function listener(resp) {
+		if(Service.queue.hasOwnProperty(resp.header.qid)) {
+			var callback = Service.queue[resp.header.qid];
+			$timeout.cancel(callback.timeoutPromise);
+			$rootScope.$apply(callback.cb.resolve(resp));
+			delete Service.queue[resp.header.qid];
+		}
+	}
 
-    if (isOpened) {
-      fireBullet(request);
-    } else {
-      scheduledQueue.push(request);
-    }
-    return defer.promise;
-  }
+	function getQid() {
+		Service.qid += 1;
+		if(Service.qid > 10000) {
+			Service.qid = 0;
+		}
+    		return Service.qid;
+	}
 
-  function fireBullet(request) {
-    bullet.send(JSON.stringify(request));
-  }
+	/*
+ 	*  @param reg must have a header with some metadata
+ 	*/
+	Service.fire = function(request) {
+		var req = {};
+		angular.copy(request,req);
+		var defer = $q.defer();
+		var qid = getQid();
 
-  function listener(response) {
-    if(callbacks.hasOwnProperty(response.header.cbid)) {
-      var callback = callbacks[response.header.cbid];
-      $timeout.cancel(callback.timeoutPromise);
-      $rootScope.$apply(callback.cb.resolve(response));
-      delete callbacks[response.header.cbid];
-    }
-  }
+		req.header.qid = qid;
 
-  function getCallbackId() {
-    currentCallbackId += 1;
-    if(currentCallbackId > 10000) {
-      currentCallbackId = 0;
-    }
-    return currentCallbackId;
-  }
+		var timeoutPromise = $timeout(function(){
+			var timedout = { header : { qid : qid }};
+			timedout.header.result = "timeout";
+			timedout.header.msg = "A timeout occurred";
+			console.log("REQ TIMED OUT",timedout)
+			listener(timedout);
+    		},Service.timeout);
 
-  Service.send = function(msg) {
-    msg.header.cbid = null;
-    var promise = sendRequest(msg);
-    Service.promise = promise; 
-    return promise;
-  }
+		Service.queue[qid] = {
+			time: new Date()
+			,cb: defer
+			,timeoutPromise: timeoutPromise
+			,req : req
+			,fired : false
+   		};
 
+		if (Service.connected) {
+			fireBullet(req);
+		}
+    		return defer.promise;
+  	}
 
-
-
-
-
-
-
-
+	//=====================================================================
 
 
 

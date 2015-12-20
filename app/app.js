@@ -13,6 +13,7 @@ var app = angular.module('CardsApp', [
 	,'cards.services.Elements'
 	,'cards.services.Auth'
 	,'cards.services.Basket'
+	,'cards.factories.Request'
 	,'cards.controllers.Display'
 	,'cards.controllers.Selection'
 	,'cards.controllers.Drawings'

@@ -191,7 +191,7 @@
 								<label for="firstName" class="pull-right">First Name</label>
 							</div>
 							<div class="col-md-8">
-								<input type="text" id="firstName" name="firstName" ng-model="newRegister.firstName" class="form-control" placeholder="First Name" required autofocus>
+								<input type="text" id="firstName" name="firstName" ng-model="newCustomer.fname" class="form-control" placeholder="First Name" required autofocus>
 								<p ng-show="registerForm.firstName.$invalid && !registerForm.firstName.$pristine" class="help-block">You name is required.</p>
 							</div>
 						</div>
@@ -201,17 +201,30 @@
 								<label for="lastName" class="pull-right">Last Name</label>
 							</div>
 							<div class="col-md-8">
-								<input type="text" id="lastName" name="lastName" ng-model="newRegister.lastName" class="form-control" placeholder="Last Name" required>
+								<input type="text" id="lastName" name="lastName" ng-model="newCustomer.lname" class="form-control" placeholder="Last Name" required>
 								<p ng-show="registerForm.lastName.$invalid && !registerForm.lastName.$pristine" class="help-block">You name is required.</p>
 							</div>
 						</div>
+						<div class="row top-bottom-padding-3">
+							<div class="col-md-4">
+								<label for="gender" class="sr-only">Gender</label>
+								<label for="gender" class="pull-right">Gender</label>
+							</div>
+							<div class="col-md-8">
+								<div class="btn-group">
+									<label class="btn btn-primary btn-sm" ng-model="newCustomer.gender" uib-btn-radio="'F'">Female</label>
+									<label class="btn btn-primary btn-sm" ng-model="newCustomer.gender" uib-btn-radio="'M'">Male</label>
+								</div>
+							</div>
+						</div>
+
 						<div class="row top-bottom-padding-3">
 							<div class="col-md-4">
 								<label for="email" class="sr-only">Email address</label>
 								<label for="email" class="pull-right">Email address</label>
 							</div>
 							<div class="col-md-8">
-								<input type="email" id="email" name="email" ng-model="newRegister.email" class="form-control" placeholder="Email address" required autofocus>
+								<input type="email" id="email" name="email" ng-model="newUser.email" class="form-control" placeholder="Email address" required autofocus>
 								<p ng-show="registerForm.email.$invalid && !registerForm.email.$pristine" class="help-block">Enter a valid email.</p>
 							</div>
 						</div>
@@ -221,7 +234,7 @@
 								<label for="password" class="pull-right">Password</label>
 							</div>
 							<div class="col-md-8">
-								<input ng-minlength="5" type="password" id="password" name="password" ng-model="newRegister.password" class="form-control" placeholder="Password" required>
+								<input ng-minlength="5" type="password" id="password" name="password" ng-model="newUser.password" class="form-control" placeholder="Password" required>
 								<p ng-show="registerForm.password.$error.minlength" class="help-block">Password is too short.</p>
 							</div>
 						</div>
@@ -231,7 +244,7 @@
 								<label for="confirmPassword" class="pull-right">Re-Type Password</label>
 							</div>
 							<div class="col-md-8">
-								<input type="password" id="confirmPassword" name="confirmPassword" ng-model="newRegister.rePassword" class="form-control" placeholder="Re-Type Password" match="newRegister.password" required>
+								<input type="password" id="confirmPassword" name="confirmPassword" ng-model="newUser.rePassword" class="form-control" placeholder="Re-Type Password" match="newUser.password" required>
 								<div ng-show="registerForm.confirmPassword.$error.match">Passwords do not match!</div>
 							</div>
 						</div>
@@ -241,7 +254,7 @@
 							<div class="col-md-8">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" ng-model="newRegister.tnc" required> <small>I accept the Drook <a href ng-click="tnc()">Terms and conditions</a> </small>
+										<input type="checkbox" ng-model="newCustomer.tnc" required> <small>I accept the Drook <a href ng-click="tnc()">Terms and conditions</a> </small>
 									</label>
 								</div>
 							</div>
@@ -252,7 +265,7 @@
 							<div class="col-md-8">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" ng-model="newRegister.promo" ng-init="registerForm.promo=true" > <small> Yes, please send me special offers and updates by email on Drook products and services.</small>
+										<input type="checkbox" ng-model="newCustomer.promo" ng-init="registerForm.promo=true" > <small> Yes, please send me special offers and updates by email on Drook products and services.</small>
 									</label>
 								</div>
 							</div>
