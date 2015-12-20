@@ -18,10 +18,15 @@ module.controller('SignInController', ['$scope', '$uibModal','BulletService','Re
 		var promise = BulletService.fire(req);
 		angular.copy($scope.defaultLogin, $scope.newLogin );
 		promise.then(function(resp){
-			var authenticated = resp.body.authenticated;
-			if (authenticated) {
-				$scope.expand('login');
-			} else {
+			var result = resp.header.result;
+                        if (result === "ok") {
+				var authenticated = resp.body.authenticated;
+				if (authenticated) {
+					$scope.expand('login');
+				} else {
+					alert("We are sorry, please try again");
+				}
+			} else if (result === "timeout") {
 				alert("We are sorry, please try again later");
 			}
 		});	
@@ -59,10 +64,15 @@ module.controller('SignInController', ['$scope', '$uibModal','BulletService','Re
 		var req = RequestFactory.register(user,customer);
 		var promise = BulletService.fire(req);
 		promise.then(function(resp){
-			var registered = resp.body.registered;
-			if (registered) {
-				$scope.expand('login');
-			} else {
+			var result = resp.header.result;
+                        if (result === "ok") {
+				var registered = resp.body.registered;
+				if (registered) {
+					$scope.expand('login');
+				} else {
+					alert("We are sorry, please try again");
+				}
+			} else if (result === "timeout") {
 				alert("We are sorry, please try again later");
 			}
 		});	
