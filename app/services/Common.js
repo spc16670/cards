@@ -51,7 +51,10 @@ module.service('CommonService', ['$cookies',function ($cookies) {
 	}
 	
 	Service.CONSTANTS = {
-		EMPTY_ARRAY : []
+		TOKEN_KEY : "TOKEN"
+		,USER_INFO_KEY : "USER_INFO"
+		,STORAGE_EXPIRY_DAYS : 7
+		,EMPTY_ARRAY : []
 		,EMPTY_STRING : ""
 		,DEFAULT_COLOUR : "#ffffff"
 		,FABRIC_CANVAS : {

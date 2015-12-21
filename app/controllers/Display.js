@@ -102,4 +102,16 @@ module.controller('DisplayController', ['$scope','DisplayService','CommonService
 		DisplayService.setFabricShowing( !DisplayService.fabricShowing );
 	}
 
+
+	$scope.share = function(){
+		console.log("Share");
+	};
+	$scope.save = function(){
+		console.log("Save");
+
+	};
+	$scope.drook = function(){
+		console.log("Drook");
+
+	};
 }]);

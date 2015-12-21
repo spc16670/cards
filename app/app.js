@@ -2,6 +2,7 @@
 
 var app = angular.module('CardsApp', [
 	'colorpicker.module'
+        ,'darthwade.loading'
 	,'ui.bootstrap'
 	,'ngFileUpload'
 	,'ngCookies'
@@ -11,8 +12,10 @@ var app = angular.module('CardsApp', [
 	,'cards.services.Utils'
 	,'cards.services.Common'
 	,'cards.services.Elements'
-	,'cards.services.Auth'
+	,'cards.services.Session'
 	,'cards.services.Basket'
+	,'cards.services.Storage'
+	,'cards.services.Template'
 	,'cards.factories.Request'
 	,'cards.controllers.Display'
 	,'cards.controllers.Selection'

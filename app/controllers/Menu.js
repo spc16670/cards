@@ -1,7 +1,8 @@
 var module = angular.module('cards.controllers.Menu',[]);
 
 module.controller('MenuController', ['$scope','$timeout','$location','$anchorScroll','$element','MenuService','BulletService'
-  ,'DisplayService', function ($scope,$timeout,$location,$anchorScroll,$element,MenuService,BulletService,DisplayService) {
+  ,'DisplayService', function ($scope,$timeout,$location,$anchorScroll,$element,MenuService,BulletService
+  ,DisplayService) {
 	
 	$scope.tabs = MenuService.tabs;
 	
@@ -61,5 +62,6 @@ module.controller('MenuController', ['$scope','$timeout','$location','$anchorScr
 			});
 		}
 	}
+
 
 }]);

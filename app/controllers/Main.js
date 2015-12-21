@@ -1,7 +1,7 @@
 var module = angular.module('cards.controllers.Main',[]);
 
-module.controller('MainController', ['$scope', 'DisplayService', 'AuthService','UtilsService',
-	function ($scope, DisplayService, AuthService,UtilsService) {
+module.controller('MainController', ['$scope', 'DisplayService', 'SessionService','UtilsService',
+ 'SessionService',function ($scope, DisplayService, SessionService,UtilsService,SessionService) {
 
 	$scope.mobile = { collapsed : true };
 	$scope.workspace = { fabric : false };
@@ -13,14 +13,13 @@ module.controller('MainController', ['$scope', 'DisplayService', 'AuthService','
 		,contact : false
 	};
 	
-	$scope.user = { isLogged : false, user : AuthService.user };
-	
-	$scope.$watch(function() { return AuthService.user }, function () {
-		if (AuthService.user != null) {
-			$scope.user = { loggedIn : true, user : AuthService.user };
-		} else {
-			$scope.user = { loggedIn : false, user : AuthService.user };
-		}
+	$scope.user = SessionService.user;
+
+	$scope.signOut = function() {
+		SessionService.destroy();
+	}
+
+	$scope.$watch(function() { return SessionService.info }, function () {
 	});
 	
 	$scope.visible = function(view) {

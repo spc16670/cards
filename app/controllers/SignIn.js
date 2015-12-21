@@ -1,8 +1,8 @@
 
 var module = angular.module('cards.controllers.SignIn',[]);
 
-module.controller('SignInController', ['$scope', '$uibModal','BulletService','RequestFactory','CommonService','AuthService'
-  ,function ($scope,$uibModal,BulletService,RequestFactory,CommonService,AuthService) {
+module.controller('SignInController', ['$scope', '$uibModal','BulletService','RequestFactory','CommonService','SessionService','$loading'
+  ,function ($scope,$uibModal,BulletService,RequestFactory,CommonService,SessionService,$loading) {
 
 	$scope.defaultLogin = {
 		email : ""
@@ -10,19 +10,22 @@ module.controller('SignInController', ['$scope', '$uibModal','BulletService','Re
 	}
 	$scope.newLogin = {};
 	angular.copy($scope.defaultLogin, $scope.newLogin);	
-	
 	$scope.login = function () {
 		console.log($scope.newLogin);
 		$scope.signInForm.$setPristine();
 		var req = RequestFactory.login($scope.newLogin);
 		var promise = BulletService.fire(req);
 		angular.copy($scope.defaultLogin, $scope.newLogin );
+                $loading.start("login");
 		promise.then(function(resp){
+                	$loading.finish("login");
 			var result = resp.header.result;
                         if (result === "ok") {
 				var authenticated = resp.body.authenticated;
+				console.log(resp);
 				if (authenticated) {
 					$scope.expand('login');
+					SessionService.create(resp.body.email,resp.body.token,resp.body.customer);
 				} else {
 					alert("We are sorry, please try again");
 				}
@@ -63,7 +66,9 @@ module.controller('SignInController', ['$scope', '$uibModal','BulletService','Re
 		angular.copy($scope.defaultCustomer, $scope.newCustomer);
 		var req = RequestFactory.register(user,customer);
 		var promise = BulletService.fire(req);
+          	$loading.start("register");
 		promise.then(function(resp){
+          		$loading.finish("register");
 			var result = resp.header.result;
                         if (result === "ok") {
 				var registered = resp.body.registered;
