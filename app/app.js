@@ -38,7 +38,7 @@ var app = angular.module('CardsApp', [
 app.config(function($interpolateProvider){
 });
 
-app.run(['$templateCache','CommonService','$cacheFactory',function($templateCache,CommonService,$cacheFactory) {
+app.run(['$templateCache','CommonService',function($templateCache,CommonService) {
 
 }]);
 
