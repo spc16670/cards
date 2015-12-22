@@ -36,9 +36,9 @@ module.service('BulletService', ['DisplayService','CommonService','$q','$timeout
   	};
 
   	Bullet.onmessage = function(e){
-    		if (e.data != 'pong'){
-      			var json = $.parseJSON(e.data);
-	      		if (json.hasOwnProperty('header')) { 
+    	if (e.data != 'pong'){
+      		var json = $.parseJSON(e.data);
+	      	if (json.hasOwnProperty('header')) { 
 				json.header.result = "ok";
         			if (json.header.type === "news") {
           				console.log('NEWS RECEIVED' + json)
@@ -47,7 +47,7 @@ module.service('BulletService', ['DisplayService','CommonService','$q','$timeout
 			} else {
 				console.log("INVALID",json);
 			}
-    		}
+    	}
   	};
   
 
@@ -108,8 +108,6 @@ module.service('BulletService', ['DisplayService','CommonService','$q','$timeout
   	}
 
 	//=====================================================================
-
-
 
 
 	

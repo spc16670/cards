@@ -39,11 +39,6 @@ module.directive('ngFabric', ['DisplayService','UtilsService','$timeout',
 			scope.resizeCanvas();
 
         };
-		
-        // -----------------------------------
-        // Event listeners
-        // -----------------------------------
-
 
         // -----------------------------------
         // Updates

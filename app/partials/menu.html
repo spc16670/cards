@@ -11,6 +11,7 @@
 					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="#" ng-click="visible('home')">DROOK</a>
+				<a class="navbar-brand" href="#" ng-click="showDrookSpace()">WORKSPACE</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse" uib-collapse="mobile.collapsed">
 				<ul class="nav navbar-nav">
@@ -53,37 +54,6 @@
 
 	<!-- EXPANDED CATEGORIES -->
 	<div id="expandedCategory" class="container">
-		<script type="text/ng-template" id="businessCards.thumbnail.tpl">
-			<div class="col-sm-{{item.thumbnailSize}}" >
-				<a href="#" ng-click="itemClick(item)" class="thumbnail">
-					<div class="row">
-						<div class="col-md-6">
-							<img ng-src="{{item.icon}}" alt="{{item.title}}" class="img-responsive">
-						</div>
-						<div class="col-md-6">
-							<h3>{{item.title}} </h3>
-							<p>{{item.desc}}</p>
-						</div>
-					</div>
-				</a>
-			</div>
-		</script>
-	
-		<script type="text/ng-template" id="standard.thumbnail.tpl">
-			<div class="col-sm-{{item.thumbnailSize}}" >
-				<a href="#" ng-click="itemClick(item)" class="thumbnail">
-					<div class="row">
-						<div class="col-md-6">
-							<img ng-src="{{item.icon}}" alt="{{item.title}}" class="img-responsive">
-						</div>
-						<div class="col-md-6">
-							<h3>{{item.title}} </h3>
-							<p>{{item.desc}}</p>
-						</div>
-					</div>
-				</a>
-			</div>
-		</script>
 	
 		<div id="leaflets" class="row slideable">
 			<div ng-repeat="thumbnail in tabs.leaflets.thumbnails">
@@ -122,7 +92,7 @@
 		
 		
 		
-		<!-- SIGN IN / REGISTER -->
+		<!-- SIGN IN -->
 		<div id="login" class="row slideable" ng-controller="SignInController">
 			<div class="row top-bottom-padding-5">
 				<div class="col-md-4">
@@ -189,7 +159,7 @@
 				</div>
 			</script>
 		</div>
-		
+		<!-- REGISTER -->
 		<div id="register" class="row slideable" ng-controller="SignInController">
 			<div class="row">
 				<div class="col-md-8" dw-loading="register" dw-loading-options="{text: 'Registering...'}">

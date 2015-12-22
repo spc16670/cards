@@ -1,7 +1,7 @@
 var module = angular.module('cards.services.Display',[]);
 
-module.service('DisplayService', ['$rootScope','$timeout','UtilsService'
-  ,function ($rootScope,$timeout,UtilsService) {
+module.service('DisplayService', ['$timeout','UtilsService'
+  ,function ($timeout,UtilsService) {
 
 	
 	var Service = {
@@ -18,6 +18,8 @@ module.service('DisplayService', ['$rootScope','$timeout','UtilsService'
 		
 		,fabricShowing : false
 		,materialIndex : 0
+		
+		,drookSpace : null
 
 		,model : {}
 		,mesh : {}
@@ -25,7 +27,6 @@ module.service('DisplayService', ['$rootScope','$timeout','UtilsService'
 		,activeObject : {}
 		,facePointed : 0
 	}
-	
 	
 	Service.setActiveObject = function(value) {
 		Service.activeObject = value;

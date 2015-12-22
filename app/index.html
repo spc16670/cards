@@ -83,17 +83,20 @@
 
 	<body ng-controller="MainController" ng-cloak>
 
-		<!-- Categories -->
+		<!-- Menu: The top level navbar with expandable tabs -->
 		<div id="menu">
 			<div ng-include src="'partials/menu.html'"></div>
 		</div>
 		
 		<!-- Home -->
-		<div class="container" ng-show="toggler.home">
+		<div id="home" class="container" ng-show="toggler.home">
 			<div ng-include src="'partials/home.html'"></div>
 		</div> 
 
-		<!-- Main -->
+		
+		
+		
+		<!-- Workspace / Display -->
 		<div id="editor" class="container" ng-show="toggler.editor" ng-controller="DisplayController">
 			<!-- THREE -->
 			<div id="threeRow" class="row" ng-if="!workspace.fabric" >
@@ -193,7 +196,7 @@
 		</div>
 
 
-		<div id="canvasContainer"></div>
+		<!-- Footer -->
 		<footer class="footer">
 			<div class="container">
 				<div class="row">

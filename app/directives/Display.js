@@ -1,8 +1,8 @@
 'use strict';
 var module = angular.module('cards.directives.Display',[]);
 
-module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope','UtilsService'
-	,function (DisplayService,$timeout,$rootScope,UtilsService) {
+module.directive('ngWebgl', ['DisplayService','$timeout','UtilsService'
+	,function (DisplayService,$timeout,UtilsService) {
 		
     return {
       restrict: 'A'
@@ -34,15 +34,6 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope','UtilsServ
 			
 			// Scene
 			directive.scene = new THREE.Scene();
-			
-			var objGeometry = new THREE.BoxGeometry( 200, 200, 200 );
-
-			for ( var i = 0; i < objGeometry.faces.length; i += 2 ) {
-				var hex = Math.random() * 0xffffff;
-				objGeometry.faces[ i ].color.setHex( hex );
-				objGeometry.faces[ i + 1 ].color.setHex( hex );
-			}
-
 			directive.materials.printed = new THREE.MeshBasicMaterial( 
 				{ vertexColors: THREE.FaceColors, overdraw: 0.5 } );
 
@@ -53,9 +44,8 @@ module.directive('ngWebgl', ['DisplayService','$timeout','$rootScope','UtilsServ
 				transparent: true 
 			});
 	
-			directive.obj = new THREE.Mesh( objGeometry, directive.materials.printed );
+			directive.obj = new THREE.Mesh();
 			directive.scene.add( directive.obj );
-			
 			directive.renderer = new THREE.CanvasRenderer();
 			directive.renderer.setClearColor( 0xffffff ); // renderer background 
 			directive.renderer.setPixelRatio( window.devicePixelRatio );

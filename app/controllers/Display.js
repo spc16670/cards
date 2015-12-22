@@ -3,9 +3,9 @@ var module = angular.module('cards.controllers.Display',[]);
 
 module.controller('DisplayController', ['$scope','DisplayService','CommonService', function ($scope,DisplayService,CommonService) {
 
-	$scope.mesh = DisplayService.mesh;
 	$scope.editingCanvas = DisplayService.editingCanvas;
 
+	
     $scope.fabricWidth = DisplayService.fabricWidth;
     $scope.fabricHeight = DisplayService.fabricHeight;
 	
@@ -43,7 +43,7 @@ module.controller('DisplayController', ['$scope','DisplayService','CommonService
 				,DisplayService.editingCanvas.renderAll.bind(DisplayService.editingCanvas)
 			);
 		}
-    });5
+    });
 	
 	$scope.$watch( function() { return DisplayService.fabricShowing }, function() { 
 		$scope.workspace.fabric = DisplayService.fabricShowing;

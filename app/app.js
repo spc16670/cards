@@ -2,7 +2,7 @@
 
 var app = angular.module('CardsApp', [
 	'colorpicker.module'
-        ,'darthwade.loading'
+	,'darthwade.loading'
 	,'ui.bootstrap'
 	,'ngFileUpload'
 	,'ngCookies'

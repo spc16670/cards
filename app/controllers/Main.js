@@ -1,7 +1,7 @@
 var module = angular.module('cards.controllers.Main',[]);
 
-module.controller('MainController', ['$scope', 'DisplayService', 'SessionService','UtilsService',
- 'SessionService',function ($scope, DisplayService, SessionService,UtilsService,SessionService) {
+module.controller('MainController', ['$scope', 'DisplayService', 'SessionService','UtilsService','BulletService',
+ 'SessionService',function ($scope, DisplayService, SessionService,UtilsService,BulletService,SessionService) {
 
 	$scope.mobile = { collapsed : true };
 	$scope.workspace = { fabric : false };
@@ -37,6 +37,19 @@ module.controller('MainController', ['$scope', 'DisplayService', 'SessionService
 			}
 		}
 	};
+	
+	$scope.showDrookSpace = function() {
+		if (DisplayService.drookSpace == null) {
+			var defaultMinModel = {
+				id: 1
+				, type : "businessCards"
+			}
+			var model = BulletService.fetchModel(defaultMinModel);
+			DisplayService.setModel(model);  
+			DisplayService.materializeMesh();
+		}
+		$scope.visible('editor');
+	}
 	
 	/*
 	$scope.$watch(function() { return DisplayService.fabricShowing }, function () {
