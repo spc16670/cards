@@ -258,4 +258,11 @@ WHALE.VerticallyZFoldedDLLeaflet.prototype.play = function () {
 		this.rightZ = this.rightZ + 2;
 		this.leftZ = this.leftZ + 2;
 	} 
+	this.verticesNeedUpdate = true;
+	this.elementsNeedUpdate = true;
+	this.morphTargetsNeedUpdate = true;
+	this.uvsNeedUpdate = true;
+	this.normalsNeedUpdate = true;
+	this.colorsNeedUpdate = true;
+	this.tangentsNeedUpdate = true;
 }

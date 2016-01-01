@@ -1,0 +1,178 @@
+
+<div class="row" ng-controller="DisplayController">
+
+	<!-- MY MODELS / 3D MODEL / TEMPLATES -->
+	<div id="threeRow" class="row" ng-if="!workspace.fabric" >
+	
+		<div id="myModels" class="col-md-3">
+			<div ng-include src="'partials/saves.html'"></div>
+		</div>
+		
+		<div id="editorDisplay" class="anchor col-md-6">  
+			<div class="panel panel-default" dw-loading="display" dw-loading-options="{text: 'Please wait...'}">
+
+				<div class="panel-heading clearfix" style="border:0;background-color:#ffffff">
+					<div class="row">
+						<div class="col-xs-1 col-sm-1 col-md-1 col-lb-1">
+							<label for="spinning" class="pull-right">		
+								Spin
+							</label>
+						</div>
+						<div class="col-xs-1 col-sm-1 col-md-1 col-lb-1">
+							<input type="checkbox" id="spinning" ng-model="controls.spinning"/>		
+						</div>
+
+						<div class="col-xs-1 col-sm-1 col-md-1 col-lb-1">
+							<label for="scale" class="pull-right">
+								Scale
+							</label>
+						</div>
+						<div class="col-xs-5 col-sm-5 col-md-5 col-lb-5">
+							<input type="range" name="scale" min="0.1" max="2.0" step="0.1" ng-model="controls.scale"/>		
+						</div>
+
+						<div class="col-xs-4 col-sm-4 col-md-4 col-lb-4">
+							<button type="button" class="btn btn-default form-control" ng-click="share()">
+								<i class="fa fa-share-alt"></i> Share &nbsp;
+							</button>
+						</div>
+					</div>
+
+					
+					<div class="input-group input-group-sm pull-right">
+						<span>
+							<label for="spinning">		
+								<span>Spin</span>
+								<input type="checkbox" id="spinning" ng-model="controls.spinning"/>		
+							</label>
+							<label for="helpers">		
+								<span>Axes</span>
+								<input type="checkbox" id="helpers" ng-model="controls.helpers"/>				
+							</label>
+							<label for="wireframe">
+								<span>Frame</span>
+								<input type="checkbox" id="wireframe" ng-model="controls.wireframe"/>				
+							</label>
+							<label for="normals">
+								<span>Normals</span>
+								<input type="checkbox" id="normals" ng-model="controls.normals"/>		
+							</label>
+							<label for="export">
+								<span>Export</span>
+								<input type="button" id="export" ng-click="exported()"/>		
+							</label>
+						</span>
+
+					</div>
+					
+				</div>
+				
+				<div class="panel-body">
+					<div id="threeCanvas" ng-webgl></div>
+				</div>
+				
+				<div class="panel-footer clearfix" style="border:0;background-color:#ffffff">
+					<div class="row">
+						<div class="col-xs-4 col-sm-4 col-md-4 col-lb-4">
+						</div>
+						<div class="col-xs-4 col-sm-4 col-md-4 col-lb-4">
+							<button type="button" class="btn btn-primary form-control" ng-click="save()">
+								<i class="fa fa-floppy-o"></i> Save &nbsp;
+							</button>
+						</div>
+						<div class="col-xs-4 col-sm-4 col-md-4 col-lb-4">
+							<button type="button" class="btn btn-success form-control" ng-click="drook()">
+								<i class="fa fa-print"></i> <strong> Print Drook it! &nbsp;</strong>
+							</button>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		
+		<div id="samples" class="col-md-3" >
+			<div ng-include src="'partials/samples.html'"></div>
+		</div>
+		
+	</div>
+
+	
+	
+	<!-- FABRIC EDITOR -->
+	<div id="fabricRow" class="row" ng-if="workspace.fabric">
+
+		<div class="col-md-3" ng-controller="ToolsController">
+			<div ng-include src="'partials/selection.html'" ></div>
+			<div ng-include src="'partials/text.html'" ></div>
+			<div ng-include src="'partials/drawings.html'" ></div>
+		</div>
+
+		<div class="col-md-6">
+		
+			<div class="panel panel-default">
+				<div class="panel-heading">
+				
+					<!-- ZOOM -->
+					<div class="btn-group btn-group-justified" role="group" aria-label="...">
+						<div class="btn-group" role="group" colorpicker="rgba" ng-model="canvas.bgColour">
+							<button type="button" class="btn btn-default btn-sm" ng-style="{ 'background-color' : canvas.bgColour }">
+								<span id="basic-addon1">
+									<i class="fa fa-tint"></i>
+								</span>
+							</button>
+						</div>
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-default btn-sm" ng-click="zoomIn()">
+								<span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
+							</button>
+						</div>
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-default btn-sm" ng-click="zoomOut()">
+								<span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span>
+							</button>
+						</div>
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-default btn-sm" ng-click="resetZoom()">
+								<span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+							</button>
+						</div>
+					</div>
+				
+				</div> 
+
+				<div class="panel-body scrollxy">
+					<div id="fabricCanvas"
+						ng-fabric
+						width="fabricWidth"
+						height="fabricHeight"
+					>
+					</div>
+				</div>
+				
+				<div class="panel-footer">
+					<div class="btn-group btn-group-justified" role="group" aria-label="...">
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-default btn-sm" ng-click="hide()">
+								<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Cancel
+							</button>
+						</div>
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-default btn-sm" ng-click="apply()">
+								<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Apply
+							</button>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		
+		<!-- FABRIC ELEMENTS -->
+		<div class="col-md-3">
+			<div ng-include src="'partials/elements.html'"></div>
+		</div>
+	
+	</div>
+			
+</div>

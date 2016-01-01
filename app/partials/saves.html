@@ -1,0 +1,37 @@
+<div  ng-controller="SavesController">
+	<uib-accordion>
+		<div uib-accordion-group heading="Saved models" template-url="templates/miniature.html" is-open="true">
+			<ul class="list-group" ng-if="saves.length === 0">
+				<li class="list-group-item crop">
+					<div class="row" >
+						<div class="col-sm-12">
+							<p class="text-center">There are no saved models</p>
+							<hr style="margin-bottom:5px"></hr>
+						</div>
+					</div>
+					<div class="row" >
+						<div class="col-sm-12">
+							<p class="text-center"><i class="fa fa-exclamation-circle"></i><small>&nbsp;&nbsp;Save the model you are working on before navigating away from this page.</small></p>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<ul class="list-group" ng-if="saves.length != 0">
+				<li class="list-group-item crop">
+					<div class="row" ng-if="!user.isLogged">
+						<div class="col-sm-12">
+							<p class="text-center"><i class="fa fa-exclamation-circle"></i><small>&nbsp;&nbsp;Your model is saved temporarily. <a href ng-click="signIn()">Sign in</a> to save the model permanently. </small></p>
+						</div>
+					</div>
+				</li>
+				<li class="list-group-item crop" ng-repeat="s in saves">
+					<div class="row" ng-click="select(s)">
+						<a href class="col-sm-12">
+							<img id="min-{{ s.type }}{{ s.id }}" ng-src="{{ s.snapshot }}" class="img-thumbnail" alt="Member Image" />
+						</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</uib-accordion>
+</div>

@@ -214,14 +214,16 @@ WHALE.VerticallyCFoldedDLLeaflet.prototype.getMaterialSize = function () {
 * Reset the position of vertices to their position as build time.
 */
 WHALE.VerticallyCFoldedDLLeaflet.prototype.reset = function () {
+	
 	var i;
 	for(i=0;i<this.BUILD_STATE.vertices.length;i++) {
 		var originalVertex = this.BUILD_STATE.vertices[i].clone()
 		this.vertices[i] = originalVertex;
 	}
-	this.verticesNeedUpdate = true;
 	this.rightZ = this.BUILD_STATE.rightZ;
 	this.leftZ = this.BUILD_STATE.leftZ;
+	this.verticesNeedUpdate = true;
+	this.normalsNeedUpdate = true;
 }
 
 /**
@@ -282,4 +284,11 @@ WHALE.VerticallyCFoldedDLLeaflet.prototype.play = function () {
 		this.rightZ = this.rightZ + 2;
 		this.leftZ = this.leftZ + 2;
 	}
+	this.verticesNeedUpdate = true;
+	this.elementsNeedUpdate = true;
+	this.morphTargetsNeedUpdate = true;
+	this.uvsNeedUpdate = true;
+	this.normalsNeedUpdate = true;
+	this.colorsNeedUpdate = true;
+	this.tangentsNeedUpdate = true;
 }

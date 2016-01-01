@@ -1,7 +1,10 @@
 
 var module = angular.module('cards.controllers.Display',[]);
 
-module.controller('DisplayController', ['$scope','DisplayService','CommonService', function ($scope,DisplayService,CommonService) {
+module.controller('DisplayController', ['$scope','DisplayService'
+	,'CommonService','UtilsService','ModelsService','$loading'
+	,function ($scope,DisplayService,CommonService,UtilsService
+	,ModelsService,$loading) {
 
 	$scope.editingCanvas = DisplayService.editingCanvas;
 
@@ -106,12 +109,79 @@ module.controller('DisplayController', ['$scope','DisplayService','CommonService
 	$scope.share = function(){
 		console.log("Share");
 	};
+	
+	$scope.exported = function(){
+		function takeSnapshot(callback) {
+			var display = document.getElementById("displayRenderer");
+			var url = display.toDataURL();
+			var targetWidth = 100;
+			var targetHeight = 100;
+			UtilsService.resizeImage(url, targetWidth, targetHeight, callback);
+		}
+		var callback = function (base64PngImg) {
+			window.open(base64PngImg);
+		}
+		takeSnapshot(callback);
+	}
+	
 	$scope.save = function(){
-		console.log("Save");
-
+		$loading.start("display");
+		function takeSnapshot(callback) {
+			var display = document.getElementById("displayRenderer");
+			var url = display.toDataURL();
+			var targetWidth = 77;
+			var targetHeight = 77;
+			UtilsService.resizeImage(url, targetWidth, targetHeight, callback);
+		}
+		var callback = function (base64PngImg) {
+			// create a copy of everything except materialised geometry
+			var id = DisplayService.model.id;
+			var uid = DisplayService.model.uid;
+			var flatGeometry = DisplayService.model.flatGeometry;
+			var fabrics = [];
+			var i;
+			for(i=0;i<DisplayService.model.fabrics.length;i++) {
+				var cloned = {};
+				angular.copy(DisplayService.model.fabrics[i],cloned);
+				fabrics.push(cloned);
+			}
+			var modelSize = {};
+			angular.copy(DisplayService.model.modelSize,modelSize);
+			var productSize = {};
+			angular.copy(DisplayService.model.productSize,productSize);
+			var type = DisplayService.model.type;
+			// ----------------------------------------------------------------
+			var saved = {
+				snapshot : base64PngImg
+				,id : id
+				,uid : uid
+				,type : type
+				,flatGeometry : flatGeometry
+				,fabrics : fabrics
+				,modelSize : modelSize
+				,productSize : productSize
+			};
+			
+			/*
+			* update
+			*/
+			var i;
+			var updated = false;
+			for(i=0;i<ModelsService.saves.length;i++) {
+				if (ModelsService.saves[i].uid === saved.uid) {
+					ModelsService.saves[i] = saved;
+					updated = true;
+				}
+			}
+			if (!updated) {
+				ModelsService.saves.push(saved);
+			}
+			$loading.finish("display");
+		}
+		takeSnapshot(callback);
 	};
+	
 	$scope.drook = function(){
 		console.log("Drook");
-
 	};
 }]);

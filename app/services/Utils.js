@@ -30,5 +30,17 @@ module.service('UtilsService', [function () {
 		return true;
 	}
 	
+	Service.resizeImage = function(url, width, height, callback) {
+		var sourceImage = new Image();
+		sourceImage.onload = function() {
+			var canvas = document.createElement("canvas");
+			canvas.width = width;
+			canvas.height = height;
+			canvas.getContext("2d").drawImage(sourceImage, 0, 0, width, height);
+			callback(canvas.toDataURL());
+		}
+		sourceImage.src = url;
+	}
+	
 	return Service;
 }]);

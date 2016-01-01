@@ -1,50 +1,8 @@
 
 <div ng-controller="ElementController">
-
-	<script type="text/ng-template" id="upload-template.html">
-		<div class="panel {{panelClass || 'panel-default'}}">
-			<div class="panel-heading top-bottom-padding-5">
-				<a href tabindex="0" class="accordion-toggle" ng-click="toggleOpen()" uib-accordion-transclude="heading">
-					<small><strong><span ng-class="{'text-muted': isDisabled}">{{heading}}</span></strong></small>
-				</a>
-			</div>
-			<div class="panel-collapse collapse" uib-collapse="!isOpen">
-				<ul class="list-group">
-					<li class="list-group-item crop">
-						
-						<div class="drop-box" accept="image/*,application/pdf"
-							ngf-drop 
-							ngf-select 
-							ng-model="files"  
-							ngf-drag-over-class="'dragover'" 
-							ngf-multiple="true" 
-							ngf-allow-dir="true"
-							ngf-capture="'camera'" 
-							ngf-pattern="'image/*,application/pdf'">
-								<div class="btn btn-primary btn-sm text-center" role="button" ngf-select ng-model="files" ngf-multiple="true" ngf-capture="'camera'" >Select Files</div>
-								<br><small>Drop images here or click to upload</small>
-						</div>
-						<div ngf-no-file-drop>
-							File Drag/Drop is not supported for this browser
-						</div>
-						<!--<input type="file" onchange="angular.element(this).scope().fileSelected(this)" accept="image/*" id="fabricImgFile" ng-model="selectedImgFile"/>-->
-					</li>
-					<li class="list-group-item crop">
-						Files:
-						<ul>
-							<li ng-repeat="f in files" style="font:smaller">{{ f.name }} {{ f.$error }} {{ f.$errorParam }}</li>
-						</ul>
-						Upload Log:
-						<pre>{{ log }}</pre>
-						<div class="panel-body" style="text-align: right" ng-transclude></div>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</script>
 	
 	<uib-accordion>
-		<div uib-accordion-group heading="{{ uploads.title }}" template-url="upload-template.html" is-open="true">
+		<div uib-accordion-group heading="{{ uploads.title }}" template-url="templates/upload.html" is-open="true">
 			<table class="table table-condensed">
 				<tbody>
 					<tr ng-repeat="member in uploads.members">

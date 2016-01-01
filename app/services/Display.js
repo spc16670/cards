@@ -18,8 +18,6 @@ module.service('DisplayService', ['$timeout','UtilsService'
 		
 		,fabricShowing : false
 		,materialIndex : 0
-		
-		,drookSpace : null
 
 		,model : {}
 		,mesh : {}
@@ -70,6 +68,7 @@ module.service('DisplayService', ['$timeout','UtilsService'
 	
 	/**
 	* setModel() is called from CategoriesController.
+	* The model is flat i.e. its deometry has not been materialized yet.
 	*/
 	Service.setModel = function(model) {
 		this.model = model;
@@ -149,10 +148,33 @@ module.service('DisplayService', ['$timeout','UtilsService'
 	*
 	*/
 	Service.materializeMesh = function() {
+		// 1) Instantiate Service.model.geometry from flatGeometry string into a Three js model
+		Service.model.geometry = new WHALE[Service.model.flatGeometry](Service.model.modelSize.x,Service.model.modelSize.y,Service.model.modelSize.z);
+		
+		// 2) Inflate fabrics fetching them first from the server if needed
+		if (Service.model.fabrics == undefined || Service.model.fabrics.length === 0) {
+			//ModelService.fetchModel(Service.model);
+		}
+		var f;
+		for (f=0;f<Service.model.fabrics.length;f++) {
+			var faceFabric = Service.model.fabrics[f];
+			var canvas = document.createElement('canvas');
+			var name = "model_side_" + faceFabric.materialIndex;
+			canvas.id = name;
+			var size = Service.model.geometry.getMaterialSize();
+			canvas.width = size.x;
+			canvas.height = size.y;
+			faceFabric['canvas'] = new fabric.Canvas(canvas.id);
+			faceFabric.canvas.setWidth(size.x);
+			faceFabric.canvas.setHeight(size.y);
+		}
+		
+		// 3) Apply inflated fabrics onto every side of the model
 		var updateMaterial = function(index) {
 			var f = Service.model.fabrics[index];
 			var image = f.canvas.getContext('2d').canvas;
 			var texture = new THREE.Texture(image);
+			texture.minFilter = THREE.LinearFilter;
 			/**
 			* CanvasRenderer: texture.onUpdate() support. See #7628 - 91110eb
 			* 
@@ -176,6 +198,8 @@ module.service('DisplayService', ['$timeout','UtilsService'
 			var f = this.model.fabrics[fabricIndex];
 			f.canvas.loadFromJSON(f.fabricJson,updateMaterial(fabricIndex));		
 		}
+		
+		// 4) Ensure the 3D display is in the foreground and notify angular
 		$timeout(function(){ console.log(Service.mesh);Service.setFabricShowing(false); })
 	}
 	

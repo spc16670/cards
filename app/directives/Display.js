@@ -46,11 +46,21 @@ module.directive('ngWebgl', ['DisplayService','$timeout','UtilsService'
 	
 			directive.obj = new THREE.Mesh();
 			directive.scene.add( directive.obj );
-			directive.renderer = new THREE.CanvasRenderer();
+			
+			if (WHALE.Detector.webgl) {
+				console.log("activating THREE.WebGLRenderer");
+				directive.renderer = new THREE.WebGLRenderer({
+					preserveDrawingBuffer: true 
+				})
+			} else {
+				console.log("activating THREE.CanvasRenderer");
+				directive.renderer = new THREE.CanvasRenderer();
+			}
+
 			directive.renderer.setClearColor( 0xffffff ); // renderer background 
 			directive.renderer.setPixelRatio( window.devicePixelRatio );
 			directive.renderer.setSize( directive.contW, directive.contH );
-			
+			directive.renderer.domElement.id = "displayRenderer";
 			element[0].appendChild( directive.renderer.domElement );
 			
 			element[0].addEventListener('mouseover', scope.mouseOver);
@@ -290,6 +300,7 @@ module.directive('ngWebgl', ['DisplayService','$timeout','UtilsService'
 			
 			x = window;
 			UtilsService.removeListener(x,'resize',scope.resizeCanvas);
+			x = null;
 			
 			
         });

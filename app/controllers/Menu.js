@@ -1,10 +1,13 @@
 var module = angular.module('cards.controllers.Menu',[]);
 
-module.controller('MenuController', ['$scope','$timeout','$location','$anchorScroll','$element','MenuService','BulletService'
-  ,'DisplayService', function ($scope,$timeout,$location,$anchorScroll,$element,MenuService,BulletService
-  ,DisplayService) {
+module.controller('MenuController', ['$scope','$timeout','$location'
+	,'$anchorScroll','$element','MenuService','ModelsService','DisplayService'
+	, function ($scope,$timeout,$location,$anchorScroll,$element,MenuService
+	,ModelsService,DisplayService) {
 	
 	$scope.tabs = MenuService.tabs;
+	
+	$scope.categorySelected = MenuService.selected;
 	
 	$scope.expand = function(view) {
 		for (var key in $scope.tabs) {
@@ -49,19 +52,14 @@ module.controller('MenuController', ['$scope','$timeout','$location','$anchorScr
 		/**
 		* @todo: add check to for object id
 		*/
-		if ((selected.type !== DisplayService.model.type) || (selected.id != DisplayService.model.id) ) {
-			MenuService.setSelected(selected);
-			var model = BulletService.fetchModel(selected);
-			DisplayService.setModel(model);  
-			DisplayService.materializeMesh();
-			DisplayService.setFabricShowing(false);
-			$timeout(function() {
-				//$anchorScroll.yOffset = -100;
-				//$location.hash('menu');
-				//$anchorScroll();
-			});
-		}
+		MenuService.setSelected(selected);
+		$scope.categorySelected = MenuService.selected;
+		$timeout(function() {
+			//$anchorScroll.yOffset = -100;
+			//$location.hash('menu');
+			//$anchorScroll();
+		});
 	}
 
-
+	$scope.$on('menu:login', function (event,data) {$scope.expand('login');});
 }]);

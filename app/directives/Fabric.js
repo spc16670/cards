@@ -68,13 +68,12 @@ module.directive('ngFabric', ['DisplayService','UtilsService','$timeout',
 			directive.editingCanvas = null;
 			directive.canvas = null;
 			directive = null;
-			
 			var x = element[0];
 			UtilsService.removeChildren(x);
 			x.remove();
-			
 			x = window;
 			UtilsService.removeListener(x,'resize',scope.resizeCanvas);
+			x = null;
         });
 		
 		init();

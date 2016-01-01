@@ -1,0 +1,30 @@
+<div ng-controller="SamplesController">
+
+	<uib-accordion>
+		<div uib-accordion-group heading="New model" template-url="templates/miniature.html" is-open="true">
+			<ul class="list-group">
+				<li class="list-group-item crop">
+					<div class="row" >
+						<a href class="col-sm-12" ng-click="select(blank)">
+							<img id="min-{{ blank.type }}{{ blank.id }}" ng-src="{{ blank.snapshot }}" class="img-thumbnail" alt="Member Image" />
+						</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</uib-accordion>
+	
+	<uib-accordion>
+		<div uib-accordion-group heading="Samples" template-url="templates/miniature.html" is-open="true">
+			<ul class="list-group">
+				<li class="list-group-item crop" ng-repeat="s in samples">
+					<div class="row">
+						<a href class="col-sm-12" ng-click="select(s)">
+							<img id="{{ s.type }}{{ s.id }}" ng-src="images/samples/{{ s.type }}/{{ s.img }}" class="img-thumbnail" alt="Member Image" />
+						</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</uib-accordion>
+</div>

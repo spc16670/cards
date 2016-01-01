@@ -51,13 +51,14 @@
 		<script src="controllers/Elements.js"></script>
 		<script src="controllers/Tools.js"></script>
 		<script src="controllers/Menu.js"></script>
-		<script src="controllers/Templates.js"></script>
+		<script src="controllers/Samples.js"></script>
 		<script src="controllers/Text.js"></script>
 		<script src="controllers/Selection.js"></script>
 		<script src="controllers/Drawings.js"></script>
 		<script src="controllers/SignIn.js"></script>
 		<script src="controllers/Main.js"></script>
 		<script src="controllers/Basket.js"></script>
+		<script src="controllers/Saves.js"></script>
 		
 		<script src="services/Bullet.js"></script>
 		<script src="services/Display.js"></script>
@@ -68,7 +69,7 @@
 		<script src="services/Session.js"></script>
 		<script src="services/Basket.js"></script>
 		<script src="services/Storage.js"></script>
-		<script src="services/Template.js"></script>
+		<script src="services/Models.js"></script>
 
 		<script src="factories/Request.js"></script>
 		
@@ -93,100 +94,10 @@
 			<div ng-include src="'partials/home.html'"></div>
 		</div> 
 
-		
-		
-		
 		<!-- Workspace / Display -->
-		<div id="editor" class="container" ng-show="toggler.editor" ng-controller="DisplayController">
-			<!-- THREE -->
-			<div id="threeRow" class="row" ng-if="!workspace.fabric" >
-				<div id="editorDisplay" class="anchor col-md-8">  
-					<div ng-include src="'partials/three.html'"></div>
-				</div>
-				<div id="templates" ng-controller="TemplateController" class="col-md-4">
-					<div ng-include src="'partials/templates.html'"></div>
-				</div>
-			</div>
-			
-			<!-- FABRIC -->
-			<div id="fabricRow" class="row" ng-if="workspace.fabric">
-
-				<div class="col-md-3" ng-controller="ToolsController">
-					<div ng-include src="'partials/selection.html'" ></div>
-					<div ng-include src="'partials/text.html'" ></div>
-					<div ng-include src="'partials/drawings.html'" ></div>
-				</div>
-
-				<div class="col-md-6">
-				
-					<div class="panel panel-default">
-						<div class="panel-heading">
-						
-							<!-- ZOOM -->
-							<div class="btn-group btn-group-justified" role="group" aria-label="...">
-								<div class="btn-group" role="group" colorpicker="rgba" ng-model="canvas.bgColour">
-									<button type="button" class="btn btn-default btn-sm" ng-style="{ 'background-color' : canvas.bgColour }">
-										<span id="basic-addon1">
-											<i class="fa fa-tint"></i>
-										</span>
-									</button>
-								</div>
-								<div class="btn-group" role="group">
-									<button type="button" class="btn btn-default btn-sm" ng-click="zoomIn()">
-										<span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
-									</button>
-								</div>
-								<div class="btn-group" role="group">
-									<button type="button" class="btn btn-default btn-sm" ng-click="zoomOut()">
-										<span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span>
-									</button>
-								</div>
-								<div class="btn-group" role="group">
-									<button type="button" class="btn btn-default btn-sm" ng-click="resetZoom()">
-										<span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-									</button>
-								</div>
-							</div>
-						
-						</div> 
-					
-					
-						<div class="panel-body scrollxy">
-							<div id="fabricCanvas"
-								ng-fabric
-								width="fabricWidth"
-								height="fabricHeight"
-							>
-							</div>
-						</div>
-						
-						<div class="panel-footer">
-							<div class="btn-group btn-group-justified" role="group" aria-label="...">
-								<div class="btn-group" role="group">
-									<button type="button" class="btn btn-default btn-sm" ng-click="hide()">
-										<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Cancel
-									</button>
-								</div>
-								<div class="btn-group" role="group">
-									<button type="button" class="btn btn-default btn-sm" ng-click="apply()">
-										<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Apply
-									</button>
-								</div>
-							</div>
-						</div>
-						
-					</div>
-				</div>
-				
-				<!-- FABRIC ELEMENTS -->
-				<div class="col-md-3">
-					<div ng-include src="'partials/elements.html'"></div>
-				</div>
-			
-			</div>
+		<div id="display" class="container" ng-show="toggler.editor">
+			<div ng-include src="'partials/display.html'"></div>
 		</div>
-		
-		
 		
 		<!-- Contact -->
 		<div class="container" ng-show="toggler.contact">

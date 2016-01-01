@@ -247,4 +247,12 @@ WHALE.HorizontallyFoldedCard.prototype.play = function () {
 		this.animateBackSide(12);
 		this.animateBackSide(13);
 	}
+	
+	this.verticesNeedUpdate = true;
+	this.elementsNeedUpdate = true;
+	this.morphTargetsNeedUpdate = true;
+	this.uvsNeedUpdate = true;
+	this.normalsNeedUpdate = true;
+	this.colorsNeedUpdate = true;
+	this.tangentsNeedUpdate = true;
 }
