@@ -16,11 +16,11 @@ module.controller('SignInController', ['$scope', '$uibModal','BulletService','Re
 		var req = RequestFactory.login($scope.newLogin);
 		var promise = BulletService.fire(req);
 		angular.copy($scope.defaultLogin, $scope.newLogin );
-        $loading.start("login");
+		$loading.start("login");
 		promise.then(function(resp){
-            $loading.finish("login");
+			$loading.finish("login");
 			var result = resp.header.result;
-                if (result === "ok") {
+                	if (result === "ok") {
 				var authenticated = resp.body.authenticated;
 				console.log(resp);
 				if (authenticated) {

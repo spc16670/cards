@@ -2,48 +2,74 @@
 var module = angular.module('cards.controllers.Elements',[]);
 
 module.controller('ElementController', ['$scope','ElementsService','Upload'
-  ,'CommonService','$timeout','DisplayService',function ($scope
-  ,ElementsService,Upload,CommonService,$timeout,DisplayService) {
+  ,'CommonService','$timeout','DisplayService','RequestFactory','BulletService',function ($scope
+  ,ElementsService,Upload,CommonService,$timeout,DisplayService,RequestFactory,BulletService) {
+	
+
+
+	$scope.getPolicy = function() {
+                var req = RequestFactory.s3policy();
+		console.log("req",req);
+                var promise = BulletService.fire(req);
+		promise.then(function(resp){
+ 			console.log("resp",resp);
+			var result = resp.header.result;
+                	if (result === "ok") {
+			} else if (result === "timeout") {
+			}
+		});	
+	
+	}
+
 
 	$scope.files = [];
 	$scope.file = null;
   
   	$scope.$watch('files', function () {
-        $scope.upload($scope.files);
-    });
-    $scope.$watch('file', function () {
-        if ($scope.file != null) {
-            $scope.files = [$scope.file]; 
-        }
-    });
-    $scope.log = '';
-	
+		$scope.upload($scope.files);
+	});
+
+	$scope.$watch('file', function () {
+        	if ($scope.file != null) {
+            		$scope.files = [$scope.file]; 
+       		}
+	});
+
+	$scope.log = '';
+
+
+
+
+
+
 	$scope.upload = function (files) {
+
 		console.log("files",files,files.length);
-        if (files && files.length) {
-            for (var i = 0; i < files.length; i++) {
-              var file = files[i];
-              if (!file.$error) {
-                Upload.upload({
-                    url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
-                    data: {
-                      username: $scope.username,
-                      file: file  
-                    }
-                }).progress(function (evt) {
-					console.log("progress",evt);
-                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                    $scope.log = 'progress: ' + progressPercentage + '% ' +
-                                evt.config.data.file.name + '\n' + $scope.log;
-                }).success(function (data, status, headers, config) {
-					console.log("success",data);
-                    $timeout(function() {
-                        $scope.log = 'file: ' + config.data.file.name + ', Response: ' + JSON.stringify(data) + '\n' + $scope.log;
-                    });
-                });
-              }
-            }
-        }
+
+		if (files && files.length) {
+			for (var i = 0; i < files.length; i++) {
+				var file = files[i];
+				if (!file.$error) {
+					Upload.upload({
+						url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+						data: {
+							username: $scope.username,
+							file: file  
+						}
+					}).progress(function (evt) {
+						console.log("progress",evt);
+                	    			var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    				$scope.log = 'progress: ' + progressPercentage + '% ' +
+                                			evt.config.data.file.name + '\n' + $scope.log;
+	            	   		}).success(function (data, status, headers, config) {
+						console.log("success",data);
+						$timeout(function() {
+							$scope.log = 'file: ' + config.data.file.name + ', Response: ' + JSON.stringify(data) + '\n' + $scope.log;
+						});
+					});
+				}
+			}
+		}
 	}
 	
 	$scope.elements = ElementsService.elements;

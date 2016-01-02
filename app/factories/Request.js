@@ -1,11 +1,17 @@
 var module = angular.module('cards.factories.Request',[]);
 
-module.factory('RequestFactory', [function() {
+module.factory('RequestFactory', ['SessionService',function(SessionService) {
 	var Factory = {};
 
 	Factory.addMeta = function(name,obj) {
 		obj["__meta__"] = { name: name };
 		return obj;
+	}
+
+	Factory.addToken = function(resp) {
+		var token = SessionService.getToken();
+		if (token) resp.body.token = token;
+		return resp;
 	}
 
 	Factory.login = function(user) {
@@ -27,6 +33,13 @@ module.factory('RequestFactory', [function() {
 
 	}
 
+	Factory.s3policy = function() {
+		var resp = {
+			header : { action : "s3policy" }
+			,body : {}
+		}
+		return Factory.addToken(resp);;
+	}
 
 	return Factory;
 }]);

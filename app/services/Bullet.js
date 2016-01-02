@@ -104,7 +104,7 @@ module.service('BulletService', ['CommonService','$q','$timeout','$rootScope'
 		if (Service.connected) {
 			fireBullet(req);
 		}
-    	return defer.promise;
+		return defer.promise;
   	}
 
 	//=====================================================================
