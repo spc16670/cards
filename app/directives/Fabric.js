@@ -37,7 +37,6 @@ module.directive('ngFabric', ['DisplayService','UtilsService','$timeout',
 			directive.editingCanvas.on('selection:cleared', directive.offSelectListener);
 			window.addEventListener('resize', scope.resizeCanvas, false );
 			scope.resizeCanvas();
-
         };
 
         // -----------------------------------

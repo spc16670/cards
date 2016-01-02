@@ -18,7 +18,7 @@ module.controller('TextController', ['$scope','DisplayService','CommonService'
 		,strokeColour : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_STROKE_COLOUR
 		,bgColour : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_TEXT_BCKG_COLOUR
 		,fontWeight : CommonService.CONSTANTS.EMPTY_STRING
-		,textDecoration : CommonService.CONSTANTS.EMPTY_ARRAY
+		,textDecoration : []
 		,align : CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_TEXT_ALIGN
 		,lineHeight : {
 			value :  CommonService.CONSTANTS.FABRIC_CANVAS.DEFAULT_LINE_HEIGHT
@@ -67,6 +67,7 @@ module.controller('TextController', ['$scope','DisplayService','CommonService'
 	}
 	
 	$scope.write = function () {
+		$scope.text.textDecoration = [];
 		var textItem = new fabric.IText('Tap and Type', { 
 			fontFamily: $scope.text.font.name
 			,fontStyle : $scope.text.fontStyle
@@ -140,6 +141,14 @@ module.controller('TextController', ['$scope','DisplayService','CommonService'
 			}
 		}
 	}
+	
+	$scope.$watch(function () {return DisplayService.activeObject}, function () {
+		if (DisplayService.activeObject instanceof fabric.IText) {
+			$scope.text.textDecoration = DisplayService.activeObject.textDecoration;
+		} 
+	});
+	
+	
 	$scope.$watch(function(){return $scope.text.font}, function() {
 		$scope.textChangeUpdate('fontFamily',$scope.text.font.name);
     },true);
