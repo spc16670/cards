@@ -71,6 +71,7 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 									,file: file
 								}
 							}).then(function (resp) {
+								$scope.finalizeUpload(resp);
 								console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
 							}, function (resp) {
 								console.log('Error status: ' + resp.status);
@@ -81,13 +82,22 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 						}
 					}
 				} else if (result === "timeout") {
-					alert("The request timed out, please try again later").
-					return;
+					alert("The request timed out, please try again later");
 			        }
 			});
 
 	}
 	
+
+	$scope.finalizeUpload = function(resp) {
+		if (resp.status == 204) {
+			
+			var url = resp.config.url;
+		}
+		console.log("data:",resp);
+	}
+
+
 	$scope.elements = ElementsService.elements;
 	$scope.uploads = ElementsService.uploads;
 
