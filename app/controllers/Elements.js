@@ -21,15 +21,17 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 	
 	}
 
-
+	
 	$scope.files = [];
 	$scope.file = null;
-  
+
   	$scope.$watch('files', function () {
+		console.log('$scope.files',$scope.files)
 		$scope.upload($scope.files);
 	});
 
 	$scope.$watch('file', function () {
+		console.log('$scope.file',$scope.file)
         	if ($scope.file != null) {
             		$scope.files = [$scope.file]; 
        		}
@@ -39,37 +41,51 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 
 
 
-
-
-
+	// upload on drop
 	$scope.upload = function (files) {
-
-		console.log("files",files,files.length);
-
-		if (files && files.length) {
-			for (var i = 0; i < files.length; i++) {
-				var file = files[i];
-				if (!file.$error) {
-					Upload.upload({
-						url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
-						data: {
-							username: $scope.username,
-							file: file  
+		if (!files || files.length === 0) return;
+		console.log("files",files);
+		var ticket;
+		var req = RequestFactory.s3policy();
+		var promise = BulletService.fire(req);
+		promise.then(function(resp){
+			console.log("resp",resp);
+			var result = resp.header.result;
+				if (result === "ok") {
+					ticket = resp.body;
+					console.log("TICKET:: ",ticket);
+					for (var i = 0; i < files.length; i++) {
+						var file = files[i];
+						if (!file.$error) {
+							Upload.upload({
+								url: ticket.url //S3 upload url including bucket name
+								,method: 'POST'
+								,data: {
+									key: "uploads/" + file.name // the key to store the file on S3
+									,AWSAccessKeyId: ticket.access
+									,acl: 'private' 
+									,policy: ticket.policy
+									,signature: ticket.signature 
+									,"Content-Type": file.type != '' ? file.type : 'application/octet-stream' 
+									//,filename: file.name // this is needed for Flash polyfill IE8-9
+									,file: file
+								}
+							}).then(function (resp) {
+								console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+							}, function (resp) {
+								console.log('Error status: ' + resp.status);
+							}, function (evt) {
+								var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+								console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+							});
 						}
-					}).progress(function (evt) {
-						console.log("progress",evt);
-                	    			var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                    				$scope.log = 'progress: ' + progressPercentage + '% ' +
-                                			evt.config.data.file.name + '\n' + $scope.log;
-	            	   		}).success(function (data, status, headers, config) {
-						console.log("success",data);
-						$timeout(function() {
-							$scope.log = 'file: ' + config.data.file.name + ', Response: ' + JSON.stringify(data) + '\n' + $scope.log;
-						});
-					});
-				}
-			}
-		}
+					}
+				} else if (result === "timeout") {
+					alert("The request timed out, please try again later").
+					return;
+			        }
+			});
+
 	}
 	
 	$scope.elements = ElementsService.elements;
