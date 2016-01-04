@@ -8,9 +8,9 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 	
 	$scope.user = SessionService.user;
 
-	$scope.$watch(function() { return SessionService.user.isLogged }, function () {
-		if (SessionService.user.isLogged) {
-			console.log("logged:: ",SessionService.user.isLogged);
+	$scope.$watch(function() { return SessionService.user.isLogged() }, function () {
+		if (SessionService.user.isLogged()) {
+			console.log("logged:: ",SessionService.user.isLogged());
 			/*
 			var promise = BulletService.http({
 				url: 'url of service'
@@ -63,46 +63,35 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 	$scope.upload = function (files) {
 		if (!files || files.length === 0) return;
 		console.log("files",files);
-		var ticket;
-		var req = RequestFactory.s3policy();
-		var promise = BulletService.fire(req);
-		promise.then(function(resp){
-			console.log("resp",resp);
-			var result = resp.header.result;
-				if (result === "ok") {
-					ticket = resp.body;
-					console.log("TICKET:: ",ticket);
-					for (var i = 0; i < files.length; i++) {
-						var file = files[i];
-						if (!file.$error) {
-							Upload.upload({
-								url: ticket.url //S3 upload url including bucket name
-								,method: 'POST'
-								,data: {
-									key: "uploads/" + file.name // the key to store the file on S3
-									,AWSAccessKeyId: ticket.access
-									,acl: 'private' 
-									,policy: ticket.policy
-									,signature: ticket.signature 
-									,"Content-Type": file.type != '' ? file.type : 'application/octet-stream' 
-									//,filename: file.name // this is needed for Flash polyfill IE8-9
-									,file: file
-								}
-							}).then(function (resp) {
-								$scope.finalizeUpload(resp);
-								console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-							}, function (resp) {
-								console.log('Error status: ' + resp.status);
-							}, function (evt) {
-								var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-								console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-							});
-						}
+		var ticket = $scope.user.info.s3;
+		console.log("TICKET:: ",ticket);
+		for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+			if (!file.$error) {
+				Upload.upload({
+					url: ticket.url //S3 upload url including bucket name
+					,method: 'POST'
+					,data: {
+						key: ticket.key + file.name // the key to store the file on S3
+						,AWSAccessKeyId: ticket.access
+						,acl: 'private' 
+						,policy: ticket.policy
+						,signature: ticket.signature 
+						,"Content-Type": file.type != '' ? file.type : 'application/octet-stream' 
+						//,filename: file.name // this is needed for Flash polyfill IE8-9
+						,file: file
 					}
-				} else if (result === "timeout") {
-					alert("The request timed out, please try again later");
-			        }
-			});
+				}).then(function (resp) {
+					$scope.finalizeUpload(resp);
+					console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+				}, function (resp) {
+					console.log('Error status: ' + resp.status);
+				}, function (evt) {
+					var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+					console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+				});
+			}
+		}
 
 	}
 	

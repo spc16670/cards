@@ -35,8 +35,8 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#" ng-click="visible('contact')">Contact</a></li>
 					<li ng-class="{active: tabs.basket.expanded}"><a href="#" ng-click="expand('basket')">Basket</a></li>
-					<li ng-class="{active: tabs.login.expanded}"><a href="#" ng-if="!user.isLogged" ng-click="expand('login')">Sign In</a></li>
-					<li class="dropdown" ng-if="user.isLogged" uib-dropdown>
+					<li ng-class="{active: tabs.login.expanded}"><a href="#" ng-if="!user.isLogged()" ng-click="expand('login')">Sign In</a></li>
+					<li class="dropdown" ng-if="user.isLogged()" uib-dropdown>
 						<a href="#" uib-dropdown-toggle role="button" aria-haspopup="true" aria-expanded="false">{{ user.info.customer.fname }}<span class="caret"></span></a>
 						<ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
 							<li><a href="#">Profile</a></li>

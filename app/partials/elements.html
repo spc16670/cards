@@ -3,7 +3,12 @@
 	
 	<uib-accordion>
 		<div uib-accordion-group heading="{{ uploads.title }}" template-url="templates/upload.html" is-open="true">
-		<ul class="list-group">
+		<ul class="list-group" ng-if="!user.isLogged()">
+			<li class="list-group-item crop">
+				Please log in 
+			</li>
+		</ul>
+		<ul class="list-group" ng-if="user.isLogged()">
 			<li class="list-group-item crop">
 				
 				<div class="drop-box" accept="image/*"
@@ -32,6 +37,9 @@
 				<div class="panel-body" style="text-align: right"></div>
 			</li>
 		</ul>
+
+
+
 
 			<table class="table table-condensed">
 				<tbody>
