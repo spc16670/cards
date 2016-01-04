@@ -3,18 +3,18 @@ var module = angular.module('cards.services.Session',[]);
 module.service('SessionService', ['StorageService','CommonService',function (StorageService,CommonService) { 
 
 	var Service = {
-		user : { isLogged : false }
+		user : { isLogged : function (){ return (Service.getToken()) ? true : false } }
 	};
 
-	Service.create = function(email,token,customer,s3) {
-		Service.setToken(token);
+	Service.create = function(resp) {
+		Service.setToken(resp.token);
 		Service.user.info = { 
-			email : email
-			,customer : customer
-			,s3 : s3
+			email : resp.email
+			,customer : resp.customer
+			,s3 : resp.s3
+			,expiry : resp.expiry
 		};
 		StorageService.persist(CommonService.CONSTANTS.USER_INFO_KEY,Service.user.info);
-		Service.user.isLogged = true;
 	}
 
 	Service.setToken = function(token) {
@@ -27,7 +27,6 @@ module.service('SessionService', ['StorageService','CommonService',function (Sto
 	Service.destroy = function() {
 		StorageService.remove(CommonService.CONSTANTS.TOKEN_KEY);
 		StorageService.remove(CommonService.CONSTANTS.USER_INFO_KEY);
-		Service.user.isLogged = false;
 		Service.user.info = null;
 	}
 
@@ -36,7 +35,8 @@ module.service('SessionService', ['StorageService','CommonService',function (Sto
 		console.log("token",token);
 		if (token != null) {
 			var info = StorageService.retrieve(CommonService.CONSTANTS.USER_INFO_KEY);
-			Service.create(info.email,token,info.customer);
+			info.token = token;
+			Service.create(info);
 		}
 	}
 

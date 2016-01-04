@@ -10,16 +10,18 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 
 	$scope.$watch(function() { return SessionService.user.isLogged }, function () {
 		if (SessionService.user.isLogged) {
+			console.log("logged:: ",SessionService.user.isLogged);
+			/*
 			var promise = BulletService.http({
 				url: 'url of service'
 				,method: "POST"
 				,data: {test :  name }
-				,withCredentials: true,
+				,withCredentials: true
 				,headers: {
 					'Content-Type': 'application/json; charset=utf-8'
 					,'Authorization': 'Basic bashe64usename:password'
 				}
-			});
+			});*/
 		}
         });
 
