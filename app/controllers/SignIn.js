@@ -25,7 +25,12 @@ module.controller('SignInController', ['$scope', '$uibModal','BulletService','Re
 				console.log(resp);
 				if (authenticated) {
 					$scope.expand('login');
-					SessionService.create(resp.body.email,resp.body.token,resp.body.customer);
+					SessionService.create(
+						resp.body.email
+						,resp.body.token
+						,resp.body.customer
+						,resp.body.s3
+					);
 				} else {
 					alert("We are sorry, please try again");
 				}

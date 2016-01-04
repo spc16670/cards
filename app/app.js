@@ -36,9 +36,11 @@ var app = angular.module('CardsApp', [
 	,'cards.directives.Validate'
 ]);
 
-app.config(function($interpolateProvider){
-});
-
+app.config(['$interpolateProvider',function($interpolateProvider){
+}]);
+app.config(['$httpProvider',function($httpProvider) {
+	$httpProvider.defaults.useXDomain = true;
+}]);
 app.run(['$templateCache','CommonService',function($templateCache,CommonService) {
 
 }]);

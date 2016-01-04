@@ -1,7 +1,7 @@
 var module = angular.module('cards.services.Bullet',[]);
 
 module.service('BulletService', ['CommonService','$q','$timeout','$rootScope'
-  ,function (CommonService,$q,$timeout,$rootScope) {
+  ,'$http',function (CommonService,$q,$timeout,$rootScope,$http) {
 
 	var Service = {
  		url : CommonService.BULLET.URL 
@@ -108,6 +108,11 @@ module.service('BulletService', ['CommonService','$q','$timeout','$rootScope'
   	}
 
 	//=====================================================================
+	//
+	
+	Service.http = function (data) {
+		return $http(data);
+	}
 
 	return Service;
 

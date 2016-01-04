@@ -2,10 +2,26 @@
 var module = angular.module('cards.controllers.Elements',[]);
 
 module.controller('ElementController', ['$scope','ElementsService','Upload'
-  ,'CommonService','$timeout','DisplayService','RequestFactory','BulletService',function ($scope
-  ,ElementsService,Upload,CommonService,$timeout,DisplayService,RequestFactory,BulletService) {
+  ,'CommonService','$timeout','DisplayService','RequestFactory','BulletService'
+  ,'SessionService',function ($scope,ElementsService,Upload,CommonService
+  ,$timeout,DisplayService,RequestFactory,BulletService,SessionService) {
 	
+	$scope.user = SessionService.user;
 
+	$scope.$watch(function() { return SessionService.user.isLogged }, function () {
+		if (SessionService.user.isLogged) {
+			var promise = BulletService.http({
+				url: 'url of service'
+				,method: "POST"
+				,data: {test :  name }
+				,withCredentials: true,
+				,headers: {
+					'Content-Type': 'application/json; charset=utf-8'
+					,'Authorization': 'Basic bashe64usename:password'
+				}
+			});
+		}
+        });
 
 	$scope.getPolicy = function() {
                 var req = RequestFactory.s3policy();

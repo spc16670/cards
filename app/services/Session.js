@@ -6,11 +6,12 @@ module.service('SessionService', ['StorageService','CommonService',function (Sto
 		user : { isLogged : false }
 	};
 
-	Service.create = function(email,token,customer) {
+	Service.create = function(email,token,customer,s3) {
 		Service.setToken(token);
 		Service.user.info = { 
 			email : email
 			,customer : customer
+			,s3 : s3
 		};
 		StorageService.persist(CommonService.CONSTANTS.USER_INFO_KEY,Service.user.info);
 		Service.user.isLogged = true;
