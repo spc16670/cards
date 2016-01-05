@@ -25,21 +25,6 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 		}
         });
 
-	$scope.getPolicy = function() {
-                var req = RequestFactory.s3policy();
-		console.log("req",req);
-                var promise = BulletService.fire(req);
-		promise.then(function(resp){
- 			console.log("resp",resp);
-			var result = resp.header.result;
-                	if (result === "ok") {
-			} else if (result === "timeout") {
-			}
-		});	
-	
-	}
-
-	
 	$scope.files = [];
 	$scope.file = null;
 
@@ -59,11 +44,26 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 
 
 
-	// upload on drop
 	$scope.upload = function (files) {
 		if (!files || files.length === 0) return;
+		var req = RequestFactory.s3({ verb : "POST"});
+		console.log("req",req);
+                var promise = BulletService.fire(req);
+		promise.then(function(resp){
+ 			console.log("resp",resp);
+			var result = resp.header.result;
+                	if (result === "ok") {
+				$scope.s3upload(files,resp.body)
+			} else if (result === "timeout") {
+				console.log("Could not get ticket.")
+			}
+		});	
+
+	
+	}
+	// upload on drop
+	$scope.s3upload = function (files,ticket) {
 		console.log("files",files);
-		var ticket = $scope.user.info.s3;
 		console.log("TICKET:: ",ticket);
 		for (var i = 0; i < files.length; i++) {
 			var file = files[i];

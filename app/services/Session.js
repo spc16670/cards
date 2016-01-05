@@ -11,7 +11,6 @@ module.service('SessionService', ['StorageService','CommonService',function (Sto
 		Service.user.info = { 
 			email : resp.email
 			,customer : resp.customer
-			,s3 : resp.s3
 			,expiry : resp.expiry
 		};
 		StorageService.persist(CommonService.CONSTANTS.USER_INFO_KEY,Service.user.info);

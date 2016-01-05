@@ -33,11 +33,13 @@ module.factory('RequestFactory', ['SessionService',function(SessionService) {
 
 	}
 
-	Factory.s3policy = function() {
+	Factory.s3 = function(data) {
 		var resp = {
-			header : { action : "s3policy" }
+			header : { action : "s3" }
 			,body : {}
 		}
+		resp.body.verb = data.verb;
+		resp.body.headers = (data.headers) ? data.headers : [];
 		return Factory.addToken(resp);;
 	}
 
