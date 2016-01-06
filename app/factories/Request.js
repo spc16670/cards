@@ -39,6 +39,7 @@ module.factory('RequestFactory', ['SessionService',function(SessionService) {
 			,body : {}
 		}
 		resp.body.verb = data.verb;
+		resp.body.path = SessionService.user.info.key;
 		resp.body.headers = (data.headers) ? data.headers : [];
 		return Factory.addToken(resp);;
 	}
