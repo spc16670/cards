@@ -11,6 +11,19 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 	$scope.$watch(function() { return SessionService.user.isLogged() }, function () {
 		if (SessionService.user.isLogged()) {
 			console.log("logged:: ",SessionService.user.isLogged());
+			var req =  RequestFactory.s3({ type : "list"});
+			console.log("req",req);
+			var promise = BulletService.fire(req);
+			promise.then(function(resp){
+ 				console.log("resp",resp);
+				var result = resp.header.result;
+                		if (result === "ok") {
+					console.log("LIST::",resp);
+				} else if (result === "timeout") {
+					alert("We could not retrieve your uploads. Please try again later or contact us.")
+				}
+			});	
+		
 			/*
 			var promise = BulletService.http({
 				url: 'url of service'
@@ -46,7 +59,7 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 
 	$scope.upload = function (files) {
 		if (!files || files.length === 0) return;
-		var req = RequestFactory.s3({ verb : "POST"});
+		var req = RequestFactory.s3({ type : "upload"});
 		console.log("req",req);
                 var promise = BulletService.fire(req);
 		promise.then(function(resp){
@@ -55,7 +68,7 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
                 	if (result === "ok") {
 				$scope.s3upload(files,resp.body)
 			} else if (result === "timeout") {
-				console.log("Could not get ticket.")
+				alert("The upload could not be completed. Please try again later.");
 			}
 		});	
 
@@ -74,7 +87,7 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 					,data: {
 						key: ticket.key + file.name // the key to store the file on S3
 						,AWSAccessKeyId: ticket.access
-						,acl: 'private' 
+						,acl: ticket.acl 
 						,policy: ticket.policy
 						,signature: ticket.signature 
 						,"Content-Type": file.type != '' ? file.type : 'application/octet-stream' 
