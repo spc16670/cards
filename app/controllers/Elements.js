@@ -7,6 +7,7 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
   ,$timeout,DisplayService,RequestFactory,BulletService,SessionService) {
 	
 	$scope.user = SessionService.user;
+	$scope.uploads = ElementsService.uploads;
 
 	$scope.$watch(function() { return SessionService.user.isLogged() }, function () {
 		if (SessionService.user.isLogged()) {
@@ -16,25 +17,15 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 			var promise = BulletService.fire(req);
 			promise.then(function(resp){
  				console.log("resp",resp);
-				var result = resp.header.result;
-                		if (result === "ok") {
-					console.log("LIST::",resp);
+				var callOk = resp.header.result;
+				var actionOk = resp.body.result;
+                		if (callOk === "ok" && actionOk === "ok") {
+					
+					//ElementsService.setUploads(resp.body.content);
 				} else if (result === "timeout") {
 					alert("We could not retrieve your uploads. Please try again later or contact us.")
 				}
 			});	
-		
-			/*
-			var promise = BulletService.http({
-				url: 'url of service'
-				,method: "POST"
-				,data: {test :  name }
-				,withCredentials: true
-				,headers: {
-					'Content-Type': 'application/json; charset=utf-8'
-					,'Authorization': 'Basic bashe64usename:password'
-				}
-			});*/
 		}
         });
 
@@ -119,7 +110,6 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 
 
 	$scope.elements = ElementsService.elements;
-	$scope.uploads = ElementsService.uploads;
 
 	$scope.loadElement = function(element) {
 		ElementsService.loadElement(element);
