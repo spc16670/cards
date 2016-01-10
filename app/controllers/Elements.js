@@ -46,8 +46,6 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 
 	$scope.log = '';
 
-
-
 	$scope.upload = function (files) {
 		if (!files || files.length === 0) return;
 		var req = RequestFactory.s3({ type : "upload"});
@@ -65,18 +63,33 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 
 	
 	}
-	// upload on drop
+
+	$scope.progressBars = {};
+
 	$scope.s3upload = function (files,ticket) {
 		console.log("files",files);
 		console.log("TICKET:: ",ticket);
 		for (var i = 0; i < files.length; i++) {
 			var file = files[i];
 			if (!file.$error) {
-				Upload.upload({
+				var cib = i.toString();
+				var s3KeyName = ticket.key + file.name;
+ 
+				$scope.progressBars[cib] = {
+					fileName : file.name
+					,progress : 0
+					,type : "warning"
+					,msg : "Preparing upload"
+				}
+
+
+				var upload;
+				upload = Upload.upload({
 					url: ticket.url //S3 upload url including bucket name
 					,method: 'POST'
+					,cib : cib
 					,data: {
-						key: ticket.key + file.name // the key to store the file on S3
+						key: s3KeyName // the key to store the file on S3
 						,AWSAccessKeyId: ticket.access
 						,acl: ticket.acl 
 						,policy: ticket.policy
@@ -85,13 +98,19 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 						//,filename: file.name // this is needed for Flash polyfill IE8-9
 						,file: file
 					}
-				}).then(function (resp) {
+				});
+
+				//
+				upload.then(function (resp) {
 					$scope.finalizeUpload(resp);
-					console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
 				}, function (resp) {
-					console.log('Error status: ' + resp.status);
+					$scope.progressBars[resp.config.cib].type = "error"; 
+					$scope.progressBars[resp.config.cib].msg = "Upload failed, please try again later."; 
+					$scope.removeProgressBar(resp.config.cib);
 				}, function (evt) {
 					var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+					$scope.progressBars[evt.config.cib].progress = progressPercentage; 
+					$scope.progressBars[evt.config.cib].msg = "Uploading..."; 
 					console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
 				});
 			}
@@ -101,13 +120,23 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 	
 
 	$scope.finalizeUpload = function(resp) {
+		
+		console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
 		if (resp.status == 204) {
-			
+			$scope.progressBars[resp.config.cib].type = "success";
+			$scope.progressBars[resp.config.cib].msg = "File uploaded"; 
 			var url = resp.config.url;
+			$scope.removeProgressBar(resp.config.cib);
 		}
 		console.log("data:",resp);
 	}
 
+	$scope.removeProgressBar = function(cib) {
+		$timeout(function(){
+			delete $scope.progressBars[cib];
+			}
+		,3000);	
+	}
 
 	$scope.elements = ElementsService.elements;
 

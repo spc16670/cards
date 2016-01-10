@@ -25,9 +25,14 @@
 				<div ngf-no-file-drop>
 					File Drag/Drop is not supported for this browser
 				</div>
-				<!--<input type="file" onchange="angular.element(this).scope().fileSelected(this)" accept="image/*" id="fabricImgFile" ng-model="selectedImgFile"/>-->
 			</li>
-			<li class="list-group-item crop">
+			<li class="list-group-item crop" ng-repeat="(id,progressBar) in progressBars">
+				
+				<small><em>{{ progressBar.fileName}}</em></small>
+				<uib-progressbar class="progress-striped active" value="progressBar.progress" type="{{progressBar.type}}">
+					{{progressBar.msg}} 
+				</uib-progressbar>
+				<!--
 				Files:
 				<ul>
 					<li ng-repeat="f in files" style="font:smaller">{{ f.name }} {{ f.$error }} {{ f.$errorParam }}</li>
@@ -35,6 +40,7 @@
 				Upload Log:
 				<pre>{{ log }}</pre>
 				<div class="panel-body" style="text-align: right"></div>
+				-->
 			</li>
 		</ul>
 
