@@ -19,6 +19,10 @@ module.service('UtilsService', [function () {
 	Service.uuid = function () {
 		return THREE.Math.generateUUID();
 	}
+	Service.timestamp = function () {
+		return new Date().getTime();
+	}
+
 	Service.getYear = function () {
 		return new Date().getFullYear();
 	}

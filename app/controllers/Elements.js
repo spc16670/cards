@@ -3,8 +3,10 @@ var module = angular.module('cards.controllers.Elements',[]);
 
 module.controller('ElementController', ['$scope','ElementsService','Upload'
   ,'CommonService','$timeout','DisplayService','RequestFactory','BulletService'
-  ,'SessionService',function ($scope,ElementsService,Upload,CommonService
-  ,$timeout,DisplayService,RequestFactory,BulletService,SessionService) {
+  ,'SessionService','UtilsService'
+  ,function ($scope,ElementsService,Upload,CommonService
+  ,$timeout,DisplayService,RequestFactory,BulletService,SessionService
+  ,UtilsService) {
 	
 	$scope.user = SessionService.user;
 	$scope.uploads = ElementsService.uploads;
@@ -20,8 +22,12 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 				var callOk = resp.header.result;
 				var actionOk = resp.body.result;
                 		if (callOk === "ok" && actionOk === "ok") {
-					
-					//ElementsService.setUploads(resp.body.content);
+					var uploads = resp.body.contents;
+					for (var i=0;i<uploads.length;i++) {
+						var id = "img-" + UtilsService.timestamp();
+						uploads[i].id = id;
+						ElementsService.uploads.push(uploads[i]);
+					}
 				} else if (result === "timeout") {
 					alert("We could not retrieve your uploads. Please try again later or contact us.")
 				}
@@ -73,7 +79,7 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 			var file = files[i];
 			if (!file.$error) {
 				var cib = i.toString();
-				var s3KeyName = ticket.key + file.name;
+				var s3KeyName = ticket.key + UtilsService.timestamp() + "-" + file.name;
  
 				$scope.progressBars[cib] = {
 					fileName : file.name
@@ -88,6 +94,7 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 					url: ticket.url //S3 upload url including bucket name
 					,method: 'POST'
 					,cib : cib
+					,s3Url : ticket.url + "/" + s3KeyName
 					,data: {
 						key: s3KeyName // the key to store the file on S3
 						,AWSAccessKeyId: ticket.access
@@ -125,7 +132,9 @@ module.controller('ElementController', ['$scope','ElementsService','Upload'
 		if (resp.status == 204) {
 			$scope.progressBars[resp.config.cib].type = "success";
 			$scope.progressBars[resp.config.cib].msg = "File uploaded"; 
-			var url = resp.config.url;
+			var id = "img-" + UtilsService.timestamp();
+			var upload = { id : id , src : resp.config.s3Url };
+			ElementsService.uploads.push(upload);
 			$scope.removeProgressBar(resp.config.cib);
 		}
 		console.log("data:",resp);

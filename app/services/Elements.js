@@ -4,11 +4,10 @@ module.service('ElementsService', ['BulletService','UtilsService', function (Bul
 
 	var Service = {}
 	
-	Service.uploads =  {
-		id : 1
-		,name: 'uploads'
-		,title: 'Uploads'
-		,members: []
+	Service.uploads = [];
+
+	Service.removeUploads = function() {
+		Service.uploads = [];
 	}
 	
 	Service.elements = [
@@ -38,10 +37,6 @@ module.service('ElementsService', ['BulletService','UtilsService', function (Bul
 		}
 	];
 	
-	Service.loadUploads = function () {
-		Service.uploads.members.push({ groupId : 1, title: "Huge", img: "huge.jpg", id: 1, elementId : UtilsService.uuid()});
-	}
-
 	Service.loadElement = function (element) {
 		if (element.members.length == 0) {
 			if (element.name === "flourishes") {
@@ -57,9 +52,6 @@ module.service('ElementsService', ['BulletService','UtilsService', function (Bul
 			}  
 		}
 	}
-	
-	// load upload members
-	Service.loadUploads();
 	
 	return Service;
 }]);

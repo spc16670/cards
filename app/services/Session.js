@@ -1,6 +1,7 @@
 var module = angular.module('cards.services.Session',[]);
 
-module.service('SessionService', ['StorageService','CommonService',function (StorageService,CommonService) { 
+module.service('SessionService', ['StorageService','CommonService','ElementsService'
+  ,function (StorageService,CommonService,ElementsService) { 
 
 	var Service = {
 		user : { isLogged : function (){ return (Service.getToken()) ? true : false } }
@@ -27,6 +28,7 @@ module.service('SessionService', ['StorageService','CommonService',function (Sto
 	Service.destroy = function() {
 		StorageService.remove(CommonService.CONSTANTS.TOKEN_KEY);
 		StorageService.remove(CommonService.CONSTANTS.USER_INFO_KEY);
+		ElementsService.removeUploads();
 		Service.user.info = null;
 	}
 

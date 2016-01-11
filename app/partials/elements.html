@@ -2,7 +2,8 @@
 <div ng-controller="ElementController">
 	
 	<uib-accordion>
-		<div uib-accordion-group heading="{{ uploads.title }}" template-url="templates/upload.html" is-open="true">
+		<!-- UPLOAD AREA -->
+		<div uib-accordion-group heading="Your Uploads" template-url="templates/upload.html" is-open="true">
 		<ul class="list-group" ng-if="!user.isLogged()">
 			<li class="list-group-item crop">
 				Please log in 
@@ -27,42 +28,25 @@
 				</div>
 			</li>
 			<li class="list-group-item crop" ng-repeat="(id,progressBar) in progressBars">
-				
 				<small><em>{{ progressBar.fileName}}</em></small>
 				<uib-progressbar class="progress-striped active" value="progressBar.progress" type="{{progressBar.type}}">
 					{{progressBar.msg}} 
 				</uib-progressbar>
-				<!--
-				Files:
-				<ul>
-					<li ng-repeat="f in files" style="font:smaller">{{ f.name }} {{ f.$error }} {{ f.$errorParam }}</li>
-				</ul>
-				Upload Log:
-				<pre>{{ log }}</pre>
-				<div class="panel-body" style="text-align: right"></div>
-				-->
 			</li>
 		</ul>
 
+		<!-- UPLOAD LIST -->
+		<ul class="list-group" ng-if="uploads.length != 0">
+			<li class="list-group-item crop" ng-repeat="upload in uploads">
+				<div class="row" ng-click="selectElement(upload)">
+					<div class="col-sm-12">
+						<img id="{{ upload.id }}" ng-src="{{ upload.src }}" class="img-thumbnail" alt="Member Image" />
+					</div>
+				</td>
+			</li>
+		</ul>
 
-
-
-			<table class="table table-condensed">
-				<tbody>
-					<tr ng-repeat="member in uploads.members">
-						<td ng-click="selectElement(member)">
-							<div class="row">
-								<div class="col-sm-12">
-									<img id="{{ member.elementId }}" ng-src="images/elements/{{ uploads.name }}/{{ member.img }}" class="img-thumbnail" alt="Member Image" />
-								</div>
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			 <button ng-click="getPolicy()">Get Policy</button>
-		</div>
-
+		<!-- ELEMENT GROUPS -->
 		<div uib-accordion-group heading="{{ element.title }}" ng-click='loadElement(element)' ng-repeat="element in elements">
 			<table class="table table-condensed">
 				<tbody>
