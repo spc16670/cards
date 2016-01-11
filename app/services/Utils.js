@@ -19,8 +19,14 @@ module.service('UtilsService', [function () {
 	Service.uuid = function () {
 		return THREE.Math.generateUUID();
 	}
+
+	Service.randomId = function() {
+		var id = "id-" + Service.uuid();
+		return id;
+	}
+
 	Service.timestamp = function () {
-		return new Date().getTime();
+		return new Date().getUTCMilliseconds();
 	}
 
 	Service.getYear = function () {
