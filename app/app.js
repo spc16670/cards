@@ -18,6 +18,7 @@ var app = angular.module('CardsApp', [
 	,'cards.services.Models'
 	,'cards.factories.Request'
 	,'cards.controllers.Display'
+	,'cards.controllers.Upload'
 	,'cards.controllers.Saves'
 	,'cards.controllers.Selection'
 	,'cards.controllers.Drawings'

@@ -1,0 +1,62 @@
+<!-- GENERAL TOOLS -->
+<div class="panel panel-default bottom-space-margin" ng-controller="UploadController">
+	<div class="panel-heading top-bottom-padding-5">
+		<a><small><strong>Your Uploads</strong></small></a>
+	</div>
+
+
+	<ul class="list-group" ng-if="!user.isLogged()">
+		<li class="list-group-item crop">
+			Please log in 
+		</li>
+	</ul>
+
+	<ul class="list-group" ng-if="user.isLogged()">
+		<li class="list-group-item crop">
+			
+			<div class="drop-box" accept="image/*"
+				ngf-drop="upload(files)" 
+				ng-model="files"  
+				ngf-drag-over-class="'dragover'" 
+				ngf-multiple="true"
+				ngf-allow-dir="true"
+				ngf-pattern="'image/*'">
+	
+				<div class="btn btn-primary btn-sm text-center" 
+					role="button" 
+					ngf-select="upload(files)" 
+					ng-model="files" 
+					ngf-multiple="true" 
+					ngf-capture="'camera'" >
+						Select Files
+				</div>
+				<br><small>Drop images here or click to upload</small>
+			</div>
+			<div ngf-no-file-drop>
+				File Drag/Drop is not supported for this browser
+			</div>
+		</li>
+		<li class="list-group-item crop" ng-repeat="(id,progressBar) in progressBars">
+			<small><em>{{ progressBar.fileName}}</em></small>
+			<uib-progressbar class="progress-striped active" value="progressBar.progress" type="{{progressBar.type}}">
+					{{progressBar.msg}} 
+			</uib-progressbar>
+		</li>
+		<li class="list-group-item">
+		
+			<div class="row bottom-space">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lb-12">
+					<div class="btn-group btn-group-justified" role="group" aria-label="...">
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-default" ng-click="open()">
+								Open <i class="fa fa-folder-open"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</li>
+	</ul>
+
+</div>

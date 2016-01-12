@@ -1,9 +1,40 @@
-<div class="panel {{panelClass || 'panel-default'}}">
-	<div class="panel-heading top-bottom-padding-5">
-		<a href tabindex="0" class="accordion-toggle" ng-click="toggleOpen()" uib-accordion-transclude="heading">
-			<small><strong><span ng-class="{'text-muted': isDisabled}">{{heading}}</span></strong></small>
-		</a>
-	</div>
-	<div class="panel-collapse collapse" uib-collapse="!isOpen" ng-transclude>
-	</div>
+<div class="modal-header">
+	<h3 class="modal-title">My gallery of uploads</h3>
 </div>
+<div class="modal-body">
+	<ul class="list-group" ng-repeat="upload in uploads">
+		<li class="list-group-item crop" ng-if="$index % 4 == 0">
+			<div class="row">
+				<div class="col-sm-3">
+					<a href="#" ng-if="uploads[$index+0]" ng-click="$event.preventDefault(); selected.upload = uploads[$index+0]">
+						<img id="{{ uploads[$index+0].id }}" ng-src="{{ uploads[$index+0].src }}" class="img-thumbnail" alt="Member Image" />
+					</a>
+				</div>
+
+				<div class="col-sm-3">
+					<a href="#" ng-if="uploads[$index+1]" ng-click="$event.preventDefault(); selected.upload = uploads[$index+1]">
+						<img id="{{ uploads[$index+1].id }}" ng-src="{{ uploads[$index+1].src }}" class="img-thumbnail" alt="Member Image" />
+					</a>
+				</div>
+				<div class="col-sm-3">
+					<a href="#" ng-if="uploads[$index+2]" ng-click="$event.preventDefault(); selected.upload = uploads[$index+2]">
+						<img id="{{ uploads[$index+2].id }}" ng-src="{{ uploads[$index+2].src }}" class="img-thumbnail" alt="Member Image" />
+					</a>
+				</div>
+				<div class="col-sm-3">
+					<a href="#" ng-if="uploads[$index+3]" ng-click="$event.preventDefault(); selected.upload = uploads[$index+3]">
+						<img id="{{ uploads[$index+3].id }}" ng-src="{{ uploads[$index+3].src }}" class="img-thumbnail" alt="Member Image" />
+					</a>
+				</div>
+
+
+			</div>
+		</li>
+	</ul>
+        Selected: <b>{{ selected.upload }}</b>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+	<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>
+
