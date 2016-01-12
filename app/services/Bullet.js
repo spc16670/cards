@@ -78,6 +78,7 @@ module.service('BulletService', ['CommonService','$q','$timeout','$rootScope'
  	*  @param reg must have a header with some metadata
  	*/
 	Service.fire = function(request) {
+		console.log("req",request);
 		var req = {};
 		angular.copy(request,req);
 		var defer = $q.defer();

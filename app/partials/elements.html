@@ -4,7 +4,7 @@
 	<uib-accordion>
 		<div uib-accordion-group heading="{{ element.title }}" template-url="templates/miniature.html" ng-repeat="element in elements">
 
-			<ul class="list-group" ng-if="user.isLogged()">
+			<ul class="list-group">
 				<li class="list-group-item crop" ng-repeat="member in element.members">
 					<div class="row" ng-click="selectElement(member)">
 						<div class="col-sm-12">

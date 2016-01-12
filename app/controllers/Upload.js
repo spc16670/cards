@@ -9,41 +9,14 @@ module.controller('UploadController', ['$scope','ElementsService','Upload'
   ,UtilsService,$uibModal) {
 	
 	$scope.user = SessionService.user;
-	$scope.uploads = ElementsService.uploads;
 
 	$scope.$watch(function() { return SessionService.user.isLogged() }, function () {
 		console.log("logged:: ",SessionService.user.isLogged());
-		console.log("len ", $scope.uploads.length, ElementsService.uploads.length);
-		if (SessionService.user.isLogged()) {
-			$scope.getUploads();
-		} else {
+		if (!SessionService.user.isLogged()) {
 			ElementsService.uploads = [];
 		}
         });
 	
-	$scope.getUploads = function() {
-		if ($scope.uploads.length != 0) return;
-		var req =  RequestFactory.s3({ type : "list"});
-		console.log("req",req);
-		var promise = BulletService.fire(req);
-		promise.then(function(resp){
-			console.log("resp",resp);
-			var callOk = resp.header.result;
-			var actionOk = resp.body.result;
-        		if (callOk === "ok" && actionOk === "ok") {
-				var uploads = resp.body.contents;
-				for (var i=0;i<uploads.length;i++) {
-					var upload = uploads[i];
-					var id = UtilsService.randomId();
-					upload.id = id;
-					ElementsService.uploads.push(upload);
-				}
-			} else if (result === "timeout") {
-				alert("We could not retrieve your uploads. Please try again later or contact us.")
-			}
-		});	
-	}
-
 	$scope.files = [];
 	$scope.file = null;
 
@@ -60,10 +33,11 @@ module.controller('UploadController', ['$scope','ElementsService','Upload'
 	});
 
 
+	$scope.uploads = ElementsService.uploads;
+
 	$scope.upload = function (files) {
 		if (!files || files.length === 0) return;
 		var req = RequestFactory.s3({ type : "upload"});
-		console.log("req",req);
                 var promise = BulletService.fire(req);
 		promise.then(function(resp){
  			console.log("resp",resp);
@@ -175,9 +149,7 @@ module.controller('UploadController', ['$scope','ElementsService','Upload'
 			controller: 'UploadsModalController',
 			size: 'lg',
 			resolve: {
-				uploads: function () {
-					return $scope.uploads;
-				}
+				parcel: {}
 			}
 		});
 
@@ -195,12 +167,40 @@ module.controller('UploadController', ['$scope','ElementsService','Upload'
 //=====================================================================================
 //=====================================================================================
 
-module.controller('UploadsModalController', ['$scope','$uibModalInstance','uploads'
-	,function ($scope, $uibModalInstance, uploads) {
+module.controller('UploadsModalController', ['$scope','parcel','$uibModalInstance'
+	,'$loading','RequestFactory','BulletService','ElementsService','UtilsService'
+	,function ($scope,parcel, $uibModalInstance, $loading,RequestFactory
+	,BulletService,ElementsService,UtilsService) {
 
-	$scope.uploads = uploads;
+	$scope.uploads = ElementsService.uploads;
+
 	$scope.selected = {
 		upload: $scope.uploads[0]
+	};
+
+	$scope.delete = function () {
+		var clockId = "uploadDelete-" + $scope.selected.upload.id; 
+		$loading.start(clockId);
+		var req = RequestFactory.s3({ type : "delete", data : [$scope.selected.upload.src]});
+                var promise = BulletService.fire(req);
+		promise.then(function(resp){
+ 			console.log("resp",resp);
+			$loading.finish(clockId);
+			var result = resp.header.result;
+                	if (result === "ok") {
+				var deleted = resp.body;
+				for (var i=0;i<deleted.length;i++){
+					var del = deleted[i];
+					if (del.result === "ok") {
+						
+					}
+				}	
+				//ElementsService.uploads.splice			
+			} else if (result === "timeout") {
+				alert("The item could not be deleted, please try again later.");
+			}
+		});	
+	
 	};
 
 	$scope.ok = function () {
@@ -210,5 +210,38 @@ module.controller('UploadsModalController', ['$scope','$uibModalInstance','uploa
 	$scope.cancel = function () {
 		$uibModalInstance.dismiss('cancel');
 	};
+
+	// ========================== GET UPLOADS =====================================
+
+	$scope.remove
+	$scope.getUploads = function() {
+		if ($scope.uploads.length != 0) return;
+		var req =  RequestFactory.s3({ type : "list"});
+		console.log("req",req);
+		var promise = BulletService.fire(req);
+		promise.then(function(resp){
+			console.log("resp",resp);
+			var callOk = resp.header.result;
+			var actionOk = resp.body.result;
+        		if (callOk === "ok" && actionOk === "ok") {
+				var uploads = resp.body.contents;
+				for (var i=0;i<uploads.length;i++) {
+					var upload = uploads[i];
+					var id = UtilsService.randomId();
+					upload.id = id;
+					ElementsService.uploads.push(upload);
+				}
+			} else if (result === "timeout") {
+				alert("We could not retrieve your uploads. Please try again later or contact us.")
+			}
+		});	
+	}
+
+	$scope.$watch(function() { return ElementsService.uploads }, function () {
+		$scope.uploads = ElementsService.uploads;
+        });
+
+	$scope.getUploads();
+
 }]);
 

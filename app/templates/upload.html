@@ -5,23 +5,23 @@
 	<ul class="list-group" ng-repeat="upload in uploads">
 		<li class="list-group-item crop" ng-if="$index % 4 == 0">
 			<div class="row">
-				<div class="col-sm-3">
+				<div class="col-sm-3" dw-loading="uploadDelete-{{uploads[$index+0].id}}">
 					<a href="#" ng-if="uploads[$index+0]" ng-click="$event.preventDefault(); selected.upload = uploads[$index+0]">
 						<img id="{{ uploads[$index+0].id }}" ng-src="{{ uploads[$index+0].src }}" class="img-thumbnail" alt="Member Image" />
 					</a>
 				</div>
 
-				<div class="col-sm-3">
+				<div class="col-sm-3" dw-loading="uploadDelete-{{uploads[$index+1].id}}">
 					<a href="#" ng-if="uploads[$index+1]" ng-click="$event.preventDefault(); selected.upload = uploads[$index+1]">
 						<img id="{{ uploads[$index+1].id }}" ng-src="{{ uploads[$index+1].src }}" class="img-thumbnail" alt="Member Image" />
 					</a>
 				</div>
-				<div class="col-sm-3">
+				<div class="col-sm-3" dw-loading="uploadDelete-{{uploads[$index+2].id}}">
 					<a href="#" ng-if="uploads[$index+2]" ng-click="$event.preventDefault(); selected.upload = uploads[$index+2]">
 						<img id="{{ uploads[$index+2].id }}" ng-src="{{ uploads[$index+2].src }}" class="img-thumbnail" alt="Member Image" />
 					</a>
 				</div>
-				<div class="col-sm-3">
+				<div class="col-sm-3" dw-loading="uploadDelete-{{uploads[$index+3].id}}">
 					<a href="#" ng-if="uploads[$index+3]" ng-click="$event.preventDefault(); selected.upload = uploads[$index+3]">
 						<img id="{{ uploads[$index+3].id }}" ng-src="{{ uploads[$index+3].src }}" class="img-thumbnail" alt="Member Image" />
 					</a>
@@ -31,10 +31,16 @@
 			</div>
 		</li>
 	</ul>
-        Selected: <b>{{ selected.upload }}</b>
 </div>
 <div class="modal-footer">
-	<button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
-	<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+	<div class="row">
+		<div class="col-sm-6">
+			<button class="btn btn-danger pull-left" type="button" ng-click="delete()">Delete</button>
+		</div>
+		<div class="col-sm-6">
+			<button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+			<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+		</div>
+	</div>
 </div>
 

@@ -40,7 +40,7 @@ module.factory('RequestFactory', ['SessionService',function(SessionService) {
 		}
 		req.body.type = data.type;
 		req.body.key = SessionService.user.info.key;
-		//req.body.headers = (data.headers) ? data.headers : [];
+		req.body.data = (data.data) ? data.data : {};
 		return Factory.addToken(req);
 	}
 
