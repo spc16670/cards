@@ -192,7 +192,7 @@ module.controller('UploadsModalController', ['$scope','parcel','$uibModalInstanc
 				for (var i=0;i<deleted.length;i++){
 					var del = deleted[i];
 					if (del.result === "ok") {
-						
+						$scope.removeUpload(del);	
 					}
 				}	
 				//ElementsService.uploads.splice			
@@ -213,7 +213,16 @@ module.controller('UploadsModalController', ['$scope','parcel','$uibModalInstanc
 
 	// ========================== GET UPLOADS =====================================
 
-	$scope.remove
+	$scope.removeUpload = function(url) {
+		var newUploads = [];
+		angular.forEach(ElementsService.uploads,function(upload,i){
+			if (upload.src != url.url)  {
+				newUploads.push(upload);
+			} else {
+			}
+		});
+		ElementsService.uploads = newUploads; 
+        }
 	$scope.getUploads = function() {
 		if ($scope.uploads.length != 0) return;
 		var req =  RequestFactory.s3({ type : "list"});
